@@ -5,7 +5,8 @@ import Quiz from '@/components/interactive/Quiz.vue'
 import TerminalOutput from '@/components/interactive/TerminalOutput.vue'
 import ParallelCard from '@/components/common/ParallelCard.vue'
 import TheoryBlock from '@/components/common/TheoryBlock.vue'
-import type { QuizQuestion } from '@/types'
+import InteractiveDiagram from '@/components/interactive/InteractiveDiagram.vue'
+import type { QuizQuestion, DiagramStep } from '@/types'
 
 defineProps<{
   activeTab: string
@@ -164,6 +165,58 @@ $table->foreignId('category_id')
     ->constrained()          // FK на categories.id
     ->nullOnDelete();        // Встановити NULL при видаленні категорії`
 
+const pivotMigrationCode = `<?php
+// database/migrations/..._create_task_tag_table.php
+
+Schema::create('task_tag', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('task_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
+    $table->timestamps();
+
+    $table->unique(['task_id', 'tag_id']); // одна задача — один тег лише раз
+});`
+
+const erDiagram = `erDiagram
+  users ||--o{ tasks : "hasMany"
+  categories ||--o{ tasks : "hasMany"
+  tasks }o--o{ tags : "belongsToMany"
+  tasks {
+    int id PK
+    string title
+    string status
+    int user_id FK
+    int category_id FK
+  }
+  tags {
+    int id PK
+    string name
+  }
+  task_tag {
+    int task_id FK
+    int tag_id FK
+  }
+`
+
+const erDiagramSteps: DiagramStep[] = [
+  {
+    highlightNodes: ['users', 'tasks'],
+    description: 'User hasMany Tasks — один юзер має багато задач. В tasks є user_id (foreign key).',
+  },
+  {
+    highlightNodes: ['categories', 'tasks'],
+    description: 'Category hasMany Tasks — одна категорія має багато задач. В tasks є category_id.',
+  },
+  {
+    highlightNodes: ['tasks', 'tags', 'task_tag'],
+    description: 'Tasks belongsToMany Tags — багато-до-багатьох через pivot таблицю task_tag. Кожен рядок у task_tag зв\'язує одну задачу з одним тегом.',
+  },
+  {
+    highlightNodes: ['task_tag'],
+    description: 'Pivot таблиця task_tag — містить лише два foreign keys: task_id та tag_id. Це "міст" між tasks і tags. Laravel створює цей зв\'язок автоматично через belongsToMany.',
+  },
+]
+
 const quizQuestions: QuizQuestion[] = [
   {
     question: 'Що таке міграція в Laravel?',
@@ -283,6 +336,34 @@ const quizQuestions: QuizQuestion[] = [
       <CodeBlock lang="php" :code="foreignKeyCode" title="Foreign Keys" />
 
       <CodeBlock lang="php" :code="fullMigrationCode" title="Повна міграція tasks" :show-line-numbers="true" />
+
+      <TheoryBlock title="Pivot таблиці (Many-to-Many)">
+        <p>
+          Коли задача може мати <strong>багато тегів</strong>, і тег може бути у
+          <strong>багатьох задачах</strong> — це зв'язок many-to-many. Для нього потрібна
+          окрема <strong>pivot таблиця</strong> (як join table в SQL).
+        </p>
+        <p>
+          В JavaScript ви б створили окрему таблицю вручну і писали JOIN-запити.
+          В Laravel — просто вказуєте <code>belongsToMany</code> в моделі, а Laravel
+          робить все автоматично.
+        </p>
+      </TheoryBlock>
+
+      <CodeBlock :code="pivotMigrationCode" lang="php" title="Міграція pivot таблиці" :show-line-numbers="true" />
+
+      <CodeComparison
+        :js="`// JS: ручний JOIN\nconst tags = await db.query(\n  'SELECT t.* FROM tags t ' +\n  'JOIN task_tag tt ON t.id = tt.tag_id ' +\n  'WHERE tt.task_id = ?', [taskId]\n);`"
+        :php="`// Laravel: автоматично\n\$tags = \$task->tags;\n\n// В моделі Task:\npublic function tags(): BelongsToMany\n{\n    return \$this->belongsToMany(Tag::class);\n}`"
+        js-title="JS (ручний SQL)"
+        php-title="Laravel (belongsToMany)"
+      />
+
+      <InteractiveDiagram
+        title="ER-діаграма: зв'язки Task Manager"
+        :definition="erDiagram"
+        :steps="erDiagramSteps"
+      />
     </div>
   </div>
 
