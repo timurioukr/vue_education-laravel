@@ -325,6 +325,35 @@ const quizQuestions: QuizQuestion[] = [
           <code>update()</code> оновлює, <code>destroy()</code> видаляє.
         </p>
       </TheoryBlock>
+
+      <TheoryBlock title="Route Model Binding">
+        <p>
+          Laravel може автоматично знайти модель по <code>{id}</code> в URL.
+          Замість ручного <code>Task::findOrFail($id)</code> — просто типізуйте параметр.
+          Якщо запис не знайдено — Laravel автоматично поверне 404.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        :js="`// Vue Router + API call\nrouter.get('/tasks/:id', async (to) => {\n  const res = await fetch('/api/tasks/' + to.params.id);\n  if (!res.ok) throw new Error('Not found');\n  return res.json();\n});`"
+        :php="`// Laravel Route Model Binding\nRoute::get('/tasks/{task}', function (Task \$task) {\n    return \$task; // автоматичний findOrFail!\n});\n\n// В контролері:\npublic function show(Task \$task): JsonResponse\n{\n    return response()->json(\$task);\n}`"
+        js-title="JS (ручний fetch)"
+        php-title="PHP (auto binding)"
+      />
+
+      <TheoryBlock title="HTTP Status Codes для API">
+        <p>
+          Кожна відповідь API має числовий код. Ви вже знаєте їх з fetch/axios на фронтенді.
+          В Laravel повертаємо їх явно через <code>response()->json($data, $code)</code>.
+        </p>
+      </TheoryBlock>
+
+      <CodeBlock
+        :code="`// Основні коди для REST API:\n//\n// 200 OK            — успішний GET або PUT\n// 201 Created       — успішний POST (ресурс створено)\n// 204 No Content    — успішний DELETE (тіло порожнє)\n// 404 Not Found     — ресурс не знайдено\n// 422 Unprocessable — помилка валідації\n// 500 Server Error  — щось зламалось на сервері\n\n// Приклад у контролері:\npublic function store(Request \$request): JsonResponse\n{\n    \$task = Task::create(\$request->validated());\n    return response()->json(\$task, 201); // Created\n}\n\npublic function destroy(Task \$task): JsonResponse\n{\n    \$task->delete();\n    return response()->json(null, 204); // No Content\n}`"
+        lang="php"
+        title="HTTP Status Codes"
+        :show-line-numbers="true"
+      />
     </div>
   </div>
 
