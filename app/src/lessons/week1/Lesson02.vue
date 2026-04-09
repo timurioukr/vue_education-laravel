@@ -256,6 +256,48 @@ print_r($task->toArray());`
         php-title="PHP 8+ (Constructor Promotion)"
       />
 
+      <TheoryBlock title="Наслідування та parent::">
+        <p>
+          PHP <code>extends</code> працює як в JS. Різниця: замість <code>super</code>
+          використовується <code>parent::</code> для виклику методів батьківського класу.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        :js="`class Admin extends User {\n  constructor(name, role) {\n    super(name);\n    this.role = role;\n  }\n}`"
+        :php="`class Admin extends User\n{\n    public function __construct(\n        string \$name,\n        public string \$role,\n    ) {\n        parent::__construct(\$name);\n    }\n}`"
+        js-title="JS extends"
+        php-title="PHP extends"
+      />
+
+      <TheoryBlock title="Static методи">
+        <p>
+          <code>static</code> методи викликаються через <code>::</code> без створення об'єкта.
+          В Laravel це скрізь: <code>Task::create()</code>, <code>Task::find()</code>,
+          <code>Route::get()</code>. Аналог JS <code>Class.method()</code>.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        :js="`class Task {\n  static create(data) {\n    return new Task(data);\n  }\n}\nconst task = Task.create({...});`"
+        :php="`class Task\n{\n    public static function create(array \$data): self\n    {\n        return new self(\$data);\n    }\n}\n\$task = Task::create([...]);`"
+        js-title="JS static"
+        php-title="PHP static (::)"
+      />
+
+      <TheoryBlock title="readonly (PHP 8.1+)">
+        <p>
+          Властивість <code>readonly</code> не можна змінити після ініціалізації — як <code>const</code>
+          для полів об'єкта. Часто використовується з constructor promotion.
+        </p>
+      </TheoryBlock>
+
+      <CodeBlock
+        :code="`class Task {\n    public function __construct(\n        public readonly int \$id,\n        public readonly string \$title,\n        public string \$status = 'pending',\n    ) {}\n}\n\n\$task = new Task(1, 'Learn PHP');\n// \$task->id = 2;  // Error: Cannot modify readonly property`"
+        lang="php"
+        title="readonly properties"
+      />
+
       <TheoryBlock title="Трейти (аналог Vue Composables)">
         <p>
           В Vue ви створюєте composables (<code>useAuth()</code>, <code>useNotification()</code>) для
