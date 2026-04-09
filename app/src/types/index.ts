@@ -37,3 +37,25 @@ export interface TreeNode {
   children?: TreeNode[]
   highlight?: boolean
 }
+
+export interface DiagramStep {
+  highlightNodes: string[]
+  description: string
+  code?: string
+}
+
+export interface CodeFlowStep {
+  line: number
+  variables: Record<string, string>
+  output?: string
+  note?: string
+}
+
+export interface ExecutionResult {
+  stdout: string
+  stderr: string
+  exitCode: number
+  time: string
+  memory: number
+  status: 'success' | 'error' | 'timeout' | 'compilation_error'
+}
