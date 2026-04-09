@@ -16,10 +16,10 @@ const router = useRouter()
 const activeTab = ref('theory')
 
 const tabs = [
-  { key: 'theory', icon: '\u{1F4D6}', label: '\u0422\u0435\u043E\u0440\u0456\u044F' },
-  { key: 'practice', icon: '\u{1F4BB}', label: '\u041F\u0440\u0430\u043A\u0442\u0438\u043A\u0430' },
-  { key: 'quiz', icon: '\u{1F9EA}', label: '\u041A\u0432\u0456\u0437' },
-  { key: 'tasks', icon: '\u{1F4DD}', label: '\u0417\u0430\u0432\u0434\u0430\u043D\u043D\u044F' },
+  { key: 'theory', icon: '📖', label: 'Теорія' },
+  { key: 'practice', icon: '💻', label: 'Практика' },
+  { key: 'quiz', icon: '🧪', label: 'Квіз' },
+  { key: 'tasks', icon: '📝', label: 'Завдання' },
 ]
 
 const lessonInfo = computed(() => getLessonById(props.lessonId))
@@ -61,14 +61,14 @@ defineExpose({ activeTab })
           :disabled="!adjacent.prev"
           @click="goTo(adjacent.prev)"
         >
-          \u2190 Попередній
+          ← Попередній
         </button>
         <button
           class="nav-btn nav-btn--next"
           :disabled="!adjacent.next"
           @click="goTo(adjacent.next)"
         >
-          Наступний \u2192
+          Наступний →
         </button>
       </div>
     </header>

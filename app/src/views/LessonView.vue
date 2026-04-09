@@ -13,7 +13,7 @@ const progress = useProgressStore()
 const LessonPlaceholder = {
   render() {
     return h('div', { class: 'placeholder-message' }, [
-      h('span', { class: 'placeholder-icon' }, '\uD83D\uDEA7'),
+      h('span', { class: 'placeholder-icon' }, '🚧'),
       h('h2', null, 'Цей урок ще в розробці'),
       h('p', null, 'Скоро тут з\'явиться контент. Слідкуйте за оновленнями!'),
     ])

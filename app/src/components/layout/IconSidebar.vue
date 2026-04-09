@@ -4,9 +4,9 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const navItems = [
-  { icon: '\u{1F4CA}', label: 'Dashboard', to: '/' },
-  { icon: '\u{1F4D6}', label: 'Lessons', to: '/lesson/01' },
-  { icon: '\u{1F4CB}', label: 'Cheatsheets', to: '/cheatsheet/php-vs-js' },
+  { icon: '📊', label: 'Dashboard', to: '/' },
+  { icon: '📖', label: 'Lessons', to: '/lesson/01' },
+  { icon: '📋', label: 'Cheatsheets', to: '/cheatsheet/php-vs-js' },
 ]
 
 function isActive(to: string): boolean {
@@ -18,7 +18,7 @@ function isActive(to: string): boolean {
 <template>
   <aside class="icon-sidebar">
     <div class="logo">
-      <div class="logo-icon">\u{1F4D8}</div>
+      <div class="logo-icon">📘</div>
     </div>
 
     <nav class="nav-icons">
@@ -36,7 +36,7 @@ function isActive(to: string): boolean {
 
     <div class="nav-bottom">
       <div class="nav-icon" title="Settings">
-        <span class="nav-emoji">\u2699\uFE0F</span>
+        <span class="nav-emoji">⚙️</span>
       </div>
     </div>
   </aside>

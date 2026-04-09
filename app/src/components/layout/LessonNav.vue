@@ -58,8 +58,8 @@ function lessonStatus(lessonId: string): 'completed' | 'active' | 'upcoming' {
           :class="lessonStatus(lesson.id)"
         >
           <span class="lesson-marker">
-            <template v-if="lessonStatus(lesson.id) === 'completed'">\u2713</template>
-            <template v-else-if="lesson.isTest">\u2B50</template>
+            <template v-if="lessonStatus(lesson.id) === 'completed'">✓</template>
+            <template v-else-if="lesson.isTest">⭐</template>
             <template v-else>{{ lesson.order }}</template>
           </span>
           <span class="lesson-title">{{ lesson.titleUa }}</span>
