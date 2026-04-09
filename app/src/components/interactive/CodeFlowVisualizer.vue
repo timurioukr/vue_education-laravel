@@ -122,15 +122,15 @@ function stopAutoPlay() {
 
     <div class="flow-controls">
       <button class="ctrl-btn" @click="resetSteps">⟲</button>
-      <button class="ctrl-btn" @click="prevStep" :disabled="currentStepIndex <= 0">←</button>
+      <button class="ctrl-btn" :disabled="currentStepIndex <= 0" @click="prevStep">←</button>
       <button
         class="ctrl-btn ctrl-btn-primary"
         @click="toggleAutoPlay"
       >
         {{ isPlaying ? '⏸' : '▶' }}
       </button>
-      <button class="ctrl-btn" @click="nextStep" :disabled="currentStepIndex >= steps.length - 1">→</button>
-      <span class="step-counter" v-if="currentStepIndex >= 0">
+      <button class="ctrl-btn" :disabled="currentStepIndex >= steps.length - 1" @click="nextStep">→</button>
+      <span v-if="currentStepIndex >= 0" class="step-counter">
         {{ currentStepIndex + 1 }} / {{ steps.length }}
       </span>
     </div>

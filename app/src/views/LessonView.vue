@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, watch, defineAsyncComponent, h } from 'vue'
+import { computed, defineAsyncComponent, h, shallowRef, watch } from 'vue'
 import { getLessonById } from '@/data/lessons'
 import { useProgressStore } from '@/stores/progress'
 import LessonLayout from '@/components/layout/LessonLayout.vue'
+import type { Component } from 'vue'
 
 const props = defineProps<{
   id: string
@@ -28,45 +29,44 @@ const DemoPlaceholder = {
   },
 }
 
-const lessonComponent = computed(() => {
-  const info = getLessonById(props.id)
-  if (!info) return null
-  const week = info.week.number
-  return defineAsyncComponent({
-    loader: () => import(`../lessons/week${week}/Lesson${props.id}.vue`),
-    errorComponent: LessonPlaceholder,
-  })
-})
+const lessonComponent = shallowRef<Component | null>(null)
+const demoComponent = shallowRef<Component | null>(null)
 
-const demoComponent = computed(() => {
-  const info = getLessonById(props.id)
-  if (!info) return null
-  const week = info.week.number
-  return defineAsyncComponent({
-    loader: () => import(`../lessons/week${week}/Lesson${props.id}Demo.vue`),
-    errorComponent: DemoPlaceholder,
-  })
-})
+watch(
+  () => props.id,
+  (id) => {
+    progress.setCurrentLesson(id)
+
+    const info = getLessonById(id)
+    if (!info) {
+      lessonComponent.value = null
+      demoComponent.value = null
+      return
+    }
+    const week = info.week.number
+    lessonComponent.value = defineAsyncComponent({
+      loader: () => import(`../lessons/week${week}/Lesson${id}.vue`),
+      errorComponent: LessonPlaceholder,
+    })
+    demoComponent.value = defineAsyncComponent({
+      loader: () => import(`../lessons/week${week}/Lesson${id}Demo.vue`),
+      errorComponent: DemoPlaceholder,
+    })
+  },
+  { immediate: true },
+)
 
 const isCompleted = computed(() => progress.isCompleted(props.id))
 
 function markComplete() {
   progress.completeLesson(props.id)
 }
-
-watch(
-  () => props.id,
-  (id) => {
-    progress.setCurrentLesson(id)
-  },
-  { immediate: true },
-)
 </script>
 
 <template>
   <LessonLayout :lesson-id="id">
     <template #content="{ activeTab }">
-      <component v-if="lessonComponent" :is="lessonComponent" :active-tab="activeTab" />
+      <component :is="lessonComponent" v-if="lessonComponent" :active-tab="activeTab" />
 
       <div class="lesson-footer">
         <button
@@ -83,7 +83,7 @@ watch(
     </template>
 
     <template #demo="{ activeTab }">
-      <component v-if="demoComponent" :is="demoComponent" :active-tab="activeTab" />
+      <component :is="demoComponent" v-if="demoComponent" :active-tab="activeTab" />
     </template>
   </LessonLayout>
 </template>

@@ -16,12 +16,12 @@ function isActive(to: string): boolean {
 </script>
 
 <template>
-  <aside class="icon-sidebar">
+  <aside class="icon-sidebar" aria-label="Sidebar">
     <div class="logo">
       <div class="logo-icon">📘</div>
     </div>
 
-    <nav class="nav-icons">
+    <nav class="nav-icons" aria-label="Main navigation">
       <router-link
         v-for="item in navItems"
         :key="item.to"
@@ -29,8 +29,10 @@ function isActive(to: string): boolean {
         class="nav-icon"
         :class="{ active: isActive(item.to) }"
         :title="item.label"
+        :aria-label="item.label"
+        :aria-current="isActive(item.to) ? 'page' : undefined"
       >
-        <span class="nav-emoji">{{ item.icon }}</span>
+        <span class="nav-emoji" aria-hidden="true">{{ item.icon }}</span>
       </router-link>
     </nav>
 

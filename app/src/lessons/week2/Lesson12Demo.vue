@@ -10,9 +10,9 @@ const memoryItems = [
   { vue: '.filter(fn)', laravel: 'scopeByStatus()' },
   { vue: '.sort(fn)', laravel: 'orderBy()' },
   { vue: '.slice(0, 10)', laravel: 'paginate(10)' },
-  { vue: 'if (query) {...}', laravel: "when(\$query, fn)" },
+  { vue: 'if (query) {...}', laravel: "when($query, fn)" },
   { vue: 'allowedFields[]', laravel: 'whitelist array' },
-  { vue: '.includes(str)', laravel: "where('title', 'like', \"%\$q%\")" },
+  { vue: '.includes(str)', laravel: "where('title', 'like', \"%$q%\")" },
 ]
 
 const curlOutput = [

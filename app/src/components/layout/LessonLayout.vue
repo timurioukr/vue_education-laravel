@@ -44,7 +44,7 @@ defineExpose({ activeTab })
 </script>
 
 <template>
-  <div class="lesson-layout" v-if="lessonInfo">
+  <div v-if="lessonInfo" class="lesson-layout">
     <!-- Header bar -->
     <header class="lesson-header">
       <div class="header-left">

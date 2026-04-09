@@ -57,14 +57,16 @@ function copyCode() {
 
     <div class="code-wrapper">
       <span class="lang-badge">{{ lang }}</span>
-      <button class="copy-btn" @click="copyCode">
+      <button class="copy-btn" aria-label="Копіювати код" @click="copyCode">
         {{ copied ? 'Copied!' : 'Copy' }}
       </button>
+      <!-- eslint-disable vue/no-v-html -->
       <div
         v-if="highlightedHtml"
         class="shiki-output"
         v-html="highlightedHtml"
       />
+      <!-- eslint-enable vue/no-v-html -->
       <pre v-else class="raw-code"><code>{{ code }}</code></pre>
     </div>
   </div>

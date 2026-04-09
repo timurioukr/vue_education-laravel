@@ -100,7 +100,7 @@ function goToCheatsheet(name: string) {
       <div class="continue-info">
         <span class="continue-label">Продовжити навчання</span>
         <h3 class="continue-title">{{ nextLesson.icon }} {{ nextLesson.titleUa }}</h3>
-        <p class="continue-meta" v-if="nextLessonWeek">
+        <p v-if="nextLessonWeek" class="continue-meta">
           Тиждень {{ nextLessonWeek.number }} · {{ nextLesson.duration }}
         </p>
       </div>

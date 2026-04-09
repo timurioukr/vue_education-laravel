@@ -126,9 +126,9 @@ const currentDescription = computed(() => {
     </div>
 
     <div v-if="hasSteps" class="diagram-controls">
-      <button class="ctrl-btn" @click="resetSteps" :disabled="currentStep < 0">⟲ Скинути</button>
-      <button class="ctrl-btn" @click="prevStep" :disabled="currentStep <= 0">← Назад</button>
-      <button class="ctrl-btn ctrl-btn-primary" @click="nextStep" :disabled="currentStep >= steps!.length - 1">
+      <button class="ctrl-btn" :disabled="currentStep < 0" @click="resetSteps">⟲ Скинути</button>
+      <button class="ctrl-btn" :disabled="currentStep <= 0" @click="prevStep">← Назад</button>
+      <button class="ctrl-btn ctrl-btn-primary" :disabled="currentStep >= steps!.length - 1" @click="nextStep">
         Далі →
       </button>
     </div>

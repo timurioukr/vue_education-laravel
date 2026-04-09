@@ -1,18 +1,33 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import * as monaco from 'monaco-editor'
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
-import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
-import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import { executeCode } from '@/services/judge0'
 import type { ExecutionResult } from '@/types'
 
-self.MonacoEnvironment = {
-  getWorker(_: unknown, label: string) {
-    if (label === 'json') return new jsonWorker()
-    if (label === 'typescript' || label === 'javascript') return new tsWorker()
-    return new editorWorker()
-  },
+type Monaco = typeof import('monaco-editor')
+
+let monacoModule: Monaco | null = null
+
+async function loadMonaco(): Promise<Monaco> {
+  if (monacoModule) return monacoModule
+
+  const [monaco, { default: editorWorker }, { default: jsonWorker }, { default: tsWorker }] =
+    await Promise.all([
+      import('monaco-editor'),
+      import('monaco-editor/esm/vs/editor/editor.worker?worker'),
+      import('monaco-editor/esm/vs/language/json/json.worker?worker'),
+      import('monaco-editor/esm/vs/language/typescript/ts.worker?worker'),
+    ])
+
+  self.MonacoEnvironment = {
+    getWorker(_: unknown, label: string) {
+      if (label === 'json') return new jsonWorker()
+      if (label === 'typescript' || label === 'javascript') return new tsWorker()
+      return new editorWorker()
+    },
+  }
+
+  monacoModule = monaco
+  return monaco
 }
 
 const props = withDefaults(
@@ -30,10 +45,11 @@ const props = withDefaults(
 )
 
 const editorContainer = ref<HTMLDivElement>()
-let editor: monaco.editor.IStandaloneCodeEditor | null = null
+let editor: import('monaco-editor').editor.IStandaloneCodeEditor | null = null
 
 const result = ref<ExecutionResult | null>(null)
 const isRunning = ref(false)
+const isEditorLoading = ref(true)
 const errorMessage = ref('')
 
 const monacoLangMap: Record<string, string> = {
@@ -42,8 +58,11 @@ const monacoLangMap: Record<string, string> = {
   bash: 'shell',
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (!editorContainer.value) return
+
+  const monaco = await loadMonaco()
+  isEditorLoading.value = false
 
   editor = monaco.editor.create(editorContainer.value, {
     value: props.initialCode,
@@ -132,8 +151,8 @@ const outputMatches = computed(() => {
     <div class="playground-header">
       <span class="playground-title">{{ title ?? 'Playground' }}</span>
       <div class="playground-actions">
-        <button class="btn btn-reset" @click="reset" :disabled="isRunning">↻ Скинути</button>
-        <button class="btn btn-run" @click="run" :disabled="isRunning">
+        <button class="btn btn-reset" :disabled="isRunning" aria-label="Скинути код" @click="reset">↻ Скинути</button>
+        <button class="btn btn-run" :disabled="isRunning" aria-label="Запустити код" @click="run">
           <span v-if="isRunning" class="spinner" />
           <span v-else>▶</span>
           {{ isRunning ? 'Виконується...' : 'Запустити' }}
@@ -143,11 +162,14 @@ const outputMatches = computed(() => {
 
     <div class="playground-body">
       <div class="editor-panel">
+        <div v-if="isEditorLoading" class="editor-loading">
+          <span class="spinner" /> Завантаження редактора...
+        </div>
         <div ref="editorContainer" class="editor-container" />
       </div>
 
       <div class="output-panel">
-        <div class="output-header">
+        <div class="output-header" role="status" aria-live="polite">
           <span>Результат</span>
           <span v-if="result" class="output-meta">
             {{ result.time }}s · {{ Math.round(result.memory / 1024) }}MB
@@ -264,6 +286,17 @@ const outputMatches = computed(() => {
 
 .editor-container {
   height: 300px;
+}
+
+.editor-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 300px;
+  color: #555;
+  font-size: 0.85rem;
+  background: var(--code-bg);
 }
 
 .output-panel {
