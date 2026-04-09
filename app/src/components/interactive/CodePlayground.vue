@@ -151,7 +151,9 @@ const outputMatches = computed(() => {
     <div class="playground-header">
       <span class="playground-title">{{ title ?? 'Playground' }}</span>
       <div class="playground-actions">
-        <button class="btn btn-reset" :disabled="isRunning" aria-label="Скинути код" @click="reset">↻ Скинути</button>
+        <button class="btn btn-reset" :disabled="isRunning" aria-label="Скинути код" @click="reset">
+          ↻ Скинути
+        </button>
         <button class="btn btn-run" :disabled="isRunning" aria-label="Запустити код" @click="run">
           <span v-if="isRunning" class="spinner" />
           <span v-else>▶</span>
@@ -179,7 +181,9 @@ const outputMatches = computed(() => {
         <div v-if="phpUnavailable" class="output-notice">
           <div class="notice-icon">💡</div>
           <div class="notice-text">
-            <template v-if="expectedOutput">Показано очікуваний результат. Для запуску свого коду:</template>
+            <template v-if="expectedOutput"
+              >Показано очікуваний результат. Для запуску свого коду:</template
+            >
             <template v-else>Для запуску PHP-коду локально:</template>
             <code>php -S localhost:8088 app/server/executor.php</code>
           </div>
@@ -201,8 +205,16 @@ const outputMatches = computed(() => {
           <pre v-if="result.stdout" class="output-stdout">{{ result.stdout }}</pre>
           <pre v-if="result.stderr" class="output-stderr">{{ result.stderr }}</pre>
 
-          <div v-if="outputMatches !== null" class="output-match" :class="outputMatches ? 'match-success' : 'match-fail'">
-            {{ outputMatches ? '✓ Результат збігається з очікуваним' : '✗ Результат не збігається з очікуваним' }}
+          <div
+            v-if="outputMatches !== null"
+            class="output-match"
+            :class="outputMatches ? 'match-success' : 'match-fail'"
+          >
+            {{
+              outputMatches
+                ? '✓ Результат збігається з очікуваним'
+                : '✗ Результат не збігається з очікуваним'
+            }}
           </div>
         </div>
       </div>
@@ -409,7 +421,9 @@ const outputMatches = computed(() => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {

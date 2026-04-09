@@ -2,22 +2,25 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { codeToHtml } from 'shiki'
 
-const props = withDefaults(defineProps<{
-  code: string
-  lang: string
-  terminal?: boolean
-  showLineNumbers?: boolean
-  title?: string
-}>(), {
-  terminal: false,
-  showLineNumbers: false,
-})
+const props = withDefaults(
+  defineProps<{
+    code: string
+    lang: string
+    terminal?: boolean
+    showLineNumbers?: boolean
+    title?: string
+  }>(),
+  {
+    terminal: false,
+    showLineNumbers: false,
+  },
+)
 
 const highlightedHtml = ref('')
 const copied = ref(false)
 let copyTimeout: ReturnType<typeof setTimeout> | undefined
 
-const theme = computed(() => props.terminal ? 'github-dark' : 'github-light')
+const theme = computed(() => (props.terminal ? 'github-dark' : 'github-light'))
 
 async function highlight() {
   try {
@@ -61,11 +64,7 @@ function copyCode() {
         {{ copied ? 'Copied!' : 'Copy' }}
       </button>
       <!-- eslint-disable vue/no-v-html -->
-      <div
-        v-if="highlightedHtml"
-        class="shiki-output"
-        v-html="highlightedHtml"
-      />
+      <div v-if="highlightedHtml" class="shiki-output" v-html="highlightedHtml" />
       <!-- eslint-enable vue/no-v-html -->
       <pre v-else class="raw-code"><code>{{ code }}</code></pre>
     </div>
@@ -100,14 +99,20 @@ function copyCode() {
   border-radius: 50%;
 }
 
-.dot.red { background: #FF5F57; }
-.dot.yellow { background: #FFBD2E; }
-.dot.green { background: #28C840; }
+.dot.red {
+  background: #ff5f57;
+}
+.dot.yellow {
+  background: #ffbd2e;
+}
+.dot.green {
+  background: #28c840;
+}
 
 .terminal-title {
   margin-left: 8px;
   font-size: 0.8rem;
-  color: #A0A0B8;
+  color: #a0a0b8;
 }
 
 .code-header {
@@ -142,7 +147,7 @@ function copyCode() {
 
 .terminal .lang-badge {
   background: rgba(255, 255, 255, 0.1);
-  color: #A0A0B8;
+  color: #a0a0b8;
 }
 
 .copy-btn {
@@ -198,7 +203,7 @@ function copyCode() {
 }
 
 .terminal .raw-code {
-  color: #A0A0B8;
+  color: #a0a0b8;
 }
 
 .with-line-numbers .shiki-output :deep(code) {

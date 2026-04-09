@@ -62,12 +62,7 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question: 'Який модифікатор доступу робить властивість доступною тільки в поточному класі?',
-    options: [
-      'public',
-      'private',
-      'protected',
-      'readonly',
-    ],
+    options: ['public', 'private', 'protected', 'readonly'],
     correct: 1,
     explanation:
       'private робить властивість або метод доступним тільки всередині класу, де вони оголошені. protected -- в класі та його дочірніх класах. public -- звідусіль. readonly -- не модифікатор доступу, а заборона зміни після ініціалізації.',
@@ -239,13 +234,13 @@ print_r($task->toArray());`
 
       <TheoryBlock title="Класи та Constructor Promotion">
         <p>
-          В PHP класи -- основа всього. На відміну від Vue Composition API, де ви рідко пишете класи,
-          в Laravel класи використовуються повсюди: моделі, контролери, сервіси.
+          В PHP класи -- основа всього. На відміну від Vue Composition API, де ви рідко пишете
+          класи, в Laravel класи використовуються повсюди: моделі, контролери, сервіси.
         </p>
         <p>
-          <strong>Constructor Promotion (PHP 8+)</strong> -- замість окремого оголошення властивостей
-          і присвоєння в конструкторі, все робиться в один рядок. Замість <code>this.</code> використовується
-          <code>$this-></code>.
+          <strong>Constructor Promotion (PHP 8+)</strong> -- замість окремого оголошення
+          властивостей і присвоєння в конструкторі, все робиться в один рядок. Замість
+          <code>this.</code> використовується <code>$this-></code>.
         </p>
       </TheoryBlock>
 
@@ -258,8 +253,9 @@ print_r($task->toArray());`
 
       <TheoryBlock title="Наслідування та parent::">
         <p>
-          PHP <code>extends</code> працює як в JS. Різниця: замість <code>super</code>
-          використовується <code>parent::</code> для виклику методів батьківського класу.
+          PHP <code>extends</code> працює як в JS. Різниця: замість
+          <code>super</code> використовується <code>parent::</code> для виклику методів
+          батьківського класу.
         </p>
       </TheoryBlock>
 
@@ -272,8 +268,8 @@ print_r($task->toArray());`
 
       <TheoryBlock title="Static методи">
         <p>
-          <code>static</code> методи викликаються через <code>::</code> без створення об'єкта.
-          В Laravel це скрізь: <code>Task::create()</code>, <code>Task::find()</code>,
+          <code>static</code> методи викликаються через <code>::</code> без створення об'єкта. В
+          Laravel це скрізь: <code>Task::create()</code>, <code>Task::find()</code>,
           <code>Route::get()</code>. Аналог JS <code>Class.method()</code>.
         </p>
       </TheoryBlock>
@@ -287,7 +283,8 @@ print_r($task->toArray());`
 
       <TheoryBlock title="readonly (PHP 8.1+)">
         <p>
-          Властивість <code>readonly</code> не можна змінити після ініціалізації — як <code>const</code>
+          Властивість <code>readonly</code> не можна змінити після ініціалізації — як
+          <code>const</code>
           для полів об'єкта. Часто використовується з constructor promotion.
         </p>
       </TheoryBlock>
@@ -300,14 +297,14 @@ print_r($task->toArray());`
 
       <TheoryBlock title="Трейти (аналог Vue Composables)">
         <p>
-          В Vue ви створюєте composables (<code>useAuth()</code>, <code>useNotification()</code>) для
-          перевикористання логіки. В PHP аналог -- <strong>traits</strong>. Trait "вмішує" методи прямо
-          в клас через <code>use</code>.
+          В Vue ви створюєте composables (<code>useAuth()</code>, <code>useNotification()</code>)
+          для перевикористання логіки. В PHP аналог -- <strong>traits</strong>. Trait "вмішує"
+          методи прямо в клас через <code>use</code>.
         </p>
         <p>
-          PHP не підтримує множинне наслідування, але клас може використовувати скільки завгодно трейтів.
-          В Laravel трейти використовуються повсюди: <code>HasFactory</code>, <code>SoftDeletes</code>,
-          <code>HasApiTokens</code>.
+          PHP не підтримує множинне наслідування, але клас може використовувати скільки завгодно
+          трейтів. В Laravel трейти використовуються повсюди: <code>HasFactory</code>,
+          <code>SoftDeletes</code>, <code>HasApiTokens</code>.
         </p>
       </TheoryBlock>
 
@@ -335,9 +332,10 @@ print_r($task->toArray());`
 
       <TheoryBlock title="Enums (PHP 8.1+)">
         <p>
-          В TypeScript ви робите <code>type Status = 'pending' | 'done'</code> або <code>as const</code>.
-          В PHP є нативні <strong>backed enums</strong> зі значеннями (string або int) та методами.
-          Enums перевіряються в runtime -- неможливо передати невалідне значення.
+          В TypeScript ви робите <code>type Status = 'pending' | 'done'</code> або
+          <code>as const</code>. В PHP є нативні <strong>backed enums</strong> зі значеннями (string
+          або int) та методами. Enums перевіряються в runtime -- неможливо передати невалідне
+          значення.
         </p>
       </TheoryBlock>
 
@@ -378,17 +376,22 @@ print_r($task->toArray());`
             та методом <code>label(): string</code> що повертає українську назву
           </li>
           <li>
-            <strong>HasDeadline trait</strong> -- додає функціонал дедлайну: встановлення,
-            перевірка чи прострочений, підрахунок днів до дедлайну
+            <strong>HasDeadline trait</strong> -- додає функціонал дедлайну: встановлення, перевірка
+            чи прострочений, підрахунок днів до дедлайну
           </li>
           <li>
-            <strong>Task клас</strong> -- використовує constructor promotion, TaskStatus enum
-            та HasDeadline trait, має метод <code>toArray()</code>
+            <strong>Task клас</strong> -- використовує constructor promotion, TaskStatus enum та
+            HasDeadline trait, має метод <code>toArray()</code>
           </li>
         </ol>
       </TheoryBlock>
 
-      <CodeBlock :code="taskCode" lang="php" title="main.php (стартовий код)" :show-line-numbers="true" />
+      <CodeBlock
+        :code="taskCode"
+        lang="php"
+        title="main.php (стартовий код)"
+        :show-line-numbers="true"
+      />
     </div>
   </div>
 </template>

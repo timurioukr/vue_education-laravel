@@ -27,12 +27,7 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question: 'Яка директорія Laravel є аналогом node_modules/?',
-    options: [
-      'storage/',
-      'vendor/',
-      'packages/',
-      'lib/',
-    ],
+    options: ['storage/', 'vendor/', 'packages/', 'lib/'],
     correct: 1,
     explanation:
       'vendor/ -- це директорія, куди Composer встановлює всі залежності. Вона працює так само, як node_modules/ в npm/pnpm, і теж не комітиться в git.',
@@ -51,24 +46,14 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question: 'Який файл є точкою входу для Laravel-додатку?',
-    options: [
-      'app/index.php',
-      'public/index.php',
-      'bootstrap/app.php',
-      'artisan',
-    ],
+    options: ['app/index.php', 'public/index.php', 'bootstrap/app.php', 'artisan'],
     correct: 1,
     explanation:
       'public/index.php -- це точка входу для всіх HTTP-запитів. Веб-сервер направляє запити на цей файл, який завантажує фреймворк через bootstrap/app.php.',
   },
   {
     question: 'Де в Laravel описуються API-маршрути?',
-    options: [
-      'app/Http/routes.php',
-      'routes/api.php',
-      'config/routes.php',
-      'bootstrap/routes.php',
-    ],
+    options: ['app/Http/routes.php', 'routes/api.php', 'config/routes.php', 'bootstrap/routes.php'],
     correct: 1,
     explanation:
       'routes/api.php -- файл для API-маршрутів (JSON). routes/web.php -- для веб-сторінок (HTML). Це аналог router/index.ts у Vue Router, але розділений за типом.',
@@ -94,23 +79,28 @@ const laravelStructureDiagram = `flowchart TB
 const laravelStructureSteps: DiagramStep[] = [
   {
     highlightNodes: ['APP', 'MODELS', 'HTTP', 'PROV'],
-    description: 'app/ — серце додатку. Тут живуть моделі (Models/), контролери (Http/Controllers/) та провайдери (Providers/). Аналог src/ у Vue-проєкті.',
+    description:
+      'app/ — серце додатку. Тут живуть моделі (Models/), контролери (Http/Controllers/) та провайдери (Providers/). Аналог src/ у Vue-проєкті.',
   },
   {
     highlightNodes: ['CONFIG'],
-    description: 'config/ — налаштування додатку: бази даних, кеш, пошта, автентифікація. Як .env + конфіг файли у Vue/Nuxt.',
+    description:
+      'config/ — налаштування додатку: бази даних, кеш, пошта, автентифікація. Як .env + конфіг файли у Vue/Nuxt.',
   },
   {
     highlightNodes: ['DB', 'MIG', 'SEED', 'FACT'],
-    description: 'database/ — все про БД: міграції (версіонування схеми), seeders (тестові дані), factories (генератори фейкових даних).',
+    description:
+      'database/ — все про БД: міграції (версіонування схеми), seeders (тестові дані), factories (генератори фейкових даних).',
   },
   {
     highlightNodes: ['ROUTES', 'WEB', 'API'],
-    description: 'routes/ — маршрутизація. web.php для HTML-сторінок, api.php для API-ендпоінтів. Аналог Vue Router але на сервері.',
+    description:
+      'routes/ — маршрутизація. web.php для HTML-сторінок, api.php для API-ендпоінтів. Аналог Vue Router але на сервері.',
   },
   {
     highlightNodes: ['RES'],
-    description: 'resources/ — frontend: Blade-шаблони, CSS, JS. Коли підключаємо Vue SPA — це місце де живе фронтенд.',
+    description:
+      'resources/ — frontend: Blade-шаблони, CSS, JS. Коли підключаємо Vue SPA — це місце де живе фронтенд.',
   },
 ]
 
@@ -231,28 +221,42 @@ const serveOutput = [
       />
 
       <TheoryBlock title="Структура директорій">
-        <p>
-          В Laravel кожна директорія має чітку роль. Ось найважливіші паралелі з Vue/Nuxt:
-        </p>
+        <p>В Laravel кожна директорія має чітку роль. Ось найважливіші паралелі з Vue/Nuxt:</p>
         <ul>
           <li><strong>app/</strong> = <strong>src/</strong> -- основний код застосунку</li>
-          <li><strong>app/Models/</strong> = <strong>stores/</strong> (Pinia) -- робота з даними та БД</li>
-          <li><strong>app/Http/Controllers/</strong> = <strong>pages/</strong> -- логіка обробки запитів</li>
+          <li>
+            <strong>app/Models/</strong> = <strong>stores/</strong> (Pinia) -- робота з даними та БД
+          </li>
+          <li>
+            <strong>app/Http/Controllers/</strong> = <strong>pages/</strong> -- логіка обробки
+            запитів
+          </li>
           <li><strong>routes/</strong> = <strong>router/index.ts</strong> -- маршрутизація</li>
-          <li><strong>config/</strong> = <strong>nuxt.config.ts</strong> -- але кожен аспект в окремому файлі</li>
-          <li><strong>vendor/</strong> = <strong>node_modules/</strong> -- залежності, не комітити в git</li>
-          <li><strong>database/migrations/</strong> -- "git для бази даних", немає аналога у фронтенді</li>
+          <li>
+            <strong>config/</strong> = <strong>nuxt.config.ts</strong> -- але кожен аспект в
+            окремому файлі
+          </li>
+          <li>
+            <strong>vendor/</strong> = <strong>node_modules/</strong> -- залежності, не комітити в
+            git
+          </li>
+          <li>
+            <strong>database/migrations/</strong> -- "git для бази даних", немає аналога у фронтенді
+          </li>
         </ul>
       </TheoryBlock>
 
       <TheoryBlock title="Файл .env">
         <p>
-          В Vue <code>.env</code> містить кілька змінних з <code>VITE_</code> префіксом. В Laravel <code>.env</code>
-          містить ВСЮ конфігурацію середовища: базу даних, поштові налаштування, кешування, чергу тощо.
+          В Vue <code>.env</code> містить кілька змінних з <code>VITE_</code> префіксом. В Laravel
+          <code>.env</code>
+          містить ВСЮ конфігурацію середовища: базу даних, поштові налаштування, кешування, чергу
+          тощо.
         </p>
         <p>
-          <strong>Важливо:</strong> В Laravel не можна використовувати <code>env()</code> напряму в коді --
-          тільки в файлах <code>config/</code>. В решті коду використовуйте <code>config('app.name')</code>.
+          <strong>Важливо:</strong> В Laravel не можна використовувати <code>env()</code> напряму в
+          коді -- тільки в файлах <code>config/</code>. В решті коду використовуйте
+          <code>config('app.name')</code>.
         </p>
       </TheoryBlock>
 
@@ -265,12 +269,18 @@ const serveOutput = [
 
       <TheoryBlock title="Artisan CLI">
         <p>
-          <code>php artisan</code> -- це універсальний CLI-інструмент Laravel. Аналог <code>npm run</code> +
-          <code>npx nuxi</code>, але значно потужніший. Генерація коду, управління БД, дебаг -- все через artisan.
+          <code>php artisan</code> -- це універсальний CLI-інструмент Laravel. Аналог
+          <code>npm run</code> + <code>npx nuxi</code>, але значно потужніший. Генерація коду,
+          управління БД, дебаг -- все через artisan.
         </p>
       </TheoryBlock>
 
-      <CodeBlock :code="artisanCommands" lang="bash" :terminal="true" title="Основні artisan-команди" />
+      <CodeBlock
+        :code="artisanCommands"
+        lang="bash"
+        :terminal="true"
+        title="Основні artisan-команди"
+      />
 
       <InteractiveDiagram
         title="Структура Laravel проєкту"
@@ -284,7 +294,9 @@ const serveOutput = [
         <p>Крок за кроком встановимо Laravel та перевіримо, що все працює.</p>
         <ol>
           <li>Переконайтесь, що PHP 8.2+ та Composer встановлені</li>
-          <li>Створіть проєкт: <code>composer create-project laravel/laravel task-manager</code></li>
+          <li>
+            Створіть проєкт: <code>composer create-project laravel/laravel task-manager</code>
+          </li>
           <li>Налаштуйте <code>.env</code>: <code>DB_CONNECTION=sqlite</code></li>
           <li>Створіть файл бази: <code>touch database/database.sqlite</code></li>
           <li>Запустіть міграції: <code>php artisan migrate</code></li>
@@ -294,7 +306,12 @@ const serveOutput = [
         </ol>
       </TheoryBlock>
 
-      <CodeBlock :code="installCommands" lang="bash" :terminal="true" title="Команди встановлення" />
+      <CodeBlock
+        :code="installCommands"
+        lang="bash"
+        :terminal="true"
+        title="Команди встановлення"
+      />
 
       <TerminalOutput :lines="installOutput" title="Створення проєкту" />
 
@@ -309,11 +326,14 @@ const serveOutput = [
 
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: дослідження структури">
-        <p>Після встановлення Laravel виконайте наступні завдання для знайомства зі структурою проєкту:</p>
+        <p>
+          Після встановлення Laravel виконайте наступні завдання для знайомства зі структурою
+          проєкту:
+        </p>
         <ol>
           <li>
-            Відкрийте <code>routes/web.php</code> -- знайдіть маршрут для головної сторінки.
-            Яку функцію він виконує?
+            Відкрийте <code>routes/web.php</code> -- знайдіть маршрут для головної сторінки. Яку
+            функцію він виконує?
           </li>
           <li>
             Виконайте <code>php artisan route:list</code> -- скільки маршрутів є за замовчуванням?
@@ -323,13 +343,13 @@ const serveOutput = [
             <code>Europe/Kyiv</code> та <code>locale</code> на <code>uk</code>
           </li>
           <li>
-            Запустіть <code>php artisan tinker</code> та виконайте:
-            <code>config('app.name')</code>, <code>config('database.default')</code>,
+            Запустіть <code>php artisan tinker</code> та виконайте: <code>config('app.name')</code>,
+            <code>config('database.default')</code>,
             <code>\App\Models\User::count()</code>
           </li>
           <li>
-            Створіть контролер: <code>php artisan make:controller TaskController</code>.
-            Знайдіть згенерований файл та відкрийте його
+            Створіть контролер: <code>php artisan make:controller TaskController</code>. Знайдіть
+            згенерований файл та відкрийте його
           </li>
         </ol>
       </TheoryBlock>

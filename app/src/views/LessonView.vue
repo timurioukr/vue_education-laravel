@@ -16,7 +16,7 @@ const LessonPlaceholder = {
     return h('div', { class: 'placeholder-message' }, [
       h('span', { class: 'placeholder-icon' }, '🚧'),
       h('h2', null, 'Цей урок ще в розробці'),
-      h('p', null, 'Скоро тут з\'явиться контент. Слідкуйте за оновленнями!'),
+      h('p', null, "Скоро тут з'явиться контент. Слідкуйте за оновленнями!"),
     ])
   },
 }
@@ -69,16 +69,10 @@ function markComplete() {
       <component :is="lessonComponent" v-if="lessonComponent" :active-tab="activeTab" />
 
       <div class="lesson-footer">
-        <button
-          v-if="!isCompleted"
-          class="complete-btn"
-          @click="markComplete"
-        >
+        <button v-if="!isCompleted" class="complete-btn" @click="markComplete">
           &#x2705; Позначити як пройдений
         </button>
-        <div v-else class="completed-badge">
-          &#x2705; Урок пройдений
-        </div>
+        <div v-else class="completed-badge">&#x2705; Урок пройдений</div>
       </div>
     </template>
 

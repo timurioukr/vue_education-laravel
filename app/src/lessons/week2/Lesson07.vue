@@ -15,12 +15,7 @@ defineProps<{
 const quizQuestions: QuizQuestion[] = [
   {
     question: 'Який метод використовується для зв\'язку "задача належить категорії"?',
-    options: [
-      'hasMany',
-      'belongsTo',
-      'hasOne',
-      'belongsToMany',
-    ],
+    options: ['hasMany', 'belongsTo', 'hasOne', 'belongsToMany'],
     correct: 1,
     explanation:
       'belongsTo використовується коли поточна модель "належить" іншій — тобто у поточній таблиці є зовнішній ключ. Task belongsTo Category, бо category_id знаходиться в таблиці tasks.',
@@ -35,10 +30,10 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      'Для зв\'язку many-to-many зовнішні ключі зберігаються в окремій pivot-таблиці. Наприклад, tag_task містить task_id і tag_id. Це дозволяє задачі мати кілька тегів і тегу належати кільком задачам.',
+      "Для зв'язку many-to-many зовнішні ключі зберігаються в окремій pivot-таблиці. Наприклад, tag_task містить task_id і tag_id. Це дозволяє задачі мати кілька тегів і тегу належати кільком задачам.",
   },
   {
-    question: 'Що робить Task::with(\'category\')->get()?',
+    question: "Що робить Task::with('category')->get()?",
     options: [
       'Створює нову категорію для задачі',
       'Завантажує задачі та їх категорії за 2 SQL-запити замість N+1',
@@ -50,28 +45,28 @@ const quizQuestions: QuizQuestion[] = [
       'with() робить eager loading: один запит для tasks, один для categories WHERE id IN (...). Без with() кожна ітерація по задачах генерувала б окремий SQL-запит для категорії — це і є проблема N+1.',
   },
   {
-    question: 'Яка різниця між attach() та sync() для many-to-many зв\'язків?',
+    question: "Яка різниця між attach() та sync() для many-to-many зв'язків?",
     options: [
       'Ніякої різниці, обидва методи роблять одне й те саме',
-      'attach() додає зв\'язки не видаляючи існуючі, sync() встановлює ТОЧНИЙ набір (видаляє зайві)',
-      'sync() додає зв\'язки, attach() встановлює точний набір',
+      "attach() додає зв'язки не видаляючи існуючі, sync() встановлює ТОЧНИЙ набір (видаляє зайві)",
+      "sync() додає зв'язки, attach() встановлює точний набір",
       'attach() для belongsTo, sync() для hasMany',
     ],
     correct: 1,
     explanation:
-      'attach([1, 2]) додає теги 1 і 2 до існуючих. sync([1, 2]) видаляє всі інші зв\'язки і залишає тільки 1 і 2. sync() — це як v-model на чекбоксах: повністю замінює набір вибраних елементів.',
+      "attach([1, 2]) додає теги 1 і 2 до існуючих. sync([1, 2]) видаляє всі інші зв'язки і залишає тільки 1 і 2. sync() — це як v-model на чекбоксах: повністю замінює набір вибраних елементів.",
   },
   {
     question: 'Як отримати категорії, в яких є хоча б одна задача?',
     options: [
-      'Category::with(\'tasks\')->get()',
-      'Category::has(\'tasks\')->get()',
-      'Category::whereHas(\'tasks\')->get()',
+      "Category::with('tasks')->get()",
+      "Category::has('tasks')->get()",
+      "Category::whereHas('tasks')->get()",
       'Як b), так і c) — обидва варіанти правильні',
     ],
     correct: 3,
     explanation:
-      'has(\'tasks\') перевіряє наявність пов\'язаних записів. whereHas(\'tasks\') без колбека робить те саме. Різниця в тому, що whereHas() дозволяє додати умову на пов\'язані записи: whereHas(\'tasks\', fn($q) => $q->where(\'status\', \'pending\')).',
+      "has('tasks') перевіряє наявність пов'язаних записів. whereHas('tasks') без колбека робить те саме. Різниця в тому, що whereHas() дозволяє додати умову на пов'язані записи: whereHas('tasks', fn($q) => $q->where('status', 'pending')).",
   },
 ]
 
@@ -201,22 +196,26 @@ const erDiagram = `erDiagram
 const erDiagramSteps: DiagramStep[] = [
   {
     highlightNodes: ['users', 'tasks'],
-    description: 'User hasMany Tasks: один користувач може мати багато задач. У таблиці tasks є user_id, що вказує на users.id. Зворотний зв\'язок: Task belongsTo User.',
+    description:
+      "User hasMany Tasks: один користувач може мати багато задач. У таблиці tasks є user_id, що вказує на users.id. Зворотний зв'язок: Task belongsTo User.",
     code: '// User model\npublic function tasks(): HasMany\n{\n    return $this->hasMany(Task::class);\n}',
   },
   {
     highlightNodes: ['users', 'categories'],
-    description: 'User hasMany Categories: користувач може мати кілька категорій. category.user_id вказує на власника. Це дозволяє кожному користувачу мати свій набір категорій.',
+    description:
+      'User hasMany Categories: користувач може мати кілька категорій. category.user_id вказує на власника. Це дозволяє кожному користувачу мати свій набір категорій.',
     code: '// User model\npublic function categories(): HasMany\n{\n    return $this->hasMany(Category::class);\n}',
   },
   {
     highlightNodes: ['categories', 'tasks'],
-    description: 'Category hasMany Tasks / Task belongsTo Category: одна категорія об\'єднує багато задач. У таблиці tasks є category_id (nullable — задача може бути без категорії).',
+    description:
+      "Category hasMany Tasks / Task belongsTo Category: одна категорія об'єднує багато задач. У таблиці tasks є category_id (nullable — задача може бути без категорії).",
     code: '// Task model\npublic function category(): BelongsTo\n{\n    return $this->belongsTo(Category::class);\n}',
   },
   {
     highlightNodes: ['tasks', 'tag_task', 'tags'],
-    description: 'Task belongsToMany Tags через pivot-таблицю tag_task: одна задача може мати кілька тегів, і один тег може бути у кількох задачах. Laravel за конвенцією іменує pivot-таблицю в алфавітному порядку: tag + task = tag_task.',
+    description:
+      'Task belongsToMany Tags через pivot-таблицю tag_task: одна задача може мати кілька тегів, і один тег може бути у кількох задачах. Laravel за конвенцією іменує pivot-таблицю в алфавітному порядку: tag + task = tag_task.',
     code: '// Task model\npublic function tags(): BelongsToMany\n{\n    return $this->belongsToMany(Tag::class);\n    // Шукає pivot-таблицю tag_task\n}',
   },
 ]
@@ -323,24 +322,25 @@ class Task extends Model
       <ParallelCard from="categories[task.categoryId]" to="$task->category" />
 
       <TheoryBlock title="Три типи зв'язків">
-        <p>
-          У нашому Task Manager використовуються три основних типи зв'язків:
-        </p>
+        <p>У нашому Task Manager використовуються три основних типи зв'язків:</p>
         <ul>
           <li>
-            <strong>hasMany</strong> (один-до-багатьох) — один запис "має багато" інших.
-            Наприклад: один User <strong>має багато</strong> Tasks, одна Category <strong>має багато</strong> Tasks.
-            Зовнішній ключ знаходиться в "дочірній" таблиці: <code>tasks.user_id</code>.
+            <strong>hasMany</strong> (один-до-багатьох) — один запис "має багато" інших. Наприклад:
+            один User <strong>має багато</strong> Tasks, одна Category
+            <strong>має багато</strong> Tasks. Зовнішній ключ знаходиться в "дочірній" таблиці:
+            <code>tasks.user_id</code>.
           </li>
           <li>
-            <strong>belongsTo</strong> (зворотний зв'язок) — кожна Task <strong>належить</strong> одному User і одній Category.
-            Ключове правило: стовпець зовнішнього ключа (<code>user_id</code>, <code>category_id</code>)
-            завжди знаходиться в таблиці, яка "belongs to".
+            <strong>belongsTo</strong> (зворотний зв'язок) — кожна Task
+            <strong>належить</strong> одному User і одній Category. Ключове правило: стовпець
+            зовнішнього ключа (<code>user_id</code>, <code>category_id</code>) завжди знаходиться в
+            таблиці, яка "belongs to".
           </li>
           <li>
-            <strong>belongsToMany</strong> (багато-до-багатьох) — одна Task може мати багато Tags,
-            і один Tag може належати багатьом Tasks. Потрібна проміжна (pivot) таблиця <code>tag_task</code>.
-            Це як масив чекбоксів на фронтенді: задача може мати кілька тегів одночасно.
+            <strong>belongsToMany</strong> (багато-до-багатьох) — одна Task може мати багато Tags, і
+            один Tag може належати багатьом Tasks. Потрібна проміжна (pivot) таблиця
+            <code>tag_task</code>. Це як масив чекбоксів на фронтенді: задача може мати кілька тегів
+            одночасно.
           </li>
         </ul>
       </TheoryBlock>
@@ -352,16 +352,12 @@ class Task extends Model
         php-title="Laravel — через зв'язок"
       />
 
-      <CodeBlock
-        :code="taskModelCode"
-        lang="php"
-        title="app/Models/Task.php — методи зв'язків"
-      />
+      <CodeBlock :code="taskModelCode" lang="php" title="app/Models/Task.php — методи зв'язків" />
 
       <TheoryBlock title="Eager Loading та N+1">
         <p>
-          Проблема N+1 — одна з найпоширеніших помилок продуктивності. Якщо звертатись до
-          зв'язаної моделі (<code>$task->category</code>) всередині циклу без попереднього завантаження,
+          Проблема N+1 — одна з найпоширеніших помилок продуктивності. Якщо звертатись до зв'язаної
+          моделі (<code>$task->category</code>) всередині циклу без попереднього завантаження,
           Laravel виконає окремий SQL-запит для кожної ітерації.
         </p>
         <p>
@@ -391,21 +387,22 @@ class Task extends Model
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="Практика: зв'язки в моделі Category">
         <p>
-          Відредагуйте код нижче — додайте методи зв'язків <code>user()</code> та <code>tasks()</code>
-          до моделі Category. Після цього натисніть <strong>"Запустити"</strong> щоб перевірити.
+          Відредагуйте код нижче — додайте методи зв'язків <code>user()</code> та
+          <code>tasks()</code> до моделі Category. Після цього натисніть
+          <strong>"Запустити"</strong> щоб перевірити.
         </p>
         <ul>
           <li>
-            <code>user()</code> — повертає <code>$this->belongsTo(User::class)</code>.
-            Category belongsTo User, бо в таблиці <code>categories</code> є <code>user_id</code>.
+            <code>user()</code> — повертає <code>$this->belongsTo(User::class)</code>. Category
+            belongsTo User, бо в таблиці <code>categories</code> є <code>user_id</code>.
           </li>
           <li>
-            <code>tasks()</code> — повертає <code>$this->hasMany(Task::class)</code>.
-            Category hasMany Tasks, бо в таблиці <code>tasks</code> є <code>category_id</code>.
+            <code>tasks()</code> — повертає <code>$this->hasMany(Task::class)</code>. Category
+            hasMany Tasks, бо в таблиці <code>tasks</code> є <code>category_id</code>.
           </li>
           <li>
-            Не забудьте додати <code>use</code>-імпорти для <code>BelongsTo</code>, <code>HasMany</code>,
-            <code>User</code> та <code>Task</code>.
+            Не забудьте додати <code>use</code>-імпорти для <code>BelongsTo</code>,
+            <code>HasMany</code>, <code>User</code> та <code>Task</code>.
           </li>
         </ul>
       </TheoryBlock>
@@ -424,15 +421,17 @@ class Task extends Model
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: Підзадачі (self-referencing relationship)">
         <p>
-          Додайте до моделі Task самопосилальний зв'язок — задача може мати підзадачі.
-          Це <strong>self-referencing relationship</strong>: Task hasMany Tasks (через <code>parent_id</code>).
+          Додайте до моделі Task самопосилальний зв'язок — задача може мати підзадачі. Це
+          <strong>self-referencing relationship</strong>: Task hasMany Tasks (через
+          <code>parent_id</code>).
         </p>
         <ol>
           <li>
-            Реалізуйте метод <code>subtasks(): HasMany</code> — повертає всі підзадачі поточної задачі.
+            Реалізуйте метод <code>subtasks(): HasMany</code> — повертає всі підзадачі поточної
+            задачі.
             <br />
-            Підказка: <code>$this->hasMany(Task::class, 'parent_id')</code> — вказуємо ключ явно,
-            бо за конвенцією Laravel шукав би <code>task_id</code>.
+            Підказка: <code>$this->hasMany(Task::class, 'parent_id')</code> — вказуємо ключ явно, бо
+            за конвенцією Laravel шукав би <code>task_id</code>.
           </li>
           <li>
             Реалізуйте метод <code>parent(): BelongsTo</code> — повертає батьківську задачу.
@@ -445,8 +444,8 @@ class Task extends Model
           </li>
         </ol>
         <p>
-          Після реалізації в Tinker: <code>$parent->subtasks</code> поверне колекцію підзадач,
-          а <code>$subtask->parent->title</code> — назву батьківської задачі.
+          Після реалізації в Tinker: <code>$parent->subtasks</code> поверне колекцію підзадач, а
+          <code>$subtask->parent->title</code> — назву батьківської задачі.
         </p>
       </TheoryBlock>
 

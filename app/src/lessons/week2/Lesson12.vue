@@ -14,15 +14,10 @@ defineProps<{
 const quizQuestions: QuizQuestion[] = [
   {
     question: 'Як правильно назвати метод scope у Laravel-моделі для фільтрації за статусом?',
-    options: [
-      'filterByStatus()',
-      'scopeByStatus()',
-      'getByStatus()',
-      'whereStatus()',
-    ],
+    options: ['filterByStatus()', 'scopeByStatus()', 'getByStatus()', 'whereStatus()'],
     correct: 1,
     explanation:
-      'Метод scope починається з префіксу scope у визначенні, але викликається без нього. Тобто scopeByStatus() → Task::byStatus(\'pending\'). Це конвенція Laravel для local query scopes.',
+      "Метод scope починається з префіксу scope у визначенні, але викликається без нього. Тобто scopeByStatus() → Task::byStatus('pending'). Це конвенція Laravel для local query scopes.",
   },
   {
     question: 'Що робить метод when() в Eloquent?',
@@ -40,13 +35,13 @@ const quizQuestions: QuizQuestion[] = [
     question: 'Навіщо потрібен whitelist (білий список) при сортуванні?',
     options: [
       'Для кешування результатів сортування',
-      'Щоб вибрати тільки дозволені поля та захистити від SQL-ін\'єкцій і витоку даних',
+      "Щоб вибрати тільки дозволені поля та захистити від SQL-ін'єкцій і витоку даних",
       'Для прискорення запитів через індекси',
       'Для логування всіх запитів сортування',
     ],
     correct: 1,
     explanation:
-      'Без whitelist зловмисник може передати ?sort=password або SQL-ін\'єкцію. Whitelist — це масив дозволених полів, і тільки вони приймаються для сортування. Якщо поле не в списку — використовується значення за замовчуванням (created_at).',
+      "Без whitelist зловмисник може передати ?sort=password або SQL-ін'єкцію. Whitelist — це масив дозволених полів, і тільки вони приймаються для сортування. Якщо поле не в списку — використовується значення за замовчуванням (created_at).",
   },
   {
     question: 'Яка різниця між paginate() та simplePaginate()?',
@@ -63,17 +58,16 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: 'Як правильно написати LIKE-пошук у кількох полях, щоб не зламати інші фільтри?',
     options: [
-      'where(\'title\', \'like\', ...).orWhere(\'description\', \'like\', ...)',
-      'where(function($q) { $q->where(\'title\', \'like\', ...)->orWhere(\'description\', \'like\', ...) })',
-      'whereIn([\'title\', \'description\'], [\'%search%\'])',
-      'search(\'title|description\', \'value\')',
+      "where('title', 'like', ...).orWhere('description', 'like', ...)",
+      "where(function($q) { $q->where('title', 'like', ...)->orWhere('description', 'like', ...) })",
+      "whereIn(['title', 'description'], ['%search%'])",
+      "search('title|description', 'value')",
     ],
     correct: 1,
     explanation:
-      'orWhere без обгортки ламає логіку: WHERE status = \'pending\' AND title LIKE... OR description LIKE... читається як два різних фільтри. Обгортка where(function($q){...}) створює дужки в SQL: AND (title LIKE... OR description LIKE...) — тільки так OR застосовується тільки до пошуку.',
+      "orWhere без обгортки ламає логіку: WHERE status = 'pending' AND title LIKE... OR description LIKE... читається як два різних фільтри. Обгортка where(function($q){...}) створює дужки в SQL: AND (title LIKE... OR description LIKE...) — тільки так OR застосовується тільки до пошуку.",
   },
 ]
-
 
 // === CodeComparison: JS filter/sort vs Laravel scopes ===
 const jsFilterSort = `// JavaScript — фільтрація в пам'яті
@@ -490,8 +484,8 @@ echo "\\nРезультат: $pass/$total\\n";`
       <TheoryBlock title="Проблема: контролер, що повертає все">
         <p>
           Зараз ваш <code>TaskController::index()</code> повертає <strong>всі</strong> задачі без
-          фільтрації, сортування та пагінації. У реальному додатку це катастрофа: 10 000 записів
-          у відповіді — це повільно і марно. Ваш Vue-фронтенд хоче:
+          фільтрації, сортування та пагінації. У реальному додатку це катастрофа: 10 000 записів у
+          відповіді — це повільно і марно. Ваш Vue-фронтенд хоче:
         </p>
         <ul>
           <li><code>GET /api/tasks?status=pending</code> — тільки незавершені</li>
@@ -499,7 +493,8 @@ echo "\\nРезультат: $pass/$total\\n";`
           <li><code>GET /api/tasks?page=2&amp;per_page=15</code> — друга сторінка, 15 записів</li>
         </ul>
         <p>
-          Рішення — <strong>Query Scopes</strong> у моделі та метод <code>when()</code> у контролері.
+          Рішення — <strong>Query Scopes</strong> у моделі та метод <code>when()</code> у
+          контролері.
         </p>
       </TheoryBlock>
 
@@ -512,8 +507,8 @@ echo "\\nРезультат: $pass/$total\\n";`
 
       <TheoryBlock title="Query Scopes — що це і навіщо">
         <p>
-          Scope — це метод у моделі, який інкапсулює частину SQL-запиту. Назва методу починається
-          з <code>scope</code>, але при виклику <code>scope</code> опускається:
+          Scope — це метод у моделі, який інкапсулює частину SQL-запиту. Назва методу починається з
+          <code>scope</code>, але при виклику <code>scope</code> опускається:
           <code>scopeByStatus()</code> → <code>Task::byStatus('pending')</code>.
         </p>
         <p>
@@ -524,38 +519,33 @@ echo "\\nРезультат: $pass/$total\\n";`
         </p>
         <p>
           Scopes можна <strong>ланцюжково комбінувати</strong> — кожен додає умову до того самого
-          SQL-запиту: <code>Task::byStatus('pending')-&gt;byPriority('high')-&gt;orderBy('deadline')-&gt;paginate(15)</code>.
+          SQL-запиту:
+          <code
+            >Task::byStatus('pending')-&gt;byPriority('high')-&gt;orderBy('deadline')-&gt;paginate(15)</code
+          >.
         </p>
       </TheoryBlock>
 
-      <CodeBlock
-        :code="scopesCode"
-        lang="php"
-        title="app/Models/Task.php — визначення scopes"
-      />
+      <CodeBlock :code="scopesCode" lang="php" title="app/Models/Task.php — визначення scopes" />
 
       <TheoryBlock title="when() — умовна побудова запиту">
         <p>
           <code>when($value, $callback)</code> — ключовий метод для фільтрації за query-параметрами.
-          Він виконує callback і додає умову до запиту <strong>тільки якщо</strong> <code>$value</code>
-          є truthy (не <code>null</code>, не порожній рядок, не <code>0</code>).
+          Він виконує callback і додає умову до запиту <strong>тільки якщо</strong>
+          <code>$value</code> є truthy (не <code>null</code>, не порожній рядок, не <code>0</code>).
         </p>
         <p>
           Це аналог умовної побудови URL на фронтенді:
-          <code>if (filters.status) params.set('status', filters.status)</code>.
-          Замість купи <code>if/else</code> — чистий читабельний ланцюжок.
+          <code>if (filters.status) params.set('status', filters.status)</code>. Замість купи
+          <code>if/else</code> — чистий читабельний ланцюжок.
         </p>
         <p>
-          Стрілкова функція в <code>when()</code> отримує два аргументи:
-          <code>$q</code> (Builder) та <code>$value</code> (саме значення, яке передано першим аргументом).
+          Стрілкова функція в <code>when()</code> отримує два аргументи: <code>$q</code> (Builder)
+          та <code>$value</code> (саме значення, яке передано першим аргументом).
         </p>
       </TheoryBlock>
 
-      <CodeBlock
-        :code="whenCode"
-        lang="php"
-        title="when() — умовна фільтрація без if/else"
-      />
+      <CodeBlock :code="whenCode" lang="php" title="when() — умовна фільтрація без if/else" />
 
       <TheoryBlock title="Пагінація: paginate vs simplePaginate vs cursorPaginate">
         <p>
@@ -563,26 +553,27 @@ echo "\\nРезультат: $pass/$total\\n";`
         </p>
         <ul>
           <li>
-            <strong>paginate(15)</strong> — стандартна пагінація. Виконує два запити:
-            основний і <code>COUNT(*)</code>. Повертає <code>total</code>, <code>last_page</code>,
-            посилання на всі сторінки. Ідеально для більшості API.
+            <strong>paginate(15)</strong> — стандартна пагінація. Виконує два запити: основний і
+            <code>COUNT(*)</code>. Повертає <code>total</code>, <code>last_page</code>, посилання на
+            всі сторінки. Ідеально для більшості API.
           </li>
           <li>
-            <strong>simplePaginate(15)</strong> — тільки <code>prev</code> та <code>next</code>.
-            Без <code>COUNT(*)</code> — швидше. Немає <code>total</code> та <code>last_page</code>.
+            <strong>simplePaginate(15)</strong> — тільки <code>prev</code> та <code>next</code>. Без
+            <code>COUNT(*)</code> — швидше. Немає <code>total</code> та <code>last_page</code>.
             Підходить коли фронтенду не потрібна загальна кількість сторінок.
           </li>
           <li>
-            <strong>cursorPaginate(15)</strong> — cursor-based пагінація для нескінченного скролу
-            та дуже великих таблиць. Замість <code>?page=2</code> використовує
-            <code>?cursor=eyJpZCI6MTV9</code> — закодований покажчик на останній елемент.
-            Не пропускає записи — ефективно навіть для мільйонів рядків.
+            <strong>cursorPaginate(15)</strong> — cursor-based пагінація для нескінченного скролу та
+            дуже великих таблиць. Замість <code>?page=2</code> використовує
+            <code>?cursor=eyJpZCI6MTV9</code> — закодований покажчик на останній елемент. Не
+            пропускає записи — ефективно навіть для мільйонів рядків.
           </li>
         </ul>
         <p>
           Відповідь <code>paginate()</code> автоматично включає <code>data</code> (масив записів),
-          <code>links</code> (first/last/prev/next) та <code>meta</code> (current_page, total тощо) —
-          саме те, що очікує Vue-компонент з <code>axios.get('/api/tasks', { params: { page } })</code>.
+          <code>links</code> (first/last/prev/next) та <code>meta</code> (current_page, total тощо)
+          — саме те, що очікує Vue-компонент з
+          <code>axios.get('/api/tasks', { params: { page } })</code>.
         </p>
       </TheoryBlock>
 
@@ -597,12 +588,13 @@ echo "\\nРезультат: $pass/$total\\n";`
       <TheoryBlock title="Практика: симуляція фільтрів Laravel">
         <p>
           У цьому playground ми <strong>симулюємо</strong> роботу Laravel-контролера на чистому PHP
-          без фреймворку. Це допомагає зрозуміти логіку <code>when()</code>, whitelist та <code>paginate()</code>
+          без фреймворку. Це допомагає зрозуміти логіку <code>when()</code>, whitelist та
+          <code>paginate()</code>
           без необхідності запускати сервер.
         </p>
         <p>
-          Запустіть код та подивіться результат. Потім змініть <code>$queryParams</code> і спостерігайте,
-          як фільтри впливають на результат.
+          Запустіть код та подивіться результат. Потім змініть <code>$queryParams</code> і
+          спостерігайте, як фільтри впливають на результат.
         </p>
       </TheoryBlock>
 
@@ -620,31 +612,32 @@ echo "\\nРезультат: $pass/$total\\n";`
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: реалізуйте index() з фільтрацією, сортуванням та пагінацією">
         <p>
-          Реалізуйте чотири функції, які разом утворюють логіку Laravel-контролера <code>index()</code>
-          з фільтрацією, пошуком, сортуванням та пагінацією. Натисніть <strong>"Запустити"</strong> —
-          автотести перевірять вашу реалізацію.
+          Реалізуйте чотири функції, які разом утворюють логіку Laravel-контролера
+          <code>index()</code> з фільтрацією, пошуком, сортуванням та пагінацією. Натисніть
+          <strong>"Запустити"</strong> — автотести перевірять вашу реалізацію.
         </p>
         <ol>
           <li>
-            <strong>filterByStatus(array $tasks, ?string $status): array</strong> —
-            якщо <code>$status</code> не null — фільтрує масив. Інакше повертає всі задачі.
-            Аналог <code>when($status, fn($q, $v) =&gt; $q-&gt;byStatus($v))</code>.
+            <strong>filterByStatus(array $tasks, ?string $status): array</strong> — якщо
+            <code>$status</code> не null — фільтрує масив. Інакше повертає всі задачі. Аналог
+            <code>when($status, fn($q, $v) =&gt; $q-&gt;byStatus($v))</code>.
           </li>
           <li>
-            <strong>filterBySearch(array $tasks, ?string $search): array</strong> —
-            якщо <code>$search</code> не null — шукає в <code>title</code> (case-insensitive).
-            Аналог <code>scopeSearch()</code> з LIKE.
+            <strong>filterBySearch(array $tasks, ?string $search): array</strong> — якщо
+            <code>$search</code> не null — шукає в <code>title</code> (case-insensitive). Аналог
+            <code>scopeSearch()</code> з LIKE.
           </li>
           <li>
             <strong>sortWithWhitelist(array $tasks, string $field, string $order): array</strong> —
-            whitelist: <code>['title', 'deadline', 'priority', 'status']</code>.
-            Якщо поле не в списку — сортувати за <code>'deadline'</code>.
-            Підказка: <code>in_array()</code>, <code>usort()</code>, <code>strcmp()</code>.
+            whitelist: <code>['title', 'deadline', 'priority', 'status']</code>. Якщо поле не в
+            списку — сортувати за <code>'deadline'</code>. Підказка: <code>in_array()</code>,
+            <code>usort()</code>, <code>strcmp()</code>.
           </li>
           <li>
-            <strong>paginate(array $tasks, int $page, int $perPage): array</strong> —
-            повертає <code>['data' =&gt; [...], 'meta' =&gt; [current_page, per_page, total, last_page]]</code>.
-            Підказка: <code>array_slice()</code>, <code>ceil()</code>.
+            <strong>paginate(array $tasks, int $page, int $perPage): array</strong> — повертає
+            <code
+              >['data' =&gt; [...], 'meta' =&gt; [current_page, per_page, total, last_page]]</code
+            >. Підказка: <code>array_slice()</code>, <code>ceil()</code>.
           </li>
         </ol>
       </TheoryBlock>

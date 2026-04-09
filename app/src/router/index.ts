@@ -37,9 +37,7 @@ const BASE_TITLE = 'Laravel для Vue-розробників'
 router.afterEach((to) => {
   if (to.name === 'lesson' && typeof to.params.id === 'string') {
     const info = getLessonById(to.params.id)
-    document.title = info
-      ? `${info.lesson.titleUa} — ${BASE_TITLE}`
-      : BASE_TITLE
+    document.title = info ? `${info.lesson.titleUa} — ${BASE_TITLE}` : BASE_TITLE
   } else {
     const pageTitle = to.meta.title as string | undefined
     document.title = pageTitle ? `${pageTitle} — ${BASE_TITLE}` : BASE_TITLE

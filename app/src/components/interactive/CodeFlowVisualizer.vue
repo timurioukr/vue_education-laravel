@@ -98,7 +98,10 @@ function stopAutoPlay() {
       <div class="state-panel">
         <div class="vars-section">
           <div class="panel-header">Змінні</div>
-          <div v-if="!currentStep || Object.keys(currentStep.variables).length === 0" class="empty-state">
+          <div
+            v-if="!currentStep || Object.keys(currentStep.variables).length === 0"
+            class="empty-state"
+          >
             Натисніть "Крок →" для початку
           </div>
           <div v-else class="vars-list">
@@ -123,13 +126,12 @@ function stopAutoPlay() {
     <div class="flow-controls">
       <button class="ctrl-btn" @click="resetSteps">⟲</button>
       <button class="ctrl-btn" :disabled="currentStepIndex <= 0" @click="prevStep">←</button>
-      <button
-        class="ctrl-btn ctrl-btn-primary"
-        @click="toggleAutoPlay"
-      >
+      <button class="ctrl-btn ctrl-btn-primary" @click="toggleAutoPlay">
         {{ isPlaying ? '⏸' : '▶' }}
       </button>
-      <button class="ctrl-btn" :disabled="currentStepIndex >= steps.length - 1" @click="nextStep">→</button>
+      <button class="ctrl-btn" :disabled="currentStepIndex >= steps.length - 1" @click="nextStep">
+        →
+      </button>
       <span v-if="currentStepIndex >= 0" class="step-counter">
         {{ currentStepIndex + 1 }} / {{ steps.length }}
       </span>
@@ -325,8 +327,14 @@ function stopAutoPlay() {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {

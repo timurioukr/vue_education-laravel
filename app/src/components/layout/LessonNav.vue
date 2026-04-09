@@ -16,9 +16,7 @@ const filteredWeeks = computed(() => {
   return weeks
     .map((week) => ({
       ...week,
-      lessons: week.lessons.filter((lesson) =>
-        lesson.titleUa.toLowerCase().includes(q),
-      ),
+      lessons: week.lessons.filter((lesson) => lesson.titleUa.toLowerCase().includes(q)),
     }))
     .filter((week) => week.lessons.length > 0)
 })
@@ -38,12 +36,7 @@ function lessonStatus(lessonId: string): 'completed' | 'active' | 'upcoming' {
 <template>
   <aside class="lesson-nav">
     <div class="search-wrapper">
-      <input
-        v-model="searchQuery"
-        type="text"
-        class="search-input"
-        placeholder="Пошук уроку..."
-      />
+      <input v-model="searchQuery" type="text" class="search-input" placeholder="Пошук уроку..." />
     </div>
 
     <div class="weeks-list">

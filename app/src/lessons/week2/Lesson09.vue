@@ -25,16 +25,16 @@ const quizQuestions: QuizQuestion[] = [
       'toArray() визначає точну структуру JSON-відповіді: які поля включити, як їх назвати, які обчислити. Це "серцевина" Resource — він маппить модель у масив, який потім Laravel конвертує в JSON.',
   },
   {
-    question: 'Що робить $this->whenLoaded(\'category\') у Resource?',
+    question: "Що робить $this->whenLoaded('category') у Resource?",
     options: [
-      'Завантажує зв\'язок category з бази даних',
-      'Включає поле category у JSON тільки якщо зв\'язок вже був завантажений через with()',
+      "Завантажує зв'язок category з бази даних",
+      "Включає поле category у JSON тільки якщо зв'язок вже був завантажений через with()",
       'Перевіряє чи категорія існує в базі',
       'Автоматично підключає CategoryResource',
     ],
     correct: 1,
     explanation:
-      'whenLoaded() не завантажує зв\'язок — він перевіряє, чи він вже завантажений. Якщо контролер викликав with(\'category\'), поле буде в JSON. Якщо ні — поле просто відсутнє. Це запобігає N+1 проблемі.',
+      "whenLoaded() не завантажує зв'язок — він перевіряє, чи він вже завантажений. Якщо контролер викликав with('category'), поле буде в JSON. Якщо ні — поле просто відсутнє. Це запобігає N+1 проблемі.",
   },
   {
     question: 'Яка різниця між new TaskResource($task) та TaskResource::collection($tasks)?',
@@ -49,7 +49,8 @@ const quizQuestions: QuizQuestion[] = [
       'new TaskResource($task) трансформує один Eloquent-запис. TaskResource::collection($tasks) обробляє кожен елемент колекції чи пагінатора через той самий toArray(). Аналог у JS: transformTask(task) vs tasks.map(transformTask).',
   },
   {
-    question: 'Що містить meta в пагінованій відповіді TaskResource::collection(Task::paginate(15))?',
+    question:
+      'Що містить meta в пагінованій відповіді TaskResource::collection(Task::paginate(15))?',
     options: [
       'Тільки загальну кількість записів',
       'current_page, last_page, per_page, total та масив посилань на сторінки',
@@ -61,16 +62,16 @@ const quizQuestions: QuizQuestion[] = [
       'meta містить всю інформацію про пагінацію: current_page (поточна сторінка), last_page (остання), per_page (записів на сторінку), total (загальна кількість), а також масив links з URL кожної сторінки. Фронтенд використовує це для навігації.',
   },
   {
-    question: 'Чому без API Resource у відповіді з\'являється поле pivot для тегів?',
+    question: "Чому без API Resource у відповіді з'являється поле pivot для тегів?",
     options: [
-      'Це обов\'язкова частина JSON:API специфікації',
-      'Laravel автоматично включає дані pivot-таблиці при серіалізації many-to-many зв\'язку',
+      "Це обов'язкова частина JSON:API специфікації",
+      "Laravel автоматично включає дані pivot-таблиці при серіалізації many-to-many зв'язку",
       'Це помилка конфігурації маршрутів',
-      'pivot з\'являється тільки при помилках в міграції',
+      "pivot з'являється тільки при помилках в міграції",
     ],
     correct: 1,
     explanation:
-      'При many-to-many зв\'язку (Task ↔ Tag) Eloquent завантажує pivot-таблицю і включає її дані в серіалізацію. У відповіді кожен тег отримує поле pivot: { task_id: 1, tag_id: 1 }. API Resource дозволяє явно вказати лише потрібні поля — і pivot просто не включається в toArray().',
+      "При many-to-many зв'язку (Task ↔ Tag) Eloquent завантажує pivot-таблицю і включає її дані в серіалізацію. У відповіді кожен тег отримує поле pivot: { task_id: 1, tag_id: 1 }. API Resource дозволяє явно вказати лише потрібні поля — і pivot просто не включається в toArray().",
   },
 ]
 
@@ -373,21 +374,18 @@ const taskTestCode = `
         <p>
           Коли контролер повертає Eloquent-модель напряму через
           <code>return response()->json($task)</code>, Laravel серіалізує
-          <strong>всі поля моделі</strong>: <code>user_id</code>,
-          <code>category_id</code>, <code>updated_at</code> і навіть
-          <code>pivot</code>-дані many-to-many зв'язків. Фронтенд бачить
-          внутрішню структуру бази даних.
+          <strong>всі поля моделі</strong>: <code>user_id</code>, <code>category_id</code>,
+          <code>updated_at</code> і навіть <code>pivot</code>-дані many-to-many зв'язків. Фронтенд
+          бачить внутрішню структуру бази даних.
         </p>
         <p>
-          <strong>API Resource</strong> — це шар трансформації між моделлю
-          та JSON-відповіддю. Він визначає <em>контракт</em>: які поля
-          повертати, як їх назвати, що обчислити. Якщо перейменувати стовпець
-          в базі — Resource збереже зовнішній API незмінним.
+          <strong>API Resource</strong> — це шар трансформації між моделлю та JSON-відповіддю. Він
+          визначає <em>контракт</em>: які поля повертати, як їх назвати, що обчислити. Якщо
+          перейменувати стовпець в базі — Resource збереже зовнішній API незмінним.
         </p>
         <p>
-          Аналог на фронтенді — це <code>computed()</code>, що маппить
-          сирі дані стору в форму, зручну для шаблону. Або функція
-          <code>transformTask(raw)</code> у Nuxt server route.
+          Аналог на фронтенді — це <code>computed()</code>, що маппить сирі дані стору в форму,
+          зручну для шаблону. Або функція <code>transformTask(raw)</code> у Nuxt server route.
         </p>
       </TheoryBlock>
 
@@ -400,9 +398,8 @@ const taskTestCode = `
 
       <TheoryBlock title="До та після: return $model vs return Resource">
         <p>
-          Порівняйте два підходи. Зліва — контролер повертає модель напряму
-          (витікає структура БД). Справа — контролер повертає через Resource
-          (тільки потрібні поля, чиста структура).
+          Порівняйте два підходи. Зліва — контролер повертає модель напряму (витікає структура БД).
+          Справа — контролер повертає через Resource (тільки потрібні поля, чиста структура).
         </p>
       </TheoryBlock>
 
@@ -422,31 +419,27 @@ const taskTestCode = `
       <TheoryBlock title="Колекції та пагінація">
         <p>
           Для списку записів використовується
-          <code>TaskResource::collection($tasks)</code>. Метод
-          <code>collection()</code> застосовує <code>toArray()</code> до
-          кожного елемента. Якщо передати результат
-          <code>paginate()</code> — Laravel автоматично додасть
-          <code>links</code> і <code>meta</code> з інформацією про сторінки.
+          <code>TaskResource::collection($tasks)</code>. Метод <code>collection()</code> застосовує
+          <code>toArray()</code> до кожного елемента. Якщо передати результат
+          <code>paginate()</code> — Laravel автоматично додасть <code>links</code> і
+          <code>meta</code> з інформацією про сторінки.
         </p>
-        <p>
-          Ключі відповіді при пагінації:
-        </p>
+        <p>Ключі відповіді при пагінації:</p>
         <ul>
           <li><code>data</code> — масив трансформованих записів</li>
           <li>
-            <code>links</code> — <code>first</code>, <code>last</code>,
-            <code>prev</code>, <code>next</code> URLs
+            <code>links</code> — <code>first</code>, <code>last</code>, <code>prev</code>,
+            <code>next</code> URLs
           </li>
           <li>
-            <code>meta</code> — <code>current_page</code>,
-            <code>last_page</code>, <code>per_page</code>,
+            <code>meta</code> — <code>current_page</code>, <code>last_page</code>,
+            <code>per_page</code>,
             <code>total</code>
           </li>
         </ul>
         <p>
           Фронтенд отримує все необхідне для побудови UI-пагінації:
-          <code>response.meta.total</code>,
-          <code>response.meta.last_page</code>,
+          <code>response.meta.total</code>, <code>response.meta.last_page</code>,
           <code>response.links.next</code>.
         </p>
       </TheoryBlock>
@@ -459,10 +452,9 @@ const taskTestCode = `
 
       <TheoryBlock title="JSON: до та після Resource">
         <p>
-          Порівняйте реальний формат відповідей. Без Resource відповідь
-          містить <code>user_id</code>, <code>category_id</code>,
-          <code>updated_at</code> і <code>pivot</code> у кожному тезі.
-          З Resource — тільки те, що потрібно фронтенду.
+          Порівняйте реальний формат відповідей. Без Resource відповідь містить
+          <code>user_id</code>, <code>category_id</code>, <code>updated_at</code> і
+          <code>pivot</code> у кожному тезі. З Resource — тільки те, що потрібно фронтенду.
         </p>
       </TheoryBlock>
 
@@ -478,15 +470,12 @@ const taskTestCode = `
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="Практика: CategoryResource">
         <p>
-          Реалізуйте <code>CategoryResource</code> — Resource для категорії
-          задач. Він повинен повертати <code>id</code>, <code>name</code>,
-          <code>color</code>, умовно <code>tasks_count</code> (тільки якщо
-          завантажений через <code>withCount</code>) та вкладені задачі
-          (тільки якщо завантажені через <code>with('tasks')</code>).
+          Реалізуйте <code>CategoryResource</code> — Resource для категорії задач. Він повинен
+          повертати <code>id</code>, <code>name</code>, <code>color</code>, умовно
+          <code>tasks_count</code> (тільки якщо завантажений через <code>withCount</code>) та
+          вкладені задачі (тільки якщо завантажені через <code>with('tasks')</code>).
         </p>
-        <p>
-          Запустіть код — симуляція виведе поля категорії.
-        </p>
+        <p>Запустіть код — симуляція виведе поля категорії.</p>
       </TheoryBlock>
 
       <CodePlayground
@@ -506,27 +495,24 @@ const taskTestCode = `
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: TagResource та оновлений контролер">
         <p>
-          Створіть <code>TagResource</code> та оновіть вивід
-          <code>TagController::index()</code> для використання Resource.
+          Створіть <code>TagResource</code> та оновіть вивід <code>TagController::index()</code> для
+          використання Resource.
         </p>
         <ol>
           <li>
-            Реалізуйте <code>toArray()</code> у
-            <code>TagResource</code>: поля <code>id</code>, <code>name</code>
-            та умовний <code>tasks_count</code> через
+            Реалізуйте <code>toArray()</code> у <code>TagResource</code>: поля <code>id</code>,
+            <code>name</code> та умовний <code>tasks_count</code> через
             <code>$this->when(isset($this->tasks_count), ...)</code>
           </li>
           <li>
             У циклі виведіть кожен тег у форматі:
             <code>Тег N: id=X, name=Y, tasks_count=Z</code>
           </li>
-          <li>
-            Автотест перевірить правильність даних автоматично
-          </li>
+          <li>Автотест перевірить правильність даних автоматично</li>
         </ol>
         <p>
-          Підказка: <code>tasks_count</code> вже є в об'єктах —
-          просто зверніться до <code>$tag->tasks_count</code>.
+          Підказка: <code>tasks_count</code> вже є в об'єктах — просто зверніться до
+          <code>$tag->tasks_count</code>.
         </p>
       </TheoryBlock>
 

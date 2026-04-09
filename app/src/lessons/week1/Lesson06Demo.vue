@@ -55,13 +55,13 @@ const tinkerLines = [
   '>>> Task::all()->count()',
   '=> 5',
   '',
-  '>>> Task::where(\'status\', \'pending\')->pluck(\'title\')',
+  ">>> Task::where('status', 'pending')->pluck('title')",
   '=> ["Build REST API", "Buy groceries", "Write unit tests"]',
   '',
-  '>>> Task::create([\'title\' => \'New task\', \'user_id\' => 1])',
+  ">>> Task::create(['title' => 'New task', 'user_id' => 1])",
   '=> App\\Models\\Task {id: 6, title: "New task", status: "pending", ...}',
   '',
-  '>>> Task::find(6)->update([\'status\' => \'in_progress\'])',
+  ">>> Task::find(6)->update(['status' => 'in_progress'])",
   '=> true',
   '',
   '>>> Task::find(6)->delete()  // soft delete',
@@ -73,8 +73,8 @@ const tinkerLines = [
 
 const memoryItems = [
   { vue: "fetch('/api/tasks')", laravel: 'Task::all()' },
-  { vue: '.filter()', laravel: "->where()->get()" },
-  { vue: "store.$reset()", laravel: 'Task::create([...])' },
+  { vue: '.filter()', laravel: '->where()->get()' },
+  { vue: 'store.$reset()', laravel: 'Task::create([...])' },
   { vue: 'defineProps<{}>()', laravel: '$fillable = [...]' },
   { vue: 'DevTools Console', laravel: 'php artisan tinker' },
 ]

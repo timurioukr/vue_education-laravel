@@ -36,9 +36,12 @@ function goTo(id: string | null) {
   }
 }
 
-watch(() => props.lessonId, () => {
-  activeTab.value = 'theory'
-})
+watch(
+  () => props.lessonId,
+  () => {
+    activeTab.value = 'theory'
+  },
+)
 
 defineExpose({ activeTab })
 </script>
@@ -50,9 +53,8 @@ defineExpose({ activeTab })
       <div class="header-left">
         <h1 class="lesson-title">{{ lessonInfo.lesson.titleUa }}</h1>
         <p class="lesson-subtitle">
-          {{ lessonInfo.lesson.icon }} Урок {{ lessonInfo.lesson.order }}
-          · Тиждень {{ lessonInfo.week.number }}
-          · {{ lessonInfo.lesson.duration }}
+          {{ lessonInfo.lesson.icon }} Урок {{ lessonInfo.lesson.order }} · Тиждень
+          {{ lessonInfo.week.number }} · {{ lessonInfo.lesson.duration }}
         </p>
       </div>
       <div class="header-right">
@@ -147,7 +149,9 @@ defineExpose({ activeTab })
   font-weight: 500;
   border: none;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition:
+    background 0.2s,
+    opacity 0.2s;
   white-space: nowrap;
 }
 
@@ -194,7 +198,9 @@ defineExpose({ activeTab })
   font-size: 14px;
   color: var(--text-muted);
   border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   white-space: nowrap;
 }
 
