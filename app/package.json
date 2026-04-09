@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "mermaid": "^11.14.0",
+    "monaco-editor": "^0.55.1",
     "pinia": "^2.3.1",
     "shiki": "^3.4.2",
     "vue": "^3.5.13",
