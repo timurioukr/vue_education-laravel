@@ -13,4 +13,16 @@ export default defineConfig({
   optimizeDeps: {
     include: ['monaco-editor', 'mermaid'],
   },
+  build: {
+    target: 'es2020',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'monaco-editor': ['monaco-editor'],
+          'mermaid': ['mermaid'],
+        },
+      },
+    },
+  },
 })
