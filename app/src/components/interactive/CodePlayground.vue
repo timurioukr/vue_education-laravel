@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import * as monaco from 'monaco-editor'
-import { executeCode, isJudge0Configured } from '@/services/judge0'
+import { executeCode } from '@/services/judge0'
 import type { ExecutionResult } from '@/types'
 
 const props = withDefaults(
@@ -66,11 +66,6 @@ watch(
 async function run() {
   if (!editor || isRunning.value) return
   errorMessage.value = ''
-
-  if (!isJudge0Configured()) {
-    errorMessage.value = 'Judge0 API не налаштований. Додайте VITE_JUDGE0_API_KEY в .env файл.'
-    return
-  }
 
   isRunning.value = true
   result.value = null

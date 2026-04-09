@@ -1,116 +1,54 @@
 import type { ExecutionResult } from '@/types'
 
-const LANGUAGE_IDS: Record<string, number> = {
-  php: 68,
-  javascript: 63,
-  bash: 46,
-}
+const EXECUTOR_URL = 'http://localhost:8088'
 
 const cache = new Map<string, ExecutionResult>()
-const requestTimestamps: number[] = []
-const MAX_REQUESTS_PER_MINUTE = 10
 
 function getCacheKey(code: string, language: string): string {
   return `${language}:${code}`
 }
 
-function checkRateLimit(): boolean {
-  const now = Date.now()
-  const oneMinuteAgo = now - 60_000
-  while (requestTimestamps.length > 0 && requestTimestamps[0] < oneMinuteAgo) {
-    requestTimestamps.shift()
-  }
-  return requestTimestamps.length < MAX_REQUESTS_PER_MINUTE
-}
-
-async function submitCode(code: string, languageId: number): Promise<string> {
-  const apiUrl = import.meta.env.VITE_JUDGE0_API_URL || 'https://judge0-ce.p.rapidapi.com'
-  const apiKey = import.meta.env.VITE_JUDGE0_API_KEY
-
-  const response = await fetch(`${apiUrl}/submissions?base64_encoded=true&wait=false`, {
+async function executePhpLocally(code: string): Promise<ExecutionResult> {
+  const response = await fetch(EXECUTOR_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-RapidAPI-Key': apiKey,
-      'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
-    },
-    body: JSON.stringify({
-      source_code: btoa(unescape(encodeURIComponent(code))),
-      language_id: languageId,
-      cpu_time_limit: 5,
-      memory_limit: 128000,
-    }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, language: 'php' }),
   })
 
   if (!response.ok) {
-    throw new Error(`Judge0 submit failed: ${response.status}`)
+    throw new Error(`Executor failed: ${response.status}`)
   }
 
-  const data = await response.json()
-  return data.token
+  return await response.json()
 }
 
-async function pollResult(token: string): Promise<ExecutionResult> {
-  const apiUrl = import.meta.env.VITE_JUDGE0_API_URL || 'https://judge0-ce.p.rapidapi.com'
-  const apiKey = import.meta.env.VITE_JUDGE0_API_KEY
-  const maxAttempts = 20
-  const pollInterval = 500
+function executeJsLocally(code: string): ExecutionResult {
+  const logs: string[] = []
+  const errors: string[] = []
+  const startTime = performance.now()
 
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const response = await fetch(
-      `${apiUrl}/submissions/${token}?base64_encoded=true&fields=stdout,stderr,status,time,memory`,
-      {
-        headers: {
-          'X-RapidAPI-Key': apiKey,
-          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
-        },
-      },
-    )
-
-    if (!response.ok) {
-      throw new Error(`Judge0 poll failed: ${response.status}`)
-    }
-
-    const data = await response.json()
-
-    // Status IDs: 1=In Queue, 2=Processing, 3=Accepted, 4+=error states
-    if (data.status.id <= 2) {
-      await new Promise((resolve) => setTimeout(resolve, pollInterval))
-      continue
-    }
-
-    const decode = (b64: string | null): string => {
-      if (!b64) return ''
-      try {
-        return decodeURIComponent(escape(atob(b64)))
-      } catch {
-        return atob(b64)
-      }
-    }
-
-    const statusMap: Record<number, ExecutionResult['status']> = {
-      3: 'success',
-      5: 'timeout',
-      6: 'compilation_error',
-    }
-
-    return {
-      stdout: decode(data.stdout),
-      stderr: decode(data.stderr),
-      exitCode: data.status.id === 3 ? 0 : 1,
-      time: data.time ?? '0',
-      memory: data.memory ?? 0,
-      status: statusMap[data.status.id] ?? 'error',
-    }
+  const fakeConsole = {
+    log: (...args: unknown[]) => logs.push(args.map(String).join(' ')),
+    error: (...args: unknown[]) => errors.push(args.map(String).join(' ')),
+    warn: (...args: unknown[]) => logs.push(args.map(String).join(' ')),
   }
 
+  try {
+    const fn = new Function('console', code)
+    fn(fakeConsole)
+  } catch (e) {
+    errors.push(String(e))
+  }
+
+  const elapsed = ((performance.now() - startTime) / 1000).toFixed(3)
+
   return {
-    stdout: '',
-    stderr: 'Execution timed out while waiting for result',
-    exitCode: 1,
-    time: '0',
+    stdout: logs.join('\n') + (logs.length ? '\n' : ''),
+    stderr: errors.join('\n'),
+    exitCode: errors.length > 0 ? 1 : 0,
+    time: elapsed,
     memory: 0,
-    status: 'timeout',
+    status: errors.length > 0 ? 'error' : 'success',
   }
 }
 
@@ -122,19 +60,13 @@ export async function executeCode(
   const cached = cache.get(cacheKey)
   if (cached) return cached
 
-  if (!checkRateLimit()) {
-    return {
-      stdout: '',
-      stderr: 'Забагато запитів. Зачекайте хвилину.',
-      exitCode: 1,
-      time: '0',
-      memory: 0,
-      status: 'error',
-    }
-  }
+  let result: ExecutionResult
 
-  const languageId = LANGUAGE_IDS[language]
-  if (!languageId) {
+  if (language === 'javascript') {
+    result = executeJsLocally(code)
+  } else if (language === 'php') {
+    result = await executePhpLocally(code)
+  } else {
     return {
       stdout: '',
       stderr: `Мова "${language}" не підтримується`,
@@ -145,11 +77,6 @@ export async function executeCode(
     }
   }
 
-  requestTimestamps.push(Date.now())
-
-  const token = await submitCode(code, languageId)
-  const result = await pollResult(token)
-
   if (result.status === 'success') {
     cache.set(cacheKey, result)
   }
@@ -157,6 +84,13 @@ export async function executeCode(
   return result
 }
 
-export function isJudge0Configured(): boolean {
-  return !!import.meta.env.VITE_JUDGE0_API_KEY
+export async function isExecutorAvailable(): Promise<boolean> {
+  try {
+    const response = await fetch(EXECUTOR_URL, {
+      method: 'OPTIONS',
+    })
+    return response.ok || response.status === 204
+  } catch {
+    return false
+  }
 }
