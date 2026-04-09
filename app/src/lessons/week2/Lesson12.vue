@@ -74,24 +74,6 @@ const quizQuestions: QuizQuestion[] = [
   },
 ]
 
-// === ParallelCard comparison ===
-const jsComputedExample = `// Pinia store
-const overdueTasks = computed(() =>
-  tasks.value.filter(t =>
-    t.status !== 'completed' &&
-    isPast(new Date(t.deadline))
-  )
-);`
-
-const laravelScopeExample = `// Laravel Model
-public function scopeOverdue(
-  Builder $query
-): Builder {
-  return $query
-    ->where('status', '!=', 'completed')
-    ->whereNotNull('deadline')
-    ->where('deadline', '<', now());
-}`
 
 // === CodeComparison: JS filter/sort vs Laravel scopes ===
 const jsFilterSort = `// JavaScript — фільтрація в пам'яті
@@ -548,7 +530,7 @@ echo "\\nРезультат: $pass/$total\\n";`
 
       <CodeBlock
         :code="scopesCode"
-        language="php"
+        lang="php"
         title="app/Models/Task.php — визначення scopes"
       />
 
@@ -571,7 +553,7 @@ echo "\\nРезультат: $pass/$total\\n";`
 
       <CodeBlock
         :code="whenCode"
-        language="php"
+        lang="php"
         title="when() — умовна фільтрація без if/else"
       />
 
@@ -606,7 +588,7 @@ echo "\\nРезультат: $pass/$total\\n";`
 
       <CodeBlock
         :code="fullIndexCode"
-        language="php"
+        lang="php"
         title="app/Http/Controllers/Api/TaskController.php — повний index()"
       />
     </div>

@@ -443,7 +443,7 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
 
       <CodeBlock
         :code="storeTaskRequestCode"
-        language="php"
+        lang="php"
         title="app/Http/Requests/StoreTaskRequest.php"
       />
 
@@ -561,7 +561,7 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
 
       <CodeBlock
         :code="json422Response"
-        language="javascript"
+        lang="javascript"
         title="422 JSON-відповідь + обробка у Vue"
       />
     </div>

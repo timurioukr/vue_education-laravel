@@ -354,7 +354,7 @@ class Task extends Model
 
       <CodeBlock
         :code="taskModelCode"
-        language="php"
+        lang="php"
         title="app/Models/Task.php — методи зв'язків"
       />
 

@@ -476,7 +476,7 @@ const taskTestCode = `
 
       <CodeBlock
         title="bootstrap/app.php — повний exception handler для API"
-        language="php"
+        lang="php"
         :code="bootstrapHandlerCode"
       />
 
@@ -535,7 +535,7 @@ const taskTestCode = `
 
       <CodeBlock
         title="app/Exceptions/TaskLimitExceededException.php"
-        language="php"
+        lang="php"
         :code="customExceptionCode"
       />
 
@@ -562,7 +562,7 @@ const taskTestCode = `
 
       <CodeBlock
         title="Log фасад — рівні та контекст"
-        language="php"
+        lang="php"
         :code="logFacadeCode"
       />
     </div>

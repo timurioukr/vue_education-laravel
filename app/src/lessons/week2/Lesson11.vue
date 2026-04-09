@@ -381,7 +381,7 @@ class CategoryFactory extends Factory
 
       <CodeBlock
         :code="taskFactoryCode"
-        language="php"
+        lang="php"
         title="database/factories/TaskFactory.php — фабрика зі станами"
       />
 
@@ -402,7 +402,7 @@ class CategoryFactory extends Factory
 
       <CodeBlock
         :code="taskSeederCode"
-        language="php"
+        lang="php"
         title="database/seeders/TaskSeeder.php — seeder з recycle та states"
       />
 

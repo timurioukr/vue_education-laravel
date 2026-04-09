@@ -415,7 +415,7 @@ const taskTestCode = `
 
       <CodeBlock
         title="TaskResource — toArray() з whenLoaded та when"
-        language="php"
+        lang="php"
         :code="taskResourceCode"
       />
 
@@ -453,7 +453,7 @@ const taskTestCode = `
 
       <CodeBlock
         title="TaskController — Resource::collection і paginate"
-        language="php"
+        lang="php"
         :code="controllerWithResourceCode"
       />
 
