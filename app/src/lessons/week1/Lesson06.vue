@@ -377,6 +377,22 @@ const quizQuestions: QuizQuestion[] = [
         php-title="Laravel $fillable"
       />
 
+      <TheoryBlock title="$guarded — альтернатива $fillable">
+        <p>
+          Замість переліку <strong>дозволених</strong> полів (<code>$fillable</code>), можна
+          перелічити <strong>заборонені</strong> (<code>$guarded</code>). Якщо <code>$guarded = []</code> —
+          всі поля дозволені для масового заповнення. Зручно для прототипу, але небезпечно
+          для продакшну.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        :js="`// JS: немає вбудованого захисту\nconst task = await db.insert('tasks', req.body);\n// будь-яке поле з body потрапить в БД!`"
+        :php="`// Laravel: $fillable (whitelist)\nprotected \$fillable = ['title', 'status'];\n// Тільки title і status можна масово заповнити\n\n// Laravel: $guarded (blacklist)\nprotected \$guarded = ['id'];\n// Все можна, крім id`"
+        js-title="JS (без захисту)"
+        php-title="Laravel ($fillable vs $guarded)"
+      />
+
       <TheoryBlock title="$casts та $hidden">
         <p>
           <code>$casts</code> автоматично конвертує типи при читанні/записі:
