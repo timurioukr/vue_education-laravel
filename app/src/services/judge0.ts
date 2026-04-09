@@ -3,9 +3,21 @@ import type { ExecutionResult } from '@/types'
 const EXECUTOR_URL = 'http://localhost:8088'
 
 const cache = new Map<string, ExecutionResult>()
+let phpAvailable: boolean | null = null
 
 function getCacheKey(code: string, language: string): string {
   return `${language}:${code}`
+}
+
+async function checkPhpExecutor(): Promise<boolean> {
+  if (phpAvailable !== null) return phpAvailable
+  try {
+    const response = await fetch(EXECUTOR_URL, { method: 'OPTIONS' })
+    phpAvailable = response.ok || response.status === 204
+  } catch {
+    phpAvailable = false
+  }
+  return phpAvailable
 }
 
 async function executePhpLocally(code: string): Promise<ExecutionResult> {
@@ -65,6 +77,17 @@ export async function executeCode(
   if (language === 'javascript') {
     result = executeJsLocally(code)
   } else if (language === 'php') {
+    const available = await checkPhpExecutor()
+    if (!available) {
+      return {
+        stdout: '',
+        stderr: '',
+        exitCode: 1,
+        time: '0',
+        memory: 0,
+        status: 'php_unavailable',
+      }
+    }
     result = await executePhpLocally(code)
   } else {
     return {
@@ -82,15 +105,4 @@ export async function executeCode(
   }
 
   return result
-}
-
-export async function isExecutorAvailable(): Promise<boolean> {
-  try {
-    const response = await fetch(EXECUTOR_URL, {
-      method: 'OPTIONS',
-    })
-    return response.ok || response.status === 204
-  } catch {
-    return false
-  }
 }

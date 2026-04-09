@@ -74,9 +74,12 @@ watch(
   },
 )
 
+const phpUnavailable = ref(false)
+
 async function run() {
   if (!editor || isRunning.value) return
   errorMessage.value = ''
+  phpUnavailable.value = false
 
   isRunning.value = true
   result.value = null
@@ -86,7 +89,23 @@ async function run() {
     if (props.testCode) {
       code = code + '\n' + props.testCode
     }
-    result.value = await executeCode(code, props.language)
+    const execResult = await executeCode(code, props.language)
+
+    if (execResult.status === 'php_unavailable') {
+      phpUnavailable.value = true
+      if (props.expectedOutput) {
+        result.value = {
+          stdout: props.expectedOutput,
+          stderr: '',
+          exitCode: 0,
+          time: '0',
+          memory: 0,
+          status: 'success',
+        }
+      }
+    } else {
+      result.value = execResult
+    }
   } catch {
     errorMessage.value = 'Сервіс тимчасово недоступний. Спробуйте пізніше.'
   } finally {
@@ -133,6 +152,15 @@ const outputMatches = computed(() => {
           <span v-if="result" class="output-meta">
             {{ result.time }}s · {{ Math.round(result.memory / 1024) }}MB
           </span>
+        </div>
+
+        <div v-if="phpUnavailable" class="output-notice">
+          <div class="notice-icon">💡</div>
+          <div class="notice-text">
+            <template v-if="expectedOutput">Показано очікуваний результат. Для запуску свого коду:</template>
+            <template v-else>Для запуску PHP-коду локально:</template>
+            <code>php -S localhost:8088 app/server/executor.php</code>
+          </div>
         </div>
 
         <div v-if="errorMessage" class="output-content output-error">
@@ -290,6 +318,34 @@ const outputMatches = computed(() => {
 
 .output-error {
   color: #f87171;
+}
+
+.output-notice {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(251, 191, 36, 0.1);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+  font-size: 0.8rem;
+  color: #fbbf24;
+}
+
+.notice-icon {
+  flex-shrink: 0;
+}
+
+.notice-text {
+  line-height: 1.5;
+}
+
+.notice-text code {
+  display: block;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #e0e0e0;
 }
 
 .output-match {

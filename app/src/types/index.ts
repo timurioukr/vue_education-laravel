@@ -57,5 +57,5 @@ export interface ExecutionResult {
   exitCode: number
   time: string
   memory: number
-  status: 'success' | 'error' | 'timeout' | 'compilation_error'
+  status: 'success' | 'error' | 'timeout' | 'compilation_error' | 'php_unavailable'
 }
