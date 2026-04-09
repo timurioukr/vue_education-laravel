@@ -416,6 +416,33 @@ print_r($stats);`
         php-title="PHP (match)"
       />
 
+      <TheoryBlock title="Heredoc (Template Literals)">
+        <p>
+          В JS є template literals з бектіками. В PHP аналог — <strong>heredoc</strong> (<code>&lt;&lt;&lt;EOT</code>).
+          Heredoc підтримує інтерполяцію змінних, як подвійні лапки. <strong>Nowdoc</strong> (<code>&lt;&lt;&lt;'EOT'</code>) —
+          без інтерполяції, як одинарні лапки.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        :js="`const msg = \`Hello \${name},\ntotal: \${a + b}\`;`"
+        :php="`\$msg = &lt;&lt;&lt;EOT\nHello {\$name},\ntotal: {\$total}\nEOT;`"
+        js-title="JS (template literal)"
+        php-title="PHP (heredoc)"
+      />
+
+      <TheoryBlock title="Spread operator">
+        <p>
+          Оператор <code>...</code> працює і в PHP (з версії 8.1 для масивів).
+          Можна розпакувати масив у інший масив або передати аргументи у функцію.
+        </p>
+      </TheoryBlock>
+
+      <CodeComparison
+        js="const merged = [...arr1, ...arr2];"
+        php="$merged = [...$arr1, ...$arr2];"
+      />
+
       <CodeFlowVisualizer
         title="Покрокове виконання: foreach цикл"
         :code="foreachCode"
