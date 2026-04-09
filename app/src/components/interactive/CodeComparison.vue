@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import CodeBlock from './CodeBlock.vue'
 
-withDefaults(defineProps<{
-  js: string
-  php: string
-  jsTitle?: string
-  phpTitle?: string
-}>(), {
-  jsTitle: 'JavaScript',
-  phpTitle: 'PHP (Laravel)',
-})
+withDefaults(
+  defineProps<{
+    js: string
+    php: string
+    jsTitle?: string
+    phpTitle?: string
+  }>(),
+  {
+    jsTitle: 'JavaScript',
+    phpTitle: 'PHP (Laravel)',
+  },
+)
 </script>
 
 <template>

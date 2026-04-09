@@ -11,7 +11,12 @@ const progress = useProgressStore()
 const allLessons = getAllLessons()
 
 const weekColors = ['var(--primary)', 'var(--success)', 'var(--accent)', 'var(--warning)']
-const weekBgColors = ['var(--primary-light)', 'var(--success-light)', 'var(--accent-light)', 'var(--warning-light)']
+const weekBgColors = [
+  'var(--primary-light)',
+  'var(--success-light)',
+  'var(--accent-light)',
+  'var(--warning-light)',
+]
 
 const quizCount = computed(() => Object.keys(progress.quizScores).length)
 
@@ -100,7 +105,7 @@ function goToCheatsheet(name: string) {
       <div class="continue-info">
         <span class="continue-label">Продовжити навчання</span>
         <h3 class="continue-title">{{ nextLesson.icon }} {{ nextLesson.titleUa }}</h3>
-        <p class="continue-meta" v-if="nextLessonWeek">
+        <p v-if="nextLessonWeek" class="continue-meta">
           Тиждень {{ nextLessonWeek.number }} · {{ nextLesson.duration }}
         </p>
       </div>
@@ -167,7 +172,9 @@ function goToCheatsheet(name: string) {
   gap: 12px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .week-card:hover {
@@ -321,7 +328,9 @@ function goToCheatsheet(name: string) {
   gap: 10px;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
 }
 
 .cheatsheet-card:hover {

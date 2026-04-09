@@ -15,14 +15,14 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: 'Яка різниця між create() та make() у Laravel-фабриці?',
     options: [
-      'create() створює об\'єкт в пам\'яті, make() зберігає в базу',
-      'create() зберігає модель у базу і повертає її з id, make() створює об\'єкт тільки в пам\'яті',
+      "create() створює об'єкт в пам'яті, make() зберігає в базу",
+      "create() зберігає модель у базу і повертає її з id, make() створює об'єкт тільки в пам'яті",
       'Різниці немає — це синоніми',
       'make() створює кілька записів, create() тільки один',
     ],
     correct: 1,
     explanation:
-      'create() виконує INSERT в базу і повертає модель з id. make() створює об\'єкт тільки в пам\'яті — корисно для unit-тестів, коли реальна база не потрібна. Це як різниця між generateFakeTask() і api.post(\'/tasks\', generateFakeTask()) у JavaScript.',
+      "create() виконує INSERT в базу і повертає модель з id. make() створює об'єкт тільки в пам'яті — корисно для unit-тестів, коли реальна база не потрібна. Це як різниця між generateFakeTask() і api.post('/tasks', generateFakeTask()) у JavaScript.",
   },
   {
     question: 'Для чого використовується recycle() у фабриці?',
@@ -34,7 +34,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 1,
     explanation:
-      'Без recycle() фабрика автоматично створює нову пов\'язану модель для кожного запису. З recycle($categories) — всі 10 задач використовують одну з існуючих категорій замість того, щоб створювати 10 нових. Це як повторне використання змінної замість виклику функції в циклі.',
+      "Без recycle() фабрика автоматично створює нову пов'язану модель для кожного запису. З recycle($categories) — всі 10 задач використовують одну з існуючих категорій замість того, щоб створювати 10 нових. Це як повторне використання змінної замість виклику функції в циклі.",
   },
   {
     question: 'Навіщо потрібні factory states?',
@@ -64,13 +64,13 @@ const quizQuestions: QuizQuestion[] = [
     question: 'Що робить afterCreating() у фабриці?',
     options: [
       'Видаляє модель із бази після створення',
-      'Виконує додаткові дії після збереження моделі в базу — наприклад, прикріплює many-to-many зв\'язки',
+      "Виконує додаткові дії після збереження моделі в базу — наприклад, прикріплює many-to-many зв'язки",
       'Перевіряє, чи модель збережена правильно',
       'Запускається автоматично після всіх seeders',
     ],
     correct: 1,
     explanation:
-      'afterCreating() виконує код після того, як модель вже збережена в базу і має id. Це потрібно для зв\'язків, які вимагають id (наприклад, many-to-many через attach()). Аналог у JavaScript — .then() після async-операції створення.',
+      "afterCreating() виконує код після того, як модель вже збережена в базу і має id. Це потрібно для зв'язків, які вимагають id (наприклад, many-to-many через attach()). Аналог у JavaScript — .then() після async-операції створення.",
   },
 ]
 
@@ -341,17 +341,17 @@ class CategoryFactory extends Factory
 
       <TheoryBlock title="Проблема: порожня база даних">
         <p>
-          Уявіть: ви запускаєте <code>migrate:fresh</code> — база порожня. Щоб перевірити список задач,
-          потрібно вручну створити через curl або Postman кілька задач, категорій, користувачів.
-          Це займає 5–10 хвилин. А потім знову скинули базу — і все спочатку.
+          Уявіть: ви запускаєте <code>migrate:fresh</code> — база порожня. Щоб перевірити список
+          задач, потрібно вручну створити через curl або Postman кілька задач, категорій,
+          користувачів. Це займає 5–10 хвилин. А потім знову скинули базу — і все спочатку.
         </p>
         <p>
           У фронтенд-розробці та сама проблема: коли MSW повертає порожній масив, тестувати нема що.
           Тому пишуть mock-дані вручну або використовують <code>@faker-js/faker</code>.
         </p>
         <p>
-          Laravel вирішує це елегантно: <strong>Factories</strong> генерують реалістичні фейкові дані,
-          а <strong>Seeders</strong> наповнюють базу цими даними однією командою.
+          Laravel вирішує це елегантно: <strong>Factories</strong> генерують реалістичні фейкові
+          дані, а <strong>Seeders</strong> наповнюють базу цими даними однією командою.
         </p>
       </TheoryBlock>
 
@@ -364,13 +364,13 @@ class CategoryFactory extends Factory
 
       <TheoryBlock title="Model Factories">
         <p>
-          Factory — це клас, який описує, як створити фейковий екземпляр моделі.
-          Кожен Factory має метод <code>definition()</code>, що повертає масив атрибутів з faker-значеннями.
+          Factory — це клас, який описує, як створити фейковий екземпляр моделі. Кожен Factory має
+          метод <code>definition()</code>, що повертає масив атрибутів з faker-значеннями.
         </p>
         <p>
           Щоб фабрика працювала, модель повинна використовувати трейт <code>HasFactory</code>.
-          Laravel автоматично знаходить фабрику за конвенцією імен: модель <code>Task</code>
-          шукає <code>TaskFactory</code> у <code>database/factories/</code>.
+          Laravel автоматично знаходить фабрику за конвенцією імен: модель <code>Task</code> шукає
+          <code>TaskFactory</code> у <code>database/factories/</code>.
         </p>
         <p>
           <strong>States</strong> — іменовані варіації моделі. Наприклад, "прострочена задача",
@@ -388,15 +388,18 @@ class CategoryFactory extends Factory
       <TheoryBlock title="Seeders та порядок запуску">
         <p>
           Seeder — клас, який наповнює базу тестовими даними через фабрики.
-          <code>DatabaseSeeder</code> — точка входу, яка викликає інші seeders у правильному порядку.
+          <code>DatabaseSeeder</code> — точка входу, яка викликає інші seeders у правильному
+          порядку.
         </p>
         <p>
-          <strong>Порядок важливий:</strong> спочатку створюємо Users та Categories (бо Tasks залежать від них),
-          потім Tasks. Це як <code>await</code>-ланцюжок у JavaScript — наступний крок залежить від попереднього.
+          <strong>Порядок важливий:</strong> спочатку створюємо Users та Categories (бо Tasks
+          залежать від них), потім Tasks. Це як <code>await</code>-ланцюжок у JavaScript — наступний
+          крок залежить від попереднього.
         </p>
         <p>
           <code>recycle($categories)</code> каже фабриці повторно використовувати існуючі категорії
-          замість створення нових для кожного запису. Без нього 15 задач створили б 15 різних категорій.
+          замість створення нових для кожного запису. Без нього 15 задач створили б 15 різних
+          категорій.
         </p>
       </TheoryBlock>
 
@@ -426,19 +429,16 @@ class CategoryFactory extends Factory
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="Практика: фабрики та seeders в дії">
         <p>
-          Запустіть код нижче та спостерігайте, як фабрики генерують дані.
-          Спробуйте змінити параметри <code>count()</code>, додати інший стан або перезаписати атрибути.
+          Запустіть код нижче та спостерігайте, як фабрики генерують дані. Спробуйте змінити
+          параметри <code>count()</code>, додати інший стан або перезаписати атрибути.
         </p>
         <ul>
+          <li>Команда запуску seeders: <code>php artisan migrate:fresh --seed</code></li>
           <li>
-            Команда запуску seeders: <code>php artisan migrate:fresh --seed</code>
+            Перевірити в tinker: <code>Task::count()</code>,
+            <code>Task::where('status', 'pending')->count()</code>
           </li>
-          <li>
-            Перевірити в tinker: <code>Task::count()</code>, <code>Task::where('status', 'pending')->count()</code>
-          </li>
-          <li>
-            Запустити конкретний seeder: <code>php artisan db:seed --class=TaskSeeder</code>
-          </li>
+          <li>Запустити конкретний seeder: <code>php artisan db:seed --class=TaskSeeder</code></li>
         </ul>
       </TheoryBlock>
 
@@ -455,21 +455,20 @@ class CategoryFactory extends Factory
 
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: CategoryFactory зі станом">
-        <p>
-          Реалізуйте <code>CategoryFactory</code> з реалістичними даними та factory state.
-        </p>
+        <p>Реалізуйте <code>CategoryFactory</code> з реалістичними даними та factory state.</p>
         <ol>
           <li>
-            <strong>definition()</strong> — поле <code>name</code> вибирається з реалістичного списку
-            категорій через <code>fake()->randomElement([...])</code>, поле <code>color</code> — випадковий
-            HEX-колір через <code>fake()->hexColor()</code>.
+            <strong>definition()</strong> — поле <code>name</code> вибирається з реалістичного
+            списку категорій через <code>fake()->randomElement([...])</code>, поле
+            <code>color</code> — випадковий HEX-колір через <code>fake()->hexColor()</code>.
           </li>
           <li>
             <strong>state work()</strong> — повертає state з фіксованими значеннями:
             <code>name = 'Work'</code> та <code>color = '#3b82f6'</code>.
           </li>
           <li>
-            <strong>Бонус:</strong> Додайте state <code>personal()</code> зі своїми фіксованими значеннями.
+            <strong>Бонус:</strong> Додайте state <code>personal()</code> зі своїми фіксованими
+            значеннями.
           </li>
         </ol>
         <p>

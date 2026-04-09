@@ -48,7 +48,7 @@ const routeListLines = [
 
 const memoryItems = [
   { vue: ':id', laravel: '{id}' },
-  { vue: 'children[]', laravel: "prefix()->group()" },
+  { vue: 'children[]', laravel: 'prefix()->group()' },
   { vue: 'router.push()', laravel: 'redirect()' },
 ]
 </script>

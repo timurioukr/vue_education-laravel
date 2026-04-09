@@ -29,7 +29,7 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       'Поле валідується випадковим чином',
       'Поле валідується тільки якщо воно присутнє в запиті',
-      'Поле завжди обов\'язкове',
+      "Поле завжди обов'язкове",
       'Поле ігнорується валідатором',
     ],
     correct: 1,
@@ -51,14 +51,14 @@ const quizQuestions: QuizQuestion[] = [
   {
     question: 'Яка різниця між `nullable` та `required` правилами?',
     options: [
-      'Ніякої різниці — обидва є обов\'язковими',
-      '`required` — поле обов\'язкове і не може бути null; `nullable` — поле може бути null або відсутнє',
-      '`nullable` означає обов\'язкове поле з null-значенням',
+      "Ніякої різниці — обидва є обов'язковими",
+      "`required` — поле обов'язкове і не може бути null; `nullable` — поле може бути null або відсутнє",
+      "`nullable` означає обов'язкове поле з null-значенням",
       '`required` дозволяє null, `nullable` — ні',
     ],
     correct: 1,
     explanation:
-      'required означає: поле обов\'язкове, не може бути null або порожнім рядком. nullable означає: поле може приймати null як валідне значення. Ці правила часто комбінують: nullable|string дозволяє або null, або рядок.',
+      "required означає: поле обов'язкове, не може бути null або порожнім рядком. nullable означає: поле може приймати null як валідне значення. Ці правила часто комбінують: nullable|string дозволяє або null, або рядок.",
   },
   {
     question: 'Що повертає `$request->validated()` порівняно з `$request->all()`?',
@@ -399,16 +399,18 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
       <TheoryBlock title="Чому серверна валідація обов'язкова">
         <p>
           Ви звикли валідувати форми на клієнті — Zod, VeeValidate, HTML5 атрибути. Це покращує UX,
-          але <strong>не захищає дані</strong>. Будь-хто може обійти фронтенд і надіслати запит напряму через
-          <code>curl</code> або Postman.
+          але <strong>не захищає дані</strong>. Будь-хто може обійти фронтенд і надіслати запит
+          напряму через <code>curl</code> або Postman.
         </p>
         <p>
           Золоте правило: <strong>ніколи не довіряй даним від клієнта</strong>. Фронтенд-валідація —
-          це ввічливість, серверна — це безпека. Laravel Form Request — це ваш перший рубіж захисту на сервері.
+          це ввічливість, серверна — це безпека. Laravel Form Request — це ваш перший рубіж захисту
+          на сервері.
         </p>
         <p>
           Form Request також розділяє обов'язки: контролер містить тільки бізнес-логіку, а весь код
-          валідації живе в окремому класі — як Zod-схема у власному файлі замість того, щоб бути всередині компонента.
+          валідації живе в окремому класі — як Zod-схема у власному файлі замість того, щоб бути
+          всередині компонента.
         </p>
       </TheoryBlock>
 
@@ -420,24 +422,18 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
       />
 
       <TheoryBlock title="StoreTaskRequest — повний приклад">
-        <p>
-          Form Request — це PHP-клас з трьома методами:
-        </p>
+        <p>Form Request — це PHP-клас з трьома методами:</p>
         <ul>
           <li>
             <code>authorize()</code> — повертає <code>true/false</code>, чи дозволено виконати запит
             (аналог route guard у Vue Router)
           </li>
-          <li>
-            <code>rules()</code> — масив правил валідації для кожного поля
-          </li>
-          <li>
-            <code>messages()</code> — кастомні повідомлення про помилки
-          </li>
+          <li><code>rules()</code> — масив правил валідації для кожного поля</li>
+          <li><code>messages()</code> — кастомні повідомлення про помилки</li>
         </ul>
         <p>
-          Laravel автоматично запускає валідацію <strong>до входу в метод контролера</strong>,
-          якщо type-hint на Form Request. Аналогія — TypeScript перевіряє типи до запуску коду.
+          Laravel автоматично запускає валідацію <strong>до входу в метод контролера</strong>, якщо
+          type-hint на Form Request. Аналогія — TypeScript перевіряє типи до запуску коду.
         </p>
       </TheoryBlock>
 
@@ -546,16 +542,17 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
 
       <TheoryBlock title="Формат 422 JSON-відповіді">
         <p>
-          Коли валідація провалюється, Laravel автоматично повертає HTTP <code>422 Unprocessable Entity</code>
-          з JSON-об'єктом, де <code>errors</code> — це словник <code>{ поле: [масив помилок] }</code>.
+          Коли валідація провалюється, Laravel автоматично повертає HTTP
+          <code>422 Unprocessable Entity</code> з JSON-об'єктом, де <code>errors</code> — це словник
+          <code>{ поле: [масив помилок] }</code>.
         </p>
         <p>
           Щоб Laravel повертав JSON (а не HTML-редірект), запит повинен містити заголовок
           <code>Accept: application/json</code>. Для Vue/axios це зазвичай налаштовано глобально.
         </p>
         <p>
-          Це <strong>стандартний формат</strong> — ваш фронтенд вже знає його.
-          Помилки можна відразу прив'язати до полів форми без жодної додаткової обробки.
+          Це <strong>стандартний формат</strong> — ваш фронтенд вже знає його. Помилки можна відразу
+          прив'язати до полів форми без жодної додаткової обробки.
         </p>
       </TheoryBlock>
 
@@ -570,8 +567,8 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="Практика: симуляція валідації">
         <p>
-          Нижче — PHP-скрипт, що симулює роботу <code>$request->validate()</code>.
-          Запустіть його, спостерігайте результат, потім спробуйте:
+          Нижче — PHP-скрипт, що симулює роботу <code>$request->validate()</code>. Запустіть його,
+          спостерігайте результат, потім спробуйте:
         </p>
         <ol>
           <li>Очистити <code>title</code> — отримайте помилку "required"</li>
@@ -597,14 +594,12 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: реалізуйте UpdateTaskRequest">
         <p>
-          Напишіть Form Request для PATCH-запиту оновлення задачі.
-          Ключова відмінність від <code>StoreTaskRequest</code> — правило <code>sometimes</code>:
-          поле перевіряється тільки якщо воно є в запиті.
+          Напишіть Form Request для PATCH-запиту оновлення задачі. Ключова відмінність від
+          <code>StoreTaskRequest</code> — правило <code>sometimes</code>: поле перевіряється тільки
+          якщо воно є в запиті.
         </p>
         <ol>
-          <li>
-            Метод <code>authorize()</code> — повертає <code>true</code>
-          </li>
+          <li>Метод <code>authorize()</code> — повертає <code>true</code></li>
           <li>
             Метод <code>rules()</code> — всі поля починаються з <code>'sometimes'</code>:
             <ul>
@@ -615,13 +610,11 @@ echo "\\nРезультат: {$pass}/{$total}\\n";`
               <li><code>deadline</code> — sometimes, nullable, date</li>
             </ul>
           </li>
-          <li>
-            Метод <code>messages()</code> — додайте хоча б 2-3 повідомлення українською
-          </li>
+          <li>Метод <code>messages()</code> — додайте хоча б 2-3 повідомлення українською</li>
         </ol>
         <p>
-          Підказка: <code>sometimes</code> завжди першим у масиві правил.
-          Якщо є <code>sometimes</code> + <code>required</code> — поле перевіряється тільки якщо присутнє,
+          Підказка: <code>sometimes</code> завжди першим у масиві правил. Якщо є
+          <code>sometimes</code> + <code>required</code> — поле перевіряється тільки якщо присутнє,
           але якщо присутнє — не може бути порожнім.
         </p>
       </TheoryBlock>

@@ -44,7 +44,8 @@ async function renderDiagram() {
   } catch (e) {
     console.error('Mermaid render error:', e)
     if (diagramContainer.value) {
-      diagramContainer.value.innerHTML = '<p style="color: #f87171;">Помилка рендерингу діаграми</p>'
+      diagramContainer.value.innerHTML =
+        '<p style="color: #f87171;">Помилка рендерингу діаграми</p>'
     }
   }
 }
@@ -66,9 +67,10 @@ function applyHighlights() {
   // Highlight active nodes
   const step = props.steps[currentStep.value]
   step.highlightNodes.forEach((nodeId) => {
-    const node = svgEl.querySelector(`[id*="${nodeId}"]`)
-      ?? svgEl.querySelector(`.node#${nodeId}`)
-      ?? svgEl.querySelector(`[data-id="${nodeId}"]`)
+    const node =
+      svgEl.querySelector(`[id*="${nodeId}"]`) ??
+      svgEl.querySelector(`.node#${nodeId}`) ??
+      svgEl.querySelector(`[data-id="${nodeId}"]`)
     if (node) {
       ;(node as HTMLElement).style.opacity = '1'
     }
@@ -83,9 +85,12 @@ onMounted(() => {
   renderDiagram()
 })
 
-watch(() => props.definition, () => {
-  renderDiagram()
-})
+watch(
+  () => props.definition,
+  () => {
+    renderDiagram()
+  },
+)
 
 function nextStep() {
   if (!props.steps?.length) return
@@ -126,9 +131,13 @@ const currentDescription = computed(() => {
     </div>
 
     <div v-if="hasSteps" class="diagram-controls">
-      <button class="ctrl-btn" @click="resetSteps" :disabled="currentStep < 0">⟲ Скинути</button>
-      <button class="ctrl-btn" @click="prevStep" :disabled="currentStep <= 0">← Назад</button>
-      <button class="ctrl-btn ctrl-btn-primary" @click="nextStep" :disabled="currentStep >= steps!.length - 1">
+      <button class="ctrl-btn" :disabled="currentStep < 0" @click="resetSteps">⟲ Скинути</button>
+      <button class="ctrl-btn" :disabled="currentStep <= 0" @click="prevStep">← Назад</button>
+      <button
+        class="ctrl-btn ctrl-btn-primary"
+        :disabled="currentStep >= steps!.length - 1"
+        @click="nextStep"
+      >
         Далі →
       </button>
     </div>

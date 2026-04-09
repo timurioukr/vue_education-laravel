@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 
-const props = withDefaults(defineProps<{
-  value: number
-  size?: number
-  color?: string
-  trackColor?: string
-}>(), {
-  size: 48,
-  color: 'var(--primary)',
-  trackColor: 'var(--border)',
-})
+const props = withDefaults(
+  defineProps<{
+    value: number
+    size?: number
+    color?: string
+    trackColor?: string
+  }>(),
+  {
+    size: 48,
+    color: 'var(--primary)',
+    trackColor: 'var(--border)',
+  },
+)
 
 const mounted = ref(false)
 
-const radius = computed(() => (props.size / 2) - 4)
+const radius = computed(() => props.size / 2 - 4)
 const circumference = computed(() => 2 * Math.PI * radius.value)
 const dashoffset = computed(() =>
   mounted.value
@@ -56,9 +59,7 @@ onMounted(() => {
         :transform="`rotate(-90 ${size / 2} ${size / 2})`"
       />
     </svg>
-    <span class="ring-text" :style="{ fontSize: fontSize + 'px' }">
-      {{ value }}%
-    </span>
+    <span class="ring-text" :style="{ fontSize: fontSize + 'px' }"> {{ value }}% </span>
   </div>
 </template>
 

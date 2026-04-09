@@ -37,13 +37,9 @@ const quizQuestions: QuizQuestion[] = [
       'findOrFail() кидає Illuminate\\Database\\Eloquent\\ModelNotFoundException, якщо запис не знайдено. Глобальний exception handler перетворює його на JSON-відповідь зі статусом 404. На відміну від find(), який просто повертає null.',
   },
   {
-    question: 'Який рівень логу використовувати для некритичного попередження (наприклад, користувач близький до ліміту)?',
-    options: [
-      'Log::emergency()',
-      'Log::critical()',
-      'Log::warning()',
-      'Log::debug()',
-    ],
+    question:
+      'Який рівень логу використовувати для некритичного попередження (наприклад, користувач близький до ліміту)?',
+    options: ['Log::emergency()', 'Log::critical()', 'Log::warning()', 'Log::debug()'],
     correct: 2,
     explanation:
       'Log::warning() — для попереджень, які не є помилками, але потребують уваги. emergency() і critical() — для катастрофічних ситуацій. debug() — тільки для розробки. Рівні від найважливішого: emergency → alert → critical → error → warning → notice → info → debug.',
@@ -450,9 +446,8 @@ const taskTestCode = `
         <p>
           За замовчуванням, коли Laravel стикається з помилкою, він генерує
           <strong>HTML-сторінку</strong>. Ваш Vue-фронтенд робить
-          <code>axios.get('/api/tasks/9999')</code> і очікує JSON, але замість
-          цього отримує HTML. <code>response.data.message</code> буде
-          <code>undefined</code> — інтерфейс ламається.
+          <code>axios.get('/api/tasks/9999')</code> і очікує JSON, але замість цього отримує HTML.
+          <code>response.data.message</code> буде <code>undefined</code> — інтерфейс ламається.
         </p>
         <p>
           Рішення: налаштувати глобальний exception handler у
@@ -461,9 +456,8 @@ const taskTestCode = `
         </p>
         <pre><code>{ "message": "Task not found.", "status": 404 }</code></pre>
         <p>
-          Це аналог <code>app.config.errorHandler</code> у Vue або
-          Axios interceptor — єдине місце, де ви контролюєте формат
-          усіх помилок.
+          Це аналог <code>app.config.errorHandler</code> у Vue або Axios interceptor — єдине місце,
+          де ви контролюєте формат усіх помилок.
         </p>
       </TheoryBlock>
 
@@ -482,8 +476,8 @@ const taskTestCode = `
 
       <TheoryBlock title="abort() та findOrFail() — зупинка виконання">
         <p>
-          <code>abort()</code> — найпростіший спосіб "кинути" HTTP-помилку
-          з будь-якого місця в коді. Є зручні варіанти:
+          <code>abort()</code> — найпростіший спосіб "кинути" HTTP-помилку з будь-якого місця в
+          коді. Є зручні варіанти:
         </p>
         <ul>
           <li>
@@ -496,11 +490,10 @@ const taskTestCode = `
           </li>
         </ul>
         <p>
-          <code>findOrFail()</code> автоматично кидає
-          <code>ModelNotFoundException</code> → 404, якщо запис не знайдено.
-          Замість ручної перевірки <code>if (!$task) abort(404)</code> просто
-          пишіть <code>Task::findOrFail($id)</code> — глобальний handler
-          зробить решту.
+          <code>findOrFail()</code> автоматично кидає <code>ModelNotFoundException</code> → 404,
+          якщо запис не знайдено. Замість ручної перевірки
+          <code>if (!$task) abort(404)</code> просто пишіть <code>Task::findOrFail($id)</code> —
+          глобальний handler зробить решту.
         </p>
       </TheoryBlock>
 
@@ -513,24 +506,22 @@ const taskTestCode = `
 
       <TheoryBlock title="Власні Exception-класи для бізнес-логіки">
         <p>
-          Коли стандартних HTTP-помилок недостатньо, створюють власні
-          Exception-класи. Наприклад, <code>TaskLimitExceededException</code>
+          Коли стандартних HTTP-помилок недостатньо, створюють власні Exception-класи. Наприклад,
+          <code>TaskLimitExceededException</code>
           для ліміту задач (HTTP 429). Клас має два спеціальних методи:
         </p>
         <ul>
           <li>
-            <code>render(Request $request)</code> — визначає JSON-відповідь
-            клієнту. Аналог <code>class TaskError extends Error {}</code>
+            <code>render(Request $request)</code> — визначає JSON-відповідь клієнту. Аналог
+            <code>class TaskError extends Error {}</code>
             у TypeScript
           </li>
           <li>
-            <code>report()</code> — контролює, як виняток записується в лог.
-            Тут зручно додавати контекст: <code>user_id</code>, лімітне значення
+            <code>report()</code> — контролює, як виняток записується в лог. Тут зручно додавати
+            контекст: <code>user_id</code>, лімітне значення
           </li>
         </ul>
-        <p>
-          Створення: <code>php artisan make:exception TaskLimitExceededException</code>
-        </p>
+        <p>Створення: <code>php artisan make:exception TaskLimitExceededException</code></p>
       </TheoryBlock>
 
       <CodeBlock
@@ -541,18 +532,16 @@ const taskTestCode = `
 
       <TheoryBlock title="Log фасад — логування на сервері">
         <p>
-          Замість <code>console.log()</code>, який зникає при закритті браузера,
-          Laravel пише логи у файл <code>storage/logs/laravel.log</code> —
-          вони зберігаються на сервері. Другий аргумент — контекст (масив
-          даних), аналог передачі об'єкта в <code>console.log</code>.
+          Замість <code>console.log()</code>, який зникає при закритті браузера, Laravel пише логи у
+          файл <code>storage/logs/laravel.log</code> — вони зберігаються на сервері. Другий аргумент
+          — контекст (масив даних), аналог передачі об'єкта в <code>console.log</code>.
         </p>
         <p>
-          Ієрархія рівнів (від критичного): <code>emergency</code> →
-          <code>alert</code> → <code>critical</code> → <code>error</code> →
-          <code>warning</code> → <code>notice</code> → <code>info</code> →
-          <code>debug</code>. Використовуйте відповідний рівень:
-          <code>error</code> для помилок, <code>warning</code> для
-          попереджень, <code>info</code> для важливих подій.
+          Ієрархія рівнів (від критичного): <code>emergency</code> → <code>alert</code> →
+          <code>critical</code> → <code>error</code> → <code>warning</code> → <code>notice</code> →
+          <code>info</code> → <code>debug</code>. Використовуйте відповідний рівень:
+          <code>error</code> для помилок, <code>warning</code> для попереджень,
+          <code>info</code> для важливих подій.
         </p>
         <p>
           Перегляд логів у реальному часі:
@@ -560,11 +549,7 @@ const taskTestCode = `
         </p>
       </TheoryBlock>
 
-      <CodeBlock
-        title="Log фасад — рівні та контекст"
-        lang="php"
-        :code="logFacadeCode"
-      />
+      <CodeBlock title="Log фасад — рівні та контекст" lang="php" :code="logFacadeCode" />
     </div>
 
     <!-- ===== PRACTICE TAB ===== -->
@@ -572,9 +557,8 @@ const taskTestCode = `
       <TheoryBlock title="Практика: abort(), findOrFail() та обробка помилок">
         <p>
           Симуляція роботи <code>abort()</code>, <code>abort_if()</code>,
-          <code>abort_unless()</code> та <code>findOrFail()</code> у PHP.
-          Запустіть і спостерігайте як try/catch перехоплює різні сценарії.
-          Спробуйте змінити <code>$authUserId</code> або
+          <code>abort_unless()</code> та <code>findOrFail()</code> у PHP. Запустіть і спостерігайте
+          як try/catch перехоплює різні сценарії. Спробуйте змінити <code>$authUserId</code> або
           <code>$isAdmin</code> щоб побачити різні результати.
         </p>
       </TheoryBlock>
@@ -594,9 +578,7 @@ const taskTestCode = `
     <!-- ===== TASK TAB ===== -->
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: кастомний Exception DuplicateTaskException">
-        <p>
-          Реалізуйте власний Exception-клас та функцію з перевіркою на дублікат.
-        </p>
+        <p>Реалізуйте власний Exception-клас та функцію з перевіркою на дублікат.</p>
         <ol>
           <li>
             Створіть клас <code>DuplicateTaskException extends RuntimeException</code>:
@@ -609,9 +591,7 @@ const taskTestCode = `
                 <code>getMessage()</code> повертає:
                 <code>"Task '$title' already exists."</code>
               </li>
-              <li>
-                Метод <code>getStatusCode(): int</code> повертає <code>409</code>
-              </li>
+              <li>Метод <code>getStatusCode(): int</code> повертає <code>409</code></li>
             </ul>
           </li>
           <li>
@@ -630,8 +610,8 @@ const taskTestCode = `
         </ol>
         <p>
           Підказка: перевіряйте наявність через
-          <code>foreach</code> або <code>array_column()</code>.
-          Автотест перевірить повідомлення, HTTP-код та повернене значення.
+          <code>foreach</code> або <code>array_column()</code>. Автотест перевірить повідомлення,
+          HTTP-код та повернене значення.
         </p>
       </TheoryBlock>
 

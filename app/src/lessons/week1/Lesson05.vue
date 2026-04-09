@@ -128,7 +128,7 @@ const dbTableLines = [
   '  id .................. integer ........... autoincrement',
   '  title ............... varchar ...........',
   '  description ......... text .............. nullable',
-  '  status .............. varchar ........... default: \'pending\'',
+  "  status .............. varchar ........... default: 'pending'",
   '  priority ............ integer ........... default: 0',
   '  deadline ............ date .............. nullable',
   '  user_id ............. integer ...........',
@@ -201,7 +201,8 @@ const erDiagram = `erDiagram
 const erDiagramSteps: DiagramStep[] = [
   {
     highlightNodes: ['users', 'tasks'],
-    description: 'User hasMany Tasks — один юзер має багато задач. В tasks є user_id (foreign key).',
+    description:
+      'User hasMany Tasks — один юзер має багато задач. В tasks є user_id (foreign key).',
   },
   {
     highlightNodes: ['categories', 'tasks'],
@@ -209,11 +210,13 @@ const erDiagramSteps: DiagramStep[] = [
   },
   {
     highlightNodes: ['tasks', 'tags', 'task_tag'],
-    description: 'Tasks belongsToMany Tags — багато-до-багатьох через pivot таблицю task_tag. Кожен рядок у task_tag зв\'язує одну задачу з одним тегом.',
+    description:
+      "Tasks belongsToMany Tags — багато-до-багатьох через pivot таблицю task_tag. Кожен рядок у task_tag зв'язує одну задачу з одним тегом.",
   },
   {
     highlightNodes: ['task_tag'],
-    description: 'Pivot таблиця task_tag — містить лише два foreign keys: task_id та tag_id. Це "міст" між tasks і tags. Laravel створює цей зв\'язок автоматично через belongsToMany.',
+    description:
+      'Pivot таблиця task_tag — містить лише два foreign keys: task_id та tag_id. Це "міст" між tasks і tags. Laravel створює цей зв\'язок автоматично через belongsToMany.',
   },
 ]
 
@@ -227,29 +230,27 @@ const quizQuestions: QuizQuestion[] = [
       'Файл конфігурації підключення до БД',
     ],
     correct: 0,
-    explanation: 'Міграція -- це PHP-файл з методами up() (застосувати зміни) та down() (відкотити зміни). Це version control для бази даних -- кожна міграція як "коміт" для структури БД.',
+    explanation:
+      'Міграція -- це PHP-файл з методами up() (застосувати зміни) та down() (відкотити зміни). Це version control для бази даних -- кожна міграція як "коміт" для структури БД.',
   },
   {
-    question: 'Який метод робить колонку необов\'язковою (може бути NULL)?',
-    options: [
-      '->optional()',
-      '->nullable()',
-      '->null()',
-      '->allowNull()',
-    ],
+    question: "Який метод робить колонку необов'язковою (може бути NULL)?",
+    options: ['->optional()', '->nullable()', '->null()', '->allowNull()'],
     correct: 1,
-    explanation: 'Метод ->nullable() дозволяє колонці мати значення NULL. Це аналог ? у TypeScript: description?: string. Без nullable() колонка буде обов\'язковою.',
+    explanation:
+      "Метод ->nullable() дозволяє колонці мати значення NULL. Це аналог ? у TypeScript: description?: string. Без nullable() колонка буде обов'язковою.",
   },
   {
-    question: 'Що робить foreignId(\'user_id\')->constrained()->cascadeOnDelete()?',
+    question: "Що робить foreignId('user_id')->constrained()->cascadeOnDelete()?",
     options: [
       'Створює колонку user_id як текст',
-      'Створює зовнішній ключ на users.id; при видаленні юзера видаляє пов\'язані записи',
+      "Створює зовнішній ключ на users.id; при видаленні юзера видаляє пов'язані записи",
       'Створює колонку user_id і забороняє NULL',
       'Створює нову таблицю users',
     ],
     correct: 1,
-    explanation: 'foreignId створює колонку BIGINT UNSIGNED, constrained() додає foreign key на users.id (визначається автоматично за назвою user_id), cascadeOnDelete() видаляє залежні записи при видаленні батьківського запису.',
+    explanation:
+      'foreignId створює колонку BIGINT UNSIGNED, constrained() додає foreign key на users.id (визначається автоматично за назвою user_id), cascadeOnDelete() видаляє залежні записи при видаленні батьківського запису.',
   },
   {
     question: 'Що робить php artisan migrate:fresh?',
@@ -260,7 +261,8 @@ const quizQuestions: QuizQuestion[] = [
       'Показує список всіх міграцій',
     ],
     correct: 1,
-    explanation: 'migrate:fresh -- це "ядерна кнопка": видаляє ВСІ таблиці і запускає всі міграції з нуля. Використовуйте тільки в розробці, ніколи на продакшені!',
+    explanation:
+      'migrate:fresh -- це "ядерна кнопка": видаляє ВСІ таблиці і запускає всі міграції з нуля. Використовуйте тільки в розробці, ніколи на продакшені!',
   },
   {
     question: 'Як правильно додати нову колонку до існуючої таблиці?',
@@ -271,7 +273,8 @@ const quizQuestions: QuizQuestion[] = [
       'Видалити таблицю і створити заново',
     ],
     correct: 1,
-    explanation: 'Ніколи не змінюйте існуючу міграцію, яка вже виконана. Створіть нову міграцію з Schema::table() (не create!) -- це як новий коміт в git. Так ваші колеги зможуть застосувати зміни через php artisan migrate.',
+    explanation:
+      'Ніколи не змінюйте існуючу міграцію, яка вже виконана. Створіть нову міграцію з Schema::table() (не create!) -- це як новий коміт в git. Так ваші колеги зможуть застосувати зміни через php artisan migrate.',
   },
 ]
 </script>
@@ -284,13 +287,13 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Міграції -- version control для бази даних">
         <p>
-          Уявіть, що ваш колега додав нову таблицю в базу даних, але ви про це не знаєте.
-          Ви робите <code>git pull</code>, запускаєте проєкт -- і все ламається.
+          Уявіть, що ваш колега додав нову таблицю в базу даних, але ви про це не знаєте. Ви робите
+          <code>git pull</code>, запускаєте проєкт -- і все ламається.
         </p>
         <p>
           <strong>Міграції вирішують цю проблему.</strong> Міграція -- це PHP-файл, який описує
-          зміни в базі даних. Це як <code>git</code> для коду, тільки для структури БД.
-          Кожна міграція -- це "коміт" для бази даних.
+          зміни в базі даних. Це як <code>git</code> для коду, тільки для структури БД. Кожна
+          міграція -- це "коміт" для бази даних.
         </p>
       </TheoryBlock>
 
@@ -304,16 +307,27 @@ const quizQuestions: QuizQuestion[] = [
       <TheoryBlock title="Типи колонок та модифікатори">
         <p>Основні типи колонок в Blueprint:</p>
         <ul>
-          <li><code>$table-&gt;id()</code> -- автоінкремент primary key (як <code>id: number</code>)</li>
-          <li><code>$table-&gt;string('name')</code> -- VARCHAR(255) (як <code>name: string</code>)</li>
+          <li>
+            <code>$table-&gt;id()</code> -- автоінкремент primary key (як <code>id: number</code>)
+          </li>
+          <li>
+            <code>$table-&gt;string('name')</code> -- VARCHAR(255) (як <code>name: string</code>)
+          </li>
           <li><code>$table-&gt;text('body')</code> -- TEXT для довгого тексту</li>
-          <li><code>$table-&gt;boolean('active')</code> -- BOOLEAN (як <code>active: boolean</code>)</li>
-          <li><code>$table-&gt;integer('count')</code> -- INTEGER (як <code>count: number</code>)</li>
-          <li><code>$table-&gt;date('deadline')</code> -- DATE (як <code>deadline: string</code>)</li>
+          <li>
+            <code>$table-&gt;boolean('active')</code> -- BOOLEAN (як <code>active: boolean</code>)
+          </li>
+          <li>
+            <code>$table-&gt;integer('count')</code> -- INTEGER (як <code>count: number</code>)
+          </li>
+          <li>
+            <code>$table-&gt;date('deadline')</code> -- DATE (як <code>deadline: string</code>)
+          </li>
           <li><code>$table-&gt;timestamps()</code> -- додає created_at та updated_at</li>
           <li><code>$table-&gt;foreignId('user_id')</code> -- зовнішній ключ</li>
         </ul>
-        <p>Модифікатори: <code>-&gt;nullable()</code> (як <code>?</code> в TS),
+        <p>
+          Модифікатори: <code>-&gt;nullable()</code> (як <code>?</code> в TS),
           <code>-&gt;default('value')</code>, <code>-&gt;unique()</code>, <code>-&gt;index()</code>
         </p>
       </TheoryBlock>
@@ -327,30 +341,39 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Foreign Keys (зовнішні ключі)">
         <p>
-          У Vue ви працюєте з вкладеними об'єктами: <code>task.category.name</code>.
-          У базі даних зв'язки реалізуються через foreign keys -- посилання з однієї таблиці
-          на іншу. <code>constrained()</code> автоматично визначає цільову таблицю за назвою колонки.
+          У Vue ви працюєте з вкладеними об'єктами: <code>task.category.name</code>. У базі даних
+          зв'язки реалізуються через foreign keys -- посилання з однієї таблиці на іншу.
+          <code>constrained()</code> автоматично визначає цільову таблицю за назвою колонки.
         </p>
       </TheoryBlock>
 
       <CodeBlock lang="php" :code="foreignKeyCode" title="Foreign Keys" />
 
-      <CodeBlock lang="php" :code="fullMigrationCode" title="Повна міграція tasks" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="fullMigrationCode"
+        title="Повна міграція tasks"
+        :show-line-numbers="true"
+      />
 
       <TheoryBlock title="Pivot таблиці (Many-to-Many)">
         <p>
           Коли задача може мати <strong>багато тегів</strong>, і тег може бути у
-          <strong>багатьох задачах</strong> — це зв'язок many-to-many. Для нього потрібна
-          окрема <strong>pivot таблиця</strong> (як join table в SQL).
+          <strong>багатьох задачах</strong> — це зв'язок many-to-many. Для нього потрібна окрема
+          <strong>pivot таблиця</strong> (як join table в SQL).
         </p>
         <p>
-          В JavaScript ви б створили окрему таблицю вручну і писали JOIN-запити.
-          В Laravel — просто вказуєте <code>belongsToMany</code> в моделі, а Laravel
-          робить все автоматично.
+          В JavaScript ви б створили окрему таблицю вручну і писали JOIN-запити. В Laravel — просто
+          вказуєте <code>belongsToMany</code> в моделі, а Laravel робить все автоматично.
         </p>
       </TheoryBlock>
 
-      <CodeBlock :code="pivotMigrationCode" lang="php" title="Міграція pivot таблиці" :show-line-numbers="true" />
+      <CodeBlock
+        :code="pivotMigrationCode"
+        lang="php"
+        title="Міграція pivot таблиці"
+        :show-line-numbers="true"
+      />
 
       <CodeComparison
         :js="`// JS: ручний JOIN\nconst tags = await db.query(\n  'SELECT t.* FROM tags t ' +\n  'JOIN task_tag tt ON t.id = tt.tag_id ' +\n  'WHERE tt.task_id = ?', [taskId]\n);`"
@@ -382,7 +405,8 @@ const quizQuestions: QuizQuestion[] = [
       <TheoryBlock title="Крок 2: Запустіть міграції">
         <p>
           Команда <code>php artisan migrate</code> застосовує всі нові (ще не виконані) міграції.
-          Laravel відстежує, які міграції вже виконані, у спеціальній таблиці <code>migrations</code>.
+          Laravel відстежує, які міграції вже виконані, у спеціальній таблиці
+          <code>migrations</code>.
         </p>
       </TheoryBlock>
 
@@ -424,16 +448,36 @@ const quizQuestions: QuizQuestion[] = [
           колонки -- так само, як ви створюєте новий коміт в git, а не змінюєте старий.
         </p>
         <ol>
-          <li>Створіть нову міграцію: <code>php artisan make:migration add_notes_to_tasks_table</code></li>
-          <li>Використайте <code>Schema::table()</code> (не <code>create</code>!) для зміни існуючої таблиці</li>
-          <li>Додайте колонку <code>notes</code> типу <code>text</code>, <code>nullable</code>, після <code>description</code></li>
-          <li>В методі <code>down()</code> видаліть колонку через <code>dropColumn('notes')</code></li>
-          <li>Запустіть <code>php artisan migrate</code> і перевірте через <code>php artisan db:table tasks</code></li>
-          <li>Спробуйте <code>php artisan migrate:rollback</code> і переконайтесь, що колонка зникла</li>
+          <li>
+            Створіть нову міграцію: <code>php artisan make:migration add_notes_to_tasks_table</code>
+          </li>
+          <li>
+            Використайте <code>Schema::table()</code> (не <code>create</code>!) для зміни існуючої
+            таблиці
+          </li>
+          <li>
+            Додайте колонку <code>notes</code> типу <code>text</code>, <code>nullable</code>, після
+            <code>description</code>
+          </li>
+          <li>
+            В методі <code>down()</code> видаліть колонку через <code>dropColumn('notes')</code>
+          </li>
+          <li>
+            Запустіть <code>php artisan migrate</code> і перевірте через
+            <code>php artisan db:table tasks</code>
+          </li>
+          <li>
+            Спробуйте <code>php artisan migrate:rollback</code> і переконайтесь, що колонка зникла
+          </li>
         </ol>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="addColumnCode" title="Підказка: додавання колонки" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="addColumnCode"
+        title="Підказка: додавання колонки"
+        :show-line-numbers="true"
+      />
     </div>
   </div>
 </template>

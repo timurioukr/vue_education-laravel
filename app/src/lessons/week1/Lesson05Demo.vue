@@ -36,7 +36,7 @@ const dbTableLines = [
   '  id .................. integer ........... autoincrement',
   '  title ............... varchar ...........',
   '  description ......... text .............. nullable',
-  '  status .............. varchar ........... default: \'pending\'',
+  "  status .............. varchar ........... default: 'pending'",
   '  priority ............ integer ........... default: 0',
   '  deadline ............ date .............. nullable',
   '  user_id ............. integer ...........',
