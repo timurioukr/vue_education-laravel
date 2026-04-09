@@ -5,7 +5,8 @@ import CodeComparison from '@/components/interactive/CodeComparison.vue'
 import CodeBlock from '@/components/interactive/CodeBlock.vue'
 import TerminalOutput from '@/components/interactive/TerminalOutput.vue'
 import Quiz from '@/components/interactive/Quiz.vue'
-import type { QuizQuestion } from '@/types'
+import InteractiveDiagram from '@/components/interactive/InteractiveDiagram.vue'
+import type { QuizQuestion, DiagramStep } from '@/types'
 
 defineProps<{
   activeTab: string
@@ -71,6 +72,45 @@ const quizQuestions: QuizQuestion[] = [
     correct: 1,
     explanation:
       'routes/api.php -- файл для API-маршрутів (JSON). routes/web.php -- для веб-сторінок (HTML). Це аналог router/index.ts у Vue Router, але розділений за типом.',
+  },
+]
+
+const laravelStructureDiagram = `flowchart TB
+  ROOT["Laravel Project"] --> APP["app/"]
+  ROOT --> CONFIG["config/"]
+  ROOT --> DB["database/"]
+  ROOT --> ROUTES["routes/"]
+  ROOT --> RES["resources/"]
+  APP --> MODELS["Models/"]
+  APP --> HTTP["Http/Controllers/"]
+  APP --> PROV["Providers/"]
+  DB --> MIG["migrations/"]
+  DB --> SEED["seeders/"]
+  DB --> FACT["factories/"]
+  ROUTES --> WEB["web.php"]
+  ROUTES --> API["api.php"]
+`
+
+const laravelStructureSteps: DiagramStep[] = [
+  {
+    highlightNodes: ['APP', 'MODELS', 'HTTP', 'PROV'],
+    description: 'app/ — серце додатку. Тут живуть моделі (Models/), контролери (Http/Controllers/) та провайдери (Providers/). Аналог src/ у Vue-проєкті.',
+  },
+  {
+    highlightNodes: ['CONFIG'],
+    description: 'config/ — налаштування додатку: бази даних, кеш, пошта, автентифікація. Як .env + конфіг файли у Vue/Nuxt.',
+  },
+  {
+    highlightNodes: ['DB', 'MIG', 'SEED', 'FACT'],
+    description: 'database/ — все про БД: міграції (версіонування схеми), seeders (тестові дані), factories (генератори фейкових даних).',
+  },
+  {
+    highlightNodes: ['ROUTES', 'WEB', 'API'],
+    description: 'routes/ — маршрутизація. web.php для HTML-сторінок, api.php для API-ендпоінтів. Аналог Vue Router але на сервері.',
+  },
+  {
+    highlightNodes: ['RES'],
+    description: 'resources/ — frontend: Blade-шаблони, CSS, JS. Коли підключаємо Vue SPA — це місце де живе фронтенд.',
   },
 ]
 
@@ -231,6 +271,12 @@ const serveOutput = [
       </TheoryBlock>
 
       <CodeBlock :code="artisanCommands" lang="bash" :terminal="true" title="Основні artisan-команди" />
+
+      <InteractiveDiagram
+        title="Структура Laravel проєкту"
+        :definition="laravelStructureDiagram"
+        :steps="laravelStructureSteps"
+      />
     </div>
 
     <div v-show="activeTab === 'practice'" class="tab-content">
