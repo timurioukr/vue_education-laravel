@@ -1,0 +1,71 @@
+:root {
+  /* Colors */
+  --bg: #F5F5FA;
+  --surface: #FFFFFF;
+  --border: #EBEBF0;
+  --primary: #7C5CFC;
+  --primary-light: #F0EEFF;
+  --primary-hover: #6B4FE0;
+  --success: #34D399;
+  --success-light: #E8FAF0;
+  --accent: #F472B6;
+  --accent-light: #FFF0F5;
+  --warning: #FBBF24;
+  --warning-light: #FFF4E5;
+  --text-primary: #1A1A2E;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  --code-bg: #1E1E2E;
+  --js-color: #059669;
+  --js-bg: #ECFDF5;
+  --php-color: #7C5CFC;
+  --php-bg: #F0EEFF;
+
+  /* Spacing */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* Layout */
+  --sidebar-width: 64px;
+  --nav-width: 220px;
+  --demo-width: 260px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+code {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.875em;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.fade-enter-active { animation: fadeIn 0.3s ease; }
+.slide-enter-active { animation: slideIn 0.3s ease; }
