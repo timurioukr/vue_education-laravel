@@ -2,10 +2,11 @@
 import ParallelCard from '@/components/common/ParallelCard.vue'
 import TheoryBlock from '@/components/common/TheoryBlock.vue'
 import CodeComparison from '@/components/interactive/CodeComparison.vue'
-import CodeBlock from '@/components/interactive/CodeBlock.vue'
-import TerminalOutput from '@/components/interactive/TerminalOutput.vue'
+import CodePlayground from '@/components/interactive/CodePlayground.vue'
+import InteractiveDiagram from '@/components/interactive/InteractiveDiagram.vue'
+import CodeFlowVisualizer from '@/components/interactive/CodeFlowVisualizer.vue'
 import Quiz from '@/components/interactive/Quiz.vue'
-import type { QuizQuestion } from '@/types'
+import type { QuizQuestion, DiagramStep, CodeFlowStep } from '@/types'
 
 defineProps<{
   activeTab: string
@@ -92,6 +93,171 @@ const phpMatch = `$label = match ($status) {
     default   => 'Невідомо',
 };`
 
+// === Diagram: How PHP executes code ===
+const phpExecutionDiagram = `flowchart LR
+  A[".php файл"] --> B["PHP інтерпретатор"]
+  B --> C["Лексер/Парсер"]
+  C --> D["Опкоди"]
+  D --> E["Zend VM"]
+  E --> F["stdout / echo"]
+`
+
+const phpExecutionSteps: DiagramStep[] = [
+  {
+    highlightNodes: ['A'],
+    description: 'Все починається з .php файлу — як .js файл для Node.js. PHP-файл починається з <?php тегу.',
+    code: '<?php echo "Hello";',
+  },
+  {
+    highlightNodes: ['B'],
+    description: 'PHP інтерпретатор (CLI або через веб-сервер) читає файл. Аналог Node.js або V8 для JavaScript.',
+  },
+  {
+    highlightNodes: ['C'],
+    description: 'Лексер розбиває код на токени, парсер будує AST (абстрактне синтаксичне дерево) — як V8 парсить JS.',
+  },
+  {
+    highlightNodes: ['D', 'E'],
+    description: 'AST компілюється в опкоди (байткод) і виконується Zend VM. В JS аналог — JIT-компіляція V8.',
+  },
+  {
+    highlightNodes: ['F'],
+    description: 'Результат виводиться через echo/print — як console.log() в JavaScript. Вивід йде в stdout.',
+    code: 'echo "Hello World\\n";  // → stdout',
+  },
+]
+
+// === Diagram: PHP types vs JS types ===
+const typesDiagram = `flowchart TB
+  subgraph JS ["JavaScript"]
+    JS1["string"]
+    JS2["number"]
+    JS3["boolean"]
+    JS4["null / undefined"]
+    JS5["object / array"]
+  end
+  subgraph PHP ["PHP"]
+    PHP1["string"]
+    PHP2["int + float"]
+    PHP3["bool"]
+    PHP4["null"]
+    PHP5["array"]
+  end
+  JS1 -.-> PHP1
+  JS2 -.-> PHP2
+  JS3 -.-> PHP3
+  JS4 -.-> PHP4
+  JS5 -.-> PHP5
+`
+
+const typesDiagramSteps: DiagramStep[] = [
+  {
+    highlightNodes: ['JS1', 'PHP1'],
+    description: 'string → string. Ідентично. Одинарні та подвійні лапки, але в PHP подвійні підтримують інтерполяцію: "Hello $name".',
+    code: '$name = "World";\necho "Hello $name";  // Hello World',
+  },
+  {
+    highlightNodes: ['JS2', 'PHP2'],
+    description: 'number → int + float. В PHP числа розділені на цілі (int) та дробні (float). JS має тільки number.',
+    code: '$age = 25;      // int\n$price = 9.99;  // float',
+  },
+  {
+    highlightNodes: ['JS3', 'PHP3'],
+    description: 'boolean → bool. Ідентично. true/false без лапок.',
+  },
+  {
+    highlightNodes: ['JS4', 'PHP4'],
+    description: 'null + undefined → null. В PHP немає undefined. Тільки null. Неініціалізована змінна = warning.',
+  },
+  {
+    highlightNodes: ['JS5', 'PHP5'],
+    description: 'object + Array → array. В PHP один тип array замінює і масиви, і об\'єкти-словники з JS.',
+    code: '$list = [1, 2, 3];           // як JS []\n$map = ["a" => 1, "b" => 2];  // як JS {}',
+  },
+]
+
+// === Code Flow: foreach loop ===
+const foreachCode = `<?php
+$items = ['task1', 'task2', 'task3'];
+foreach ($items as $index => $item) {
+    echo "$index: $item\\n";
+}`
+
+const foreachSteps: CodeFlowStep[] = [
+  {
+    line: 2,
+    variables: { '$items': "['task1', 'task2', 'task3']" },
+    note: 'Створюємо масив з трьох рядків. В JS це було б const items = ["task1", "task2", "task3"]',
+  },
+  {
+    line: 3,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '0', '$item': '"task1"' },
+    note: 'foreach бере перший елемент. $index = ключ (0), $item = значення ("task1"). Як for...of + entries() в JS.',
+  },
+  {
+    line: 4,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '0', '$item': '"task1"' },
+    output: '0: task1\n',
+    note: 'echo виводить рядок з інтерполяцією. $index та $item підставляються всередину подвійних лапок.',
+  },
+  {
+    line: 3,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '1', '$item': '"task2"' },
+    note: 'Друга ітерація. $index = 1, $item = "task2".',
+  },
+  {
+    line: 4,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '1', '$item': '"task2"' },
+    output: '1: task2\n',
+  },
+  {
+    line: 3,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '2', '$item': '"task3"' },
+    note: 'Остання ітерація. $index = 2, $item = "task3".',
+  },
+  {
+    line: 4,
+    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '2', '$item': '"task3"' },
+    output: '2: task3\n',
+    note: 'Цикл завершено. Всі 3 елементи оброблено.',
+  },
+]
+
+// Expected output for practice (used for comparison)
+const practiceExpectedOutput = `Name: Timur
+Age: 25
+Is student: yes
+
+Fruits: apple, banana, cherry
+Count: 3
+
+  title: Learn PHP
+  status: in_progress
+  priority: 1
+
+Timur is 25 years old`
+
+// Test code for task validation
+const taskTestCode = `
+// Auto-test
+echo "\\n=== Auto-check ===\\n";
+$pass = 0;
+$total = 3;
+
+// Test formatTask
+$result = formatTask(['id' => 1, 'title' => 'Test', 'status' => 'done', 'priority' => 2]);
+if ($result === '[DONE] Test (priority: 2)') { echo "✓ formatTask\\n"; $pass++; } else { echo "✗ formatTask: got '$result'\\n"; }
+
+// Test filterByStatus
+$filtered = filterByStatus($tasks, 'pending');
+if (count($filtered) === 3) { echo "✓ filterByStatus\\n"; $pass++; } else { echo "✗ filterByStatus: expected 3, got " . count($filtered) . "\\n"; }
+
+// Test getTaskStats
+$stats = getTaskStats($tasks);
+if ($stats['total'] === 5 && $stats['done'] === 1 && $stats['pending'] === 3 && $stats['in_progress'] === 1) { echo "✓ getTaskStats\\n"; $pass++; } else { echo "✗ getTaskStats\\n"; }
+
+echo "\\nРезультат: $pass/$total\\n";`
+
 const practiceCode = `<?php
 declare(strict_types=1);
 
@@ -126,22 +292,6 @@ function describe(string $name, int $age): string {
 }
 
 echo "\\n" . describe($name, $age) . "\\n";`
-
-const practiceOutput = [
-  '$ php playground/01-basics.php',
-  'Name: Timur',
-  'Age: 25',
-  'Is student: yes',
-  '',
-  'Fruits: apple, banana, cherry',
-  'Count: 3',
-  '',
-  '  title: Learn PHP',
-  '  status: in_progress',
-  '  priority: 1',
-  '',
-  'Timur is 25 years old',
-]
 
 const taskStarterCode = `<?php
 declare(strict_types=1);
@@ -205,6 +355,12 @@ print_r($stats);`
         :php="`$name = &quot;Timur&quot;;       // string\nconst MAX = 10;          // константа\n$isActive = true;        // bool\n$score = 9.5;            // float`"
       />
 
+      <InteractiveDiagram
+        title="Як PHP виконує код"
+        :definition="phpExecutionDiagram"
+        :steps="phpExecutionSteps"
+      />
+
       <TheoryBlock title="Масиви">
         <p>
           В PHP немає окремого типу "об'єкт-словник". Замість цього є <strong>індексовані масиви</strong>
@@ -220,6 +376,12 @@ print_r($stats);`
       <CodeComparison
         :js="`const task = {\n  name: &quot;Task&quot;,\n  done: true\n};`"
         :php="`$task = [\n  'name' => 'Task',\n  'done' => true,\n];`"
+      />
+
+      <InteractiveDiagram
+        title="Типи даних: PHP vs JavaScript"
+        :definition="typesDiagram"
+        :steps="typesDiagramSteps"
       />
 
       <TheoryBlock title="Функції">
@@ -253,27 +415,29 @@ print_r($stats);`
         js-title="JavaScript (switch)"
         php-title="PHP (match)"
       />
+
+      <CodeFlowVisualizer
+        title="Покрокове виконання: foreach цикл"
+        :code="foreachCode"
+        language="php"
+        :steps="foreachSteps"
+      />
     </div>
 
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="Практика: перший PHP-файл">
         <p>
-          Створіть файл <code>playground/01-basics.php</code> з наступним кодом та запустіть його в терміналі.
-          Кожен PHP-файл починається з <code>&lt;?php</code>. Закриваючий тег <code>?&gt;</code> не потрібен.
+          Відредагуйте код нижче та натисніть <strong>"Запустити"</strong> щоб побачити результат.
+          Спробуйте змінити значення змінних, додати нові елементи в масив, або написати свою функцію.
         </p>
-        <ol>
-          <li>Перевірте, що PHP встановлений: <code>php -v</code></li>
-          <li>Створіть директорію: <code>mkdir -p playground</code></li>
-          <li>Створіть файл <code>playground/01-basics.php</code></li>
-          <li>Запустіть файл з терміналу</li>
-        </ol>
       </TheoryBlock>
 
-      <CodeBlock :code="practiceCode" lang="php" title="playground/01-basics.php" :show-line-numbers="true" />
-
-      <CodeBlock code="php playground/01-basics.php" lang="bash" :terminal="true" title="Запуск" />
-
-      <TerminalOutput :lines="practiceOutput" title="Очікуваний результат" />
+      <CodePlayground
+        :initial-code="practiceCode"
+        language="php"
+        title="playground/01-basics.php"
+        :expected-output="practiceExpectedOutput"
+      />
     </div>
 
     <div v-show="activeTab === 'quiz'" class="tab-content">
@@ -283,30 +447,35 @@ print_r($stats);`
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: Task Manager Functions">
         <p>
-          Створіть файл <code>playground/01-task-functions.php</code> та реалізуйте три функції
-          для роботи з масивом задач:
+          Реалізуйте три функції для роботи з масивом задач. Натисніть <strong>"Запустити"</strong> —
+          автоматичні тести перевірять вашу реалізацію.
         </p>
         <ol>
           <li>
-            <strong>formatTask(array $task): string</strong> -- форматує задачу в рядок
+            <strong>formatTask(array $task): string</strong> — форматує задачу в рядок
             <code>[STATUS] Title (priority: N)</code>
           </li>
           <li>
-            <strong>filterByStatus(array $tasks, string $status): array</strong> -- повертає
+            <strong>filterByStatus(array $tasks, string $status): array</strong> — повертає
             тільки задачі з вказаним статусом
           </li>
           <li>
-            <strong>getTaskStats(array $tasks): array</strong> -- повертає статистику:
+            <strong>getTaskStats(array $tasks): array</strong> — повертає статистику:
             загальна кількість, скільки done, pending, in_progress
           </li>
         </ol>
         <p>
-          Використовуйте: <code>array_filter</code>, <code>array_values</code>, <code>count</code>,
+          Підказка: використовуйте <code>array_filter</code>, <code>array_values</code>, <code>count</code>,
           <code>strtoupper</code>, <code>foreach</code>.
         </p>
       </TheoryBlock>
 
-      <CodeBlock :code="taskStarterCode" lang="php" title="Стартовий код" :show-line-numbers="true" />
+      <CodePlayground
+        :initial-code="taskStarterCode"
+        language="php"
+        title="Реалізуйте функції"
+        :test-code="taskTestCode"
+      />
     </div>
   </div>
 </template>
