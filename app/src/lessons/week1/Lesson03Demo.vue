@@ -37,9 +37,7 @@ const laravelTree: TreeNode[] = [
                 name: 'Controllers',
                 type: 'dir',
                 highlight: true,
-                children: [
-                  { name: 'Controller.php', type: 'file' },
-                ],
+                children: [{ name: 'Controller.php', type: 'file' }],
               },
             ],
           },
@@ -47,16 +45,12 @@ const laravelTree: TreeNode[] = [
             name: 'Models',
             type: 'dir',
             highlight: true,
-            children: [
-              { name: 'User.php', type: 'file' },
-            ],
+            children: [{ name: 'User.php', type: 'file' }],
           },
           {
             name: 'Providers',
             type: 'dir',
-            children: [
-              { name: 'AppServiceProvider.php', type: 'file' },
-            ],
+            children: [{ name: 'AppServiceProvider.php', type: 'file' }],
           },
         ],
       },
@@ -87,9 +81,7 @@ const laravelTree: TreeNode[] = [
           {
             name: 'factories',
             type: 'dir',
-            children: [
-              { name: 'UserFactory.php', type: 'file' },
-            ],
+            children: [{ name: 'UserFactory.php', type: 'file' }],
           },
           {
             name: 'migrations',
@@ -103,9 +95,7 @@ const laravelTree: TreeNode[] = [
           {
             name: 'seeders',
             type: 'dir',
-            children: [
-              { name: 'DatabaseSeeder.php', type: 'file' },
-            ],
+            children: [{ name: 'DatabaseSeeder.php', type: 'file' }],
           },
         ],
       },
@@ -126,9 +116,7 @@ const laravelTree: TreeNode[] = [
           {
             name: 'views',
             type: 'dir',
-            children: [
-              { name: 'welcome.blade.php', type: 'file' },
-            ],
+            children: [{ name: 'welcome.blade.php', type: 'file' }],
           },
         ],
       },

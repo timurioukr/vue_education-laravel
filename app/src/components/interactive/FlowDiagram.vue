@@ -2,12 +2,15 @@
 import { ref, onMounted } from 'vue'
 import type { FlowStep } from '@/types'
 
-const props = withDefaults(defineProps<{
-  steps: FlowStep[]
-  autoPlay?: boolean
-}>(), {
-  autoPlay: true,
-})
+const props = withDefaults(
+  defineProps<{
+    steps: FlowStep[]
+    autoPlay?: boolean
+  }>(),
+  {
+    autoPlay: true,
+  },
+)
 
 const visibleCount = ref(0)
 
@@ -40,10 +43,7 @@ onMounted(() => {
   <div class="flow-diagram">
     <div class="steps">
       <template v-for="(step, i) in steps" :key="i">
-        <div
-          class="step"
-          :class="{ visible: i < visibleCount }"
-        >
+        <div class="step" :class="{ visible: i < visibleCount }">
           <div class="step-icon" :style="{ background: step.color }">
             {{ step.icon }}
           </div>
@@ -59,9 +59,7 @@ onMounted(() => {
         />
       </template>
     </div>
-    <button class="replay-btn" @click="replay">
-      &#x1F504; Replay
-    </button>
+    <button class="replay-btn" @click="replay">&#x1F504; Replay</button>
   </div>
 </template>
 
@@ -88,7 +86,9 @@ onMounted(() => {
   padding: 12px 16px;
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .step.visible {

@@ -148,14 +148,14 @@ const tinkerSessionLines = [
   '>>> Task::count()',
   '=> 5',
   '',
-  '>>> Task::where(\'status\', \'pending\')->count()',
+  ">>> Task::where('status', 'pending')->count()",
   '=> 3',
   '',
-  '>>> Task::create([\'title\' => \'Test task\', \'user_id\' => 1])',
+  ">>> Task::create(['title' => 'Test task', 'user_id' => 1])",
   '=> App\\Models\\Task {id: 6, title: "Test task", status: "pending", ...}',
   '',
   '>>> $task = Task::find(6)',
-  '>>> $task->update([\'status\' => \'done\'])',
+  ">>> $task->update(['status' => 'done'])",
   '=> true',
   '',
   '>>> $task->delete()',
@@ -272,22 +272,19 @@ const quizQuestions: QuizQuestion[] = [
     options: [
       'Список полів, які будуть показані в JSON',
       'Список полів, які дозволено заповнювати через масове присвоєння (create/update)',
-      'Список обов\'язкових полів',
+      "Список обов'язкових полів",
       'Список полів з default-значеннями',
     ],
     correct: 1,
-    explanation: '$fillable -- це whitelist полів, які дозволено заповнювати через Task::create() або $task->update(). Це як defineProps у Vue -- ви явно вказуєте, які "пропси" приймає модель. Поля, яких немає в $fillable, ігноруються при масовому присвоєнні.',
+    explanation:
+      '$fillable -- це whitelist полів, які дозволено заповнювати через Task::create() або $task->update(). Це як defineProps у Vue -- ви явно вказуєте, які "пропси" приймає модель. Поля, яких немає в $fillable, ігноруються при масовому присвоєнні.',
   },
   {
     question: 'Що повертає Task::findOrFail(99), якщо задачі з id=99 не існує?',
-    options: [
-      'null',
-      'Порожній масив []',
-      'Виняток ModelNotFoundException (HTTP 404)',
-      'false',
-    ],
+    options: ['null', 'Порожній масив []', 'Виняток ModelNotFoundException (HTTP 404)', 'false'],
     correct: 2,
-    explanation: 'findOrFail() кидає виняток ModelNotFoundException, який Laravel автоматично перетворює в HTTP 404 відповідь. На відміну від find(), який просто повертає null.',
+    explanation:
+      'findOrFail() кидає виняток ModelNotFoundException, який Laravel автоматично перетворює в HTTP 404 відповідь. На відміну від find(), який просто повертає null.',
   },
   {
     question: 'Яка різниця між $task->delete() і $task->forceDelete() при SoftDeletes?',
@@ -295,21 +292,23 @@ const quizQuestions: QuizQuestion[] = [
       'Ніякої різниці',
       'delete() ставить deleted_at, forceDelete() фізично видаляє з бази',
       'delete() видаляє з бази, forceDelete() ставить deleted_at',
-      'forceDelete() видаляє разом зі зв\'язаними записами',
+      "forceDelete() видаляє разом зі зв'язаними записами",
     ],
     correct: 1,
-    explanation: 'При використанні SoftDeletes, delete() лише ставить мітку deleted_at (як кошик у macOS), а forceDelete() фізично видаляє запис з бази даних назавжди. Task::all() не покаже "м\'яко видалені" записи.',
+    explanation:
+      'При використанні SoftDeletes, delete() лише ставить мітку deleted_at (як кошик у macOS), а forceDelete() фізично видаляє запис з бази даних назавжди. Task::all() не покаже "м\'яко видалені" записи.',
   },
   {
-    question: 'Що робить $casts = [\'deadline\' => \'date\']?',
+    question: "Що робить $casts = ['deadline' => 'date']?",
     options: [
       'Забороняє значення NULL для deadline',
-      'Автоматично конвертує deadline з рядка в об\'єкт Carbon при читанні з бази',
-      'Робить deadline обов\'язковим полем',
+      "Автоматично конвертує deadline з рядка в об'єкт Carbon при читанні з бази",
+      "Робить deadline обов'язковим полем",
       'Створює колонку deadline в базі даних',
     ],
     correct: 1,
-    explanation: '$casts автоматично перетворює типи при читанні з бази та записі в базу. deadline => date конвертує рядок в об\'єкт Carbon (потужна бібліотека для роботи з датами). Це як Zod .transform() -- автоматичне перетворення типів.',
+    explanation:
+      "$casts автоматично перетворює типи при читанні з бази та записі в базу. deadline => date конвертує рядок в об'єкт Carbon (потужна бібліотека для роботи з датами). Це як Zod .transform() -- автоматичне перетворення типів.",
   },
   {
     question: 'Чому user_id НЕ потрібно додавати в $fillable?',
@@ -320,7 +319,8 @@ const quizQuestions: QuizQuestion[] = [
       'Бо user_id -- це primary key',
     ],
     correct: 2,
-    explanation: 'user_id визначається на сервері (через автентифікацію), а не приймається від клієнта. Якщо додати user_id в $fillable, хакер зможе створити задачу від імені іншого користувача, підмінивши user_id у запиті.',
+    explanation:
+      'user_id визначається на сервері (через автентифікацію), а не приймається від клієнта. Якщо додати user_id в $fillable, хакер зможе створити задачу від імені іншого користувача, підмінивши user_id у запиті.',
   },
 ]
 </script>
@@ -333,14 +333,14 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Eloquent = ваш Pinia store, API client і type definition в одному">
         <p>
-          <strong>Eloquent Model</strong> -- це найважливіша концепція Laravel.
-          Одна модель замінює те, що у Vue розділено на кілька частин:
-          Pinia store (стан + дії), fetch/useFetch (запити до даних) та TypeScript interface (опис структури).
+          <strong>Eloquent Model</strong> -- це найважливіша концепція Laravel. Одна модель замінює
+          те, що у Vue розділено на кілька частин: Pinia store (стан + дії), fetch/useFetch (запити
+          до даних) та TypeScript interface (опис структури).
         </p>
         <p>
           Замість HTTP-запитів до API ви працюєте з базою даних напряму через об'єкти.
-          <code>Task::all()</code> -- це як <code>await useFetch('/api/tasks')</code>,
-          тільки без HTTP -- напряму в базу даних.
+          <code>Task::all()</code> -- це як <code>await useFetch('/api/tasks')</code>, тільки без
+          HTTP -- напряму в базу даних.
         </p>
       </TheoryBlock>
 
@@ -380,9 +380,9 @@ const quizQuestions: QuizQuestion[] = [
       <TheoryBlock title="$guarded — альтернатива $fillable">
         <p>
           Замість переліку <strong>дозволених</strong> полів (<code>$fillable</code>), можна
-          перелічити <strong>заборонені</strong> (<code>$guarded</code>). Якщо <code>$guarded = []</code> —
-          всі поля дозволені для масового заповнення. Зручно для прототипу, але небезпечно
-          для продакшну.
+          перелічити <strong>заборонені</strong> (<code>$guarded</code>). Якщо
+          <code>$guarded = []</code> — всі поля дозволені для масового заповнення. Зручно для
+          прототипу, але небезпечно для продакшну.
         </p>
       </TheoryBlock>
 
@@ -396,8 +396,8 @@ const quizQuestions: QuizQuestion[] = [
       <TheoryBlock title="$casts та $hidden">
         <p>
           <code>$casts</code> автоматично конвертує типи при читанні/записі:
-          <code>'deadline' =&gt; 'date'</code> перетворює рядок в об'єкт Carbon.
-          Це як <code>new Date(task.deadline)</code> в JavaScript, тільки автоматично.
+          <code>'deadline' =&gt; 'date'</code> перетворює рядок в об'єкт Carbon. Це як
+          <code>new Date(task.deadline)</code> в JavaScript, тільки автоматично.
         </p>
         <p>
           <code>$hidden</code> приховує поля при серіалізації в JSON:
@@ -405,12 +405,17 @@ const quizQuestions: QuizQuestion[] = [
         </p>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="taskModelCode" title="app/Models/Task.php" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="taskModelCode"
+        title="app/Models/Task.php"
+        :show-line-numbers="true"
+      />
 
       <TheoryBlock title="CRUD-операції з Eloquent">
         <p>
-          Eloquent надає повний набір CRUD-операцій. Кожна операція -- це один рядок коду
-          замість написання SQL-запитів вручну.
+          Eloquent надає повний набір CRUD-операцій. Кожна операція -- це один рядок коду замість
+          написання SQL-запитів вручну.
         </p>
       </TheoryBlock>
 
@@ -426,9 +431,9 @@ const quizQuestions: QuizQuestion[] = [
     <div class="lesson-content-blocks">
       <TheoryBlock title="Tinker -- ваша DevTools Console для бекенду">
         <p>
-          У браузері ви відкриваєте DevTools Console і тестуєте JavaScript вживу.
-          В Laravel є <code>php artisan tinker</code> -- інтерактивна PHP-консоль,
-          де можна виконувати Eloquent-запити в реальному часі.
+          У браузері ви відкриваєте DevTools Console і тестуєте JavaScript вживу. В Laravel є
+          <code>php artisan tinker</code> -- інтерактивна PHP-консоль, де можна виконувати
+          Eloquent-запити в реальному часі.
         </p>
       </TheoryBlock>
 
@@ -442,13 +447,18 @@ const quizQuestions: QuizQuestion[] = [
         </p>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="controllerWithEloquent" title="TaskController з Eloquent" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="controllerWithEloquent"
+        title="TaskController з Eloquent"
+        :show-line-numbers="true"
+      />
 
       <TheoryBlock title="Тестування API">
         <p>
-          Запустіть <code>php artisan serve</code> і протестуйте ендпоінти через curl.
-          Тепер дані зберігаються в реальній базі -- кожен POST створює новий запис,
-          DELETE ставить <code>deleted_at</code> (soft delete), GET повертає реальні дані.
+          Запустіть <code>php artisan serve</code> і протестуйте ендпоінти через curl. Тепер дані
+          зберігаються в реальній базі -- кожен POST створює новий запис, DELETE ставить
+          <code>deleted_at</code> (soft delete), GET повертає реальні дані.
         </p>
       </TheoryBlock>
     </div>
@@ -468,7 +478,10 @@ const quizQuestions: QuizQuestion[] = [
           Використовуйте ті ж патерни, що й у <code>TaskController</code>.
         </p>
         <ol>
-          <li>Замініть хардкожені масиви на <code>Category::all()</code>, <code>Category::create()</code> тощо</li>
+          <li>
+            Замініть хардкожені масиви на <code>Category::all()</code>,
+            <code>Category::create()</code> тощо
+          </li>
           <li>Використайте <code>findOrFail()</code> для автоматичного 404</li>
           <li>В <code>store()</code> поверніть статус 201</li>
           <li>В <code>destroy()</code> поверніть <code>response()-&gt;noContent()</code> (204)</li>
@@ -477,7 +490,12 @@ const quizQuestions: QuizQuestion[] = [
         </ol>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="categoryControllerTask" title="CategoryController -- приклад рішення" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="categoryControllerTask"
+        title="CategoryController -- приклад рішення"
+        :show-line-numbers="true"
+      />
     </div>
   </div>
 </template>

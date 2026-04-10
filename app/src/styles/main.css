@@ -1,25 +1,25 @@
 :root {
   /* Colors */
-  --bg: #F5F5FA;
-  --surface: #FFFFFF;
-  --border: #EBEBF0;
-  --primary: #7C5CFC;
-  --primary-light: #F0EEFF;
-  --primary-hover: #6B4FE0;
-  --success: #34D399;
-  --success-light: #E8FAF0;
-  --accent: #F472B6;
-  --accent-light: #FFF0F5;
-  --warning: #FBBF24;
-  --warning-light: #FFF4E5;
-  --text-primary: #1A1A2E;
-  --text-secondary: #4B5563;
-  --text-muted: #9CA3AF;
-  --code-bg: #1E1E2E;
+  --bg: #f5f5fa;
+  --surface: #ffffff;
+  --border: #ebebf0;
+  --primary: #7c5cfc;
+  --primary-light: #f0eeff;
+  --primary-hover: #6b4fe0;
+  --success: #34d399;
+  --success-light: #e8faf0;
+  --accent: #f472b6;
+  --accent-light: #fff0f5;
+  --warning: #fbbf24;
+  --warning-light: #fff4e5;
+  --text-primary: #1a1a2e;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --code-bg: #1e1e2e;
   --js-color: #059669;
-  --js-bg: #ECFDF5;
-  --php-color: #7C5CFC;
-  --php-bg: #F0EEFF;
+  --js-bg: #ecfdf5;
+  --php-color: #7c5cfc;
+  --php-bg: #f0eeff;
 
   /* Spacing */
   --radius-sm: 8px;
@@ -34,7 +34,11 @@
   --demo-width: 260px;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -53,19 +57,44 @@ code {
   border-radius: 4px;
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(-12px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.fade-enter-active { animation: fadeIn 0.3s ease; }
-.slide-enter-active { animation: slideIn 0.3s ease; }
+.fade-enter-active {
+  animation: fadeIn 0.3s ease;
+}
+.slide-enter-active {
+  animation: slideIn 0.3s ease;
+}

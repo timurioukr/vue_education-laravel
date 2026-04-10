@@ -196,18 +196,15 @@ const quizQuestions: QuizQuestion[] = [
       '3 маршрути (index, store, destroy)',
     ],
     correct: 2,
-    explanation: 'apiResource генерує 5 REST-маршрутів для повного CRUD. На відміну від resource(), він не створює маршрути create та edit, бо вони потрібні тільки для HTML-форм, а в API їх немає.',
+    explanation:
+      'apiResource генерує 5 REST-маршрутів для повного CRUD. На відміну від resource(), він не створює маршрути create та edit, бо вони потрібні тільки для HTML-форм, а в API їх немає.',
   },
   {
     question: 'Який HTTP-метод використовується для оновлення ресурсу?',
-    options: [
-      'POST',
-      'GET',
-      'PUT або PATCH',
-      'DELETE',
-    ],
+    options: ['POST', 'GET', 'PUT або PATCH', 'DELETE'],
     correct: 2,
-    explanation: 'PUT або PATCH використовуються для оновлення. PUT зазвичай замінює ресурс повністю, а PATCH -- частково. Laravel обробляє обидва методи одним методом update() контролера.',
+    explanation:
+      'PUT або PATCH використовуються для оновлення. PUT зазвичай замінює ресурс повністю, а PATCH -- частково. Laravel обробляє обидва методи одним методом update() контролера.',
   },
   {
     question: 'Що робить prefix() в route group?',
@@ -218,7 +215,8 @@ const quizQuestions: QuizQuestion[] = [
       'Додає суфікс до імен маршрутів',
     ],
     correct: 1,
-    explanation: 'prefix() додає URL-префікс до всіх маршрутів у групі. Наприклад, Route::prefix("v1")->group(...) додасть /v1/ до кожного маршруту в групі.',
+    explanation:
+      'prefix() додає URL-префікс до всіх маршрутів у групі. Наприклад, Route::prefix("v1")->group(...) додасть /v1/ до кожного маршруту в групі.',
   },
   {
     question: 'Як передати параметр у маршруті Laravel?',
@@ -229,18 +227,15 @@ const quizQuestions: QuizQuestion[] = [
       '[id] (у квадратних дужках)',
     ],
     correct: 1,
-    explanation: 'У Laravel параметри маршрутів записуються у фігурних дужках: {id}. У Vue Router використовується :id, але в Laravel -- саме {id}. Необов\'язковий параметр позначається {id?}.',
+    explanation:
+      "У Laravel параметри маршрутів записуються у фігурних дужках: {id}. У Vue Router використовується :id, але в Laravel -- саме {id}. Необов'язковий параметр позначається {id?}.",
   },
   {
     question: 'Який файл відповідає за API маршрути в Laravel?',
-    options: [
-      'routes/web.php',
-      'routes/api.php',
-      'app/routes.php',
-      'config/routes.php',
-    ],
+    options: ['routes/web.php', 'routes/api.php', 'app/routes.php', 'config/routes.php'],
     correct: 1,
-    explanation: 'Файл routes/api.php відповідає за API маршрути. Всі маршрути в ньому автоматично отримують префікс /api. Для веб-сторінок (HTML) є окремий файл routes/web.php.',
+    explanation:
+      'Файл routes/api.php відповідає за API маршрути. Всі маршрути в ньому автоматично отримують префікс /api. Для веб-сторінок (HTML) є окремий файл routes/web.php.',
   },
 ]
 </script>
@@ -272,8 +267,8 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Параметри маршрутів">
         <p>
-          У Vue Router ви використовуєте <code>:id</code> для динамічних сегментів URL.
-          В Laravel -- <code>{'{id}'}</code>. Необов'язковий параметр позначається знаком питання:
+          У Vue Router ви використовуєте <code>:id</code> для динамічних сегментів URL. В Laravel --
+          <code>{'{id}'}</code>. Необов'язковий параметр позначається знаком питання:
           <code>{'{id?}'}</code> -- як <code>?</code> в TypeScript.
         </p>
       </TheoryBlock>
@@ -288,9 +283,9 @@ const quizQuestions: QuizQuestion[] = [
       <TheoryBlock title="Групування маршрутів">
         <p>
           У Vue Router є <code>children</code> для вкладених маршрутів. В Laravel є
-          <code>Route::group()</code> з <code>prefix()</code>, <code>middleware()</code>
-          та <code>name()</code>. Це дозволяє організовувати маршрути в логічні групи
-          з спільними налаштуваннями.
+          <code>Route::group()</code> з <code>prefix()</code>, <code>middleware()</code> та
+          <code>name()</code>. Це дозволяє організовувати маршрути в логічні групи з спільними
+          налаштуваннями.
         </p>
       </TheoryBlock>
 
@@ -306,8 +301,8 @@ const quizQuestions: QuizQuestion[] = [
           <code>Route::apiResource()</code> генерує 5 CRUD-маршрутів автоматично:
           <strong>index</strong> (список), <strong>store</strong> (створити),
           <strong>show</strong> (один запис), <strong>update</strong> (оновити),
-          <strong>destroy</strong> (видалити). Це як автогенерація маршрутів у Nuxt через
-          файлову структуру <code>pages/</code>, тільки для API.
+          <strong>destroy</strong> (видалити). Це як автогенерація маршрутів у Nuxt через файлову
+          структуру <code>pages/</code>, тільки для API.
         </p>
       </TheoryBlock>
 
@@ -315,9 +310,9 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Контролери">
         <p>
-          Контролер -- це клас, який містить логіку обробки запитів. Уявіть, що контролер -- це
-          ваш <code>&lt;script setup&gt;</code>, але для бекенду. Замість реактивних змінних
-          і функцій у Vue, в контролері є методи, які обробляють HTTP-запити та повертають відповіді.
+          Контролер -- це клас, який містить логіку обробки запитів. Уявіть, що контролер -- це ваш
+          <code>&lt;script setup&gt;</code>, але для бекенду. Замість реактивних змінних і функцій у
+          Vue, в контролері є методи, які обробляють HTTP-запити та повертають відповіді.
         </p>
         <p>
           Кожен метод відповідає за один ендпоінт: <code>index()</code> повертає список,
@@ -328,9 +323,9 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Route Model Binding">
         <p>
-          Laravel може автоматично знайти модель по <code>{id}</code> в URL.
-          Замість ручного <code>Task::findOrFail($id)</code> — просто типізуйте параметр.
-          Якщо запис не знайдено — Laravel автоматично поверне 404.
+          Laravel може автоматично знайти модель по <code>{id}</code> в URL. Замість ручного
+          <code>Task::findOrFail($id)</code> — просто типізуйте параметр. Якщо запис не знайдено —
+          Laravel автоматично поверне 404.
         </p>
       </TheoryBlock>
 
@@ -343,8 +338,8 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="HTTP Status Codes для API">
         <p>
-          Кожна відповідь API має числовий код. Ви вже знаєте їх з fetch/axios на фронтенді.
-          В Laravel повертаємо їх явно через <code>response()->json($data, $code)</code>.
+          Кожна відповідь API має числовий код. Ви вже знаєте їх з fetch/axios на фронтенді. В
+          Laravel повертаємо їх явно через <code>response()->json($data, $code)</code>.
         </p>
       </TheoryBlock>
 
@@ -362,9 +357,9 @@ const quizQuestions: QuizQuestion[] = [
     <div class="lesson-content-blocks">
       <TheoryBlock title="Крок 1: Створіть TaskController">
         <p>
-          Використайте Artisan для створення API-контролера з 5 методами.
-          Прапорець <code>--api</code> створить контролер без методів <code>create</code>
-          та <code>edit</code>, які потрібні тільки для HTML-форм.
+          Використайте Artisan для створення API-контролера з 5 методами. Прапорець
+          <code>--api</code> створить контролер без методів <code>create</code> та
+          <code>edit</code>, які потрібні тільки для HTML-форм.
         </p>
       </TheoryBlock>
 
@@ -372,13 +367,18 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Крок 2: Заповніть контролер">
         <p>
-          Відкрийте <code>app/Http/Controllers/TaskController.php</code> і додайте логіку
-          до кожного з 5 методів. Спочатку можна використовувати хардкожені дані,
-          а потім замінити на Eloquent-запити (Урок 6).
+          Відкрийте <code>app/Http/Controllers/TaskController.php</code> і додайте логіку до кожного
+          з 5 методів. Спочатку можна використовувати хардкожені дані, а потім замінити на
+          Eloquent-запити (Урок 6).
         </p>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="controllerCode" title="app/Http/Controllers/TaskController.php" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="controllerCode"
+        title="app/Http/Controllers/TaskController.php"
+        :show-line-numbers="true"
+      />
 
       <TheoryBlock title="Крок 3: Налаштуйте маршрути">
         <p>
@@ -387,7 +387,12 @@ const quizQuestions: QuizQuestion[] = [
         </p>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="routesFileCode" title="routes/api.php" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="routesFileCode"
+        title="routes/api.php"
+        :show-line-numbers="true"
+      />
 
       <TheoryBlock title="Крок 4: Перевірте список маршрутів">
         <p>
@@ -400,8 +405,8 @@ const quizQuestions: QuizQuestion[] = [
 
       <TheoryBlock title="Крок 5: Протестуйте з curl">
         <p>
-          Запустіть сервер командою <code>php artisan serve</code> і протестуйте всі ендпоінти
-          через curl або Postman.
+          Запустіть сервер командою <code>php artisan serve</code> і протестуйте всі ендпоінти через
+          curl або Postman.
         </p>
       </TheoryBlock>
 
@@ -419,8 +424,8 @@ const quizQuestions: QuizQuestion[] = [
     <div class="lesson-content-blocks">
       <TheoryBlock title="Завдання: TagController та вкладені маршрути">
         <p>
-          Створіть <code>TagController</code> з повним CRUD та додайте вкладені маршрути
-          для тегів конкретної задачі. Це дозволить отримувати теги для задачі за URL
+          Створіть <code>TagController</code> з повним CRUD та додайте вкладені маршрути для тегів
+          конкретної задачі. Це дозволить отримувати теги для задачі за URL
           <code>/api/tasks/1/tags</code>.
         </p>
         <ol>
@@ -432,7 +437,12 @@ const quizQuestions: QuizQuestion[] = [
         </ol>
       </TheoryBlock>
 
-      <CodeBlock lang="php" :code="tagControllerTask" title="Підказки до завдання" :show-line-numbers="true" />
+      <CodeBlock
+        lang="php"
+        :code="tagControllerTask"
+        title="Підказки до завдання"
+        :show-line-numbers="true"
+      />
     </div>
   </div>
 </template>

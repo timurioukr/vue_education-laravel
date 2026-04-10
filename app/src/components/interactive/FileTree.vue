@@ -2,14 +2,17 @@
 import { ref } from 'vue'
 import type { TreeNode } from '@/types'
 
-const props = withDefaults(defineProps<{
-  tree: TreeNode[]
-  defaultExpanded?: boolean
-  depth?: number
-}>(), {
-  defaultExpanded: false,
-  depth: 0,
-})
+const props = withDefaults(
+  defineProps<{
+    tree: TreeNode[]
+    defaultExpanded?: boolean
+    depth?: number
+  }>(),
+  {
+    defaultExpanded: false,
+    depth: 0,
+  },
+)
 
 const expanded = ref<Record<string, boolean>>({})
 
@@ -24,11 +27,7 @@ function toggle(name: string) {
 
 <template>
   <div class="file-tree" :class="{ root: depth === 0 }">
-    <div
-      v-for="node in tree"
-      :key="node.name"
-      class="tree-node"
-    >
+    <div v-for="node in tree" :key="node.name" class="tree-node">
       <div
         class="node-row"
         :class="{ highlight: node.highlight }"
@@ -45,15 +44,8 @@ function toggle(name: string) {
       </div>
 
       <Transition name="expand">
-        <div
-          v-if="node.type === 'dir' && node.children && isExpanded(node.name)"
-          class="children"
-        >
-          <FileTree
-            :tree="node.children"
-            :default-expanded="defaultExpanded"
-            :depth="depth + 1"
-          />
+        <div v-if="node.type === 'dir' && node.children && isExpanded(node.name)" class="children">
+          <FileTree :tree="node.children" :default-expanded="defaultExpanded" :depth="depth + 1" />
         </div>
       </Transition>
     </div>

@@ -7,12 +7,12 @@ defineProps<{
 }>()
 
 const memoryItems = [
-  { vue: 'faker.person.name()', laravel: "fake()->name()" },
+  { vue: 'faker.person.name()', laravel: 'fake()->name()' },
   { vue: 'beforeEach()', laravel: 'DatabaseSeeder' },
   { vue: 'factory()', laravel: 'Factory::new()' },
   { vue: 'fixtures/', laravel: 'database/seeders/' },
   { vue: 'mock data', laravel: 'Factory states' },
-  { vue: 'faker.helpers.arrayElement()', laravel: "fake()->randomElement()" },
+  { vue: 'faker.helpers.arrayElement()', laravel: 'fake()->randomElement()' },
 ]
 
 const seedOutput = [

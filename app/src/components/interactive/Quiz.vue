@@ -16,7 +16,9 @@ const showResult = ref(false)
 
 const currentQuestion = computed(() => props.questions[currentIndex.value])
 const answered = computed(() => selectedAnswers.value[currentIndex.value] !== null)
-const isCorrect = computed(() => selectedAnswers.value[currentIndex.value] === currentQuestion.value.correct)
+const isCorrect = computed(
+  () => selectedAnswers.value[currentIndex.value] === currentQuestion.value.correct,
+)
 const isLastQuestion = computed(() => currentIndex.value === props.questions.length - 1)
 
 const score = computed(() =>
@@ -25,9 +27,7 @@ const score = computed(() =>
   }, 0),
 )
 
-const scorePercent = computed(() =>
-  Math.round((score.value / props.questions.length) * 100),
-)
+const scorePercent = computed(() => Math.round((score.value / props.questions.length) * 100))
 
 const labels = ['A', 'B', 'C', 'D']
 
@@ -54,7 +54,8 @@ function retry() {
 function optionClass(optIndex: number): string {
   if (!answered.value) return 'option'
   if (optIndex === currentQuestion.value.correct) return 'option correct'
-  if (optIndex === selectedAnswers.value[currentIndex.value] && !isCorrect.value) return 'option wrong'
+  if (optIndex === selectedAnswers.value[currentIndex.value] && !isCorrect.value)
+    return 'option wrong'
   return 'option disabled'
 }
 </script>
@@ -65,14 +66,11 @@ function optionClass(optIndex: number): string {
     <div v-if="showResult" class="result-card">
       <div class="result-ring">
         <svg viewBox="0 0 100 100" width="100" height="100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--border)" stroke-width="8" />
           <circle
-            cx="50" cy="50" r="42"
-            fill="none"
-            stroke="var(--border)"
-            stroke-width="8"
-          />
-          <circle
-            cx="50" cy="50" r="42"
+            cx="50"
+            cy="50"
+            r="42"
             fill="none"
             :stroke="scorePercent >= 60 ? 'var(--success)' : 'var(--accent)'"
             stroke-width="8"
@@ -86,16 +84,12 @@ function optionClass(optIndex: number): string {
         <span class="result-percent">{{ scorePercent }}%</span>
       </div>
       <p class="result-score">{{ score }}/{{ questions.length }}</p>
-      <button class="retry-btn" @click="retry">
-        Спробувати ще
-      </button>
+      <button class="retry-btn" @click="retry">Спробувати ще</button>
     </div>
 
     <!-- Question screen -->
     <div v-else class="question-card">
-      <p class="question-counter">
-        Питання {{ currentIndex + 1 }}/{{ questions.length }}
-      </p>
+      <p class="question-counter">Питання {{ currentIndex + 1 }}/{{ questions.length }}</p>
       <h3 class="question-text">{{ currentQuestion.question }}</h3>
 
       <div class="options">
@@ -108,7 +102,11 @@ function optionClass(optIndex: number): string {
           <span class="option-label">{{ labels[i] }}</span>
           <span class="option-text">{{ option }}</span>
           <span v-if="answered && i === currentQuestion.correct" class="icon check">&#x2713;</span>
-          <span v-else-if="answered && i === selectedAnswers[currentIndex] && !isCorrect" class="icon cross">&#x2717;</span>
+          <span
+            v-else-if="answered && i === selectedAnswers[currentIndex] && !isCorrect"
+            class="icon cross"
+            >&#x2717;</span
+          >
         </button>
       </div>
 
@@ -208,13 +206,13 @@ function optionClass(optIndex: number): string {
 }
 
 .option.wrong {
-  background: #FEE2E2;
-  border-color: #F87171;
+  background: #fee2e2;
+  border-color: #f87171;
   cursor: default;
 }
 
 .option.wrong .option-label {
-  background: #F87171;
+  background: #f87171;
   color: white;
 }
 
@@ -228,8 +226,12 @@ function optionClass(optIndex: number): string {
   font-size: 1rem;
 }
 
-.icon.check { color: var(--success); }
-.icon.cross { color: #F87171; }
+.icon.check {
+  color: var(--success);
+}
+.icon.cross {
+  color: #f87171;
+}
 
 .explanation {
   margin-top: 16px;

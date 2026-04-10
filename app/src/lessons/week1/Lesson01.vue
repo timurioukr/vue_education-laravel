@@ -15,36 +15,21 @@ defineProps<{
 const quizQuestions: QuizQuestion[] = [
   {
     question: 'Як оголосити змінну в PHP?',
-    options: [
-      'let $name = "value"',
-      '$name = "value"',
-      'var name = "value"',
-      'name := "value"',
-    ],
+    options: ['let $name = "value"', '$name = "value"', 'var name = "value"', 'name := "value"'],
     correct: 1,
     explanation:
       'В PHP всі змінні починаються з $ і не потребують ключових слів let/const/var. Просто $name = "value"; -- і все.',
   },
   {
-    question: 'Який аналог JS об\'єкта {} в PHP?',
-    options: [
-      'stdClass',
-      'Асоціативний масив',
-      'Object',
-      'HashMap',
-    ],
+    question: "Який аналог JS об'єкта {} в PHP?",
+    options: ['stdClass', 'Асоціативний масив', 'Object', 'HashMap'],
     correct: 1,
     explanation:
-      'В PHP асоціативний масив [\'key\' => \'value\'] виконує роль JS об\'єкта {key: "value"}. stdClass теж існує, але масиви використовуються значно частіше.',
+      "В PHP асоціативний масив ['key' => 'value'] виконує роль JS об'єкта {key: \"value\"}. stdClass теж існує, але масиви використовуються значно частіше.",
   },
   {
     question: 'Що виведе echo 1 + "2abc"?',
-    options: [
-      '"12abc"',
-      '3',
-      'Error',
-      '"1"',
-    ],
+    options: ['"12abc"', '3', 'Error', '"1"'],
     correct: 1,
     explanation:
       'PHP автоматично приводить рядок "2abc" до числа 2 (бере числову частину з початку рядка). Тому 1 + 2 = 3. В PHP 8+ це також генерує Notice.',
@@ -105,24 +90,29 @@ const phpExecutionDiagram = `flowchart LR
 const phpExecutionSteps: DiagramStep[] = [
   {
     highlightNodes: ['A'],
-    description: 'Все починається з .php файлу — як .js файл для Node.js. PHP-файл починається з <?php тегу.',
+    description:
+      'Все починається з .php файлу — як .js файл для Node.js. PHP-файл починається з <?php тегу.',
     code: '<?php echo "Hello";',
   },
   {
     highlightNodes: ['B'],
-    description: 'PHP інтерпретатор (CLI або через веб-сервер) читає файл. Аналог Node.js або V8 для JavaScript.',
+    description:
+      'PHP інтерпретатор (CLI або через веб-сервер) читає файл. Аналог Node.js або V8 для JavaScript.',
   },
   {
     highlightNodes: ['C'],
-    description: 'Лексер розбиває код на токени, парсер будує AST (абстрактне синтаксичне дерево) — як V8 парсить JS.',
+    description:
+      'Лексер розбиває код на токени, парсер будує AST (абстрактне синтаксичне дерево) — як V8 парсить JS.',
   },
   {
     highlightNodes: ['D', 'E'],
-    description: 'AST компілюється в опкоди (байткод) і виконується Zend VM. В JS аналог — JIT-компіляція V8.',
+    description:
+      'AST компілюється в опкоди (байткод) і виконується Zend VM. В JS аналог — JIT-компіляція V8.',
   },
   {
     highlightNodes: ['F'],
-    description: 'Результат виводиться через echo/print — як console.log() в JavaScript. Вивід йде в stdout.',
+    description:
+      'Результат виводиться через echo/print — як console.log() в JavaScript. Вивід йде в stdout.',
     code: 'echo "Hello World\\n";  // → stdout',
   },
 ]
@@ -153,12 +143,14 @@ const typesDiagram = `flowchart TB
 const typesDiagramSteps: DiagramStep[] = [
   {
     highlightNodes: ['JS1', 'PHP1'],
-    description: 'string → string. Ідентично. Одинарні та подвійні лапки, але в PHP подвійні підтримують інтерполяцію: "Hello $name".',
+    description:
+      'string → string. Ідентично. Одинарні та подвійні лапки, але в PHP подвійні підтримують інтерполяцію: "Hello $name".',
     code: '$name = "World";\necho "Hello $name";  // Hello World',
   },
   {
     highlightNodes: ['JS2', 'PHP2'],
-    description: 'number → int + float. В PHP числа розділені на цілі (int) та дробні (float). JS має тільки number.',
+    description:
+      'number → int + float. В PHP числа розділені на цілі (int) та дробні (float). JS має тільки number.',
     code: '$age = 25;      // int\n$price = 9.99;  // float',
   },
   {
@@ -167,11 +159,13 @@ const typesDiagramSteps: DiagramStep[] = [
   },
   {
     highlightNodes: ['JS4', 'PHP4'],
-    description: 'null + undefined → null. В PHP немає undefined. Тільки null. Неініціалізована змінна = warning.',
+    description:
+      'null + undefined → null. В PHP немає undefined. Тільки null. Неініціалізована змінна = warning.',
   },
   {
     highlightNodes: ['JS5', 'PHP5'],
-    description: 'object + Array → array. В PHP один тип array замінює і масиви, і об\'єкти-словники з JS.',
+    description:
+      "object + Array → array. В PHP один тип array замінює і масиви, і об'єкти-словники з JS.",
     code: '$list = [1, 2, 3];           // як JS []\n$map = ["a" => 1, "b" => 2];  // як JS {}',
   },
 ]
@@ -186,38 +180,38 @@ foreach ($items as $index => $item) {
 const foreachSteps: CodeFlowStep[] = [
   {
     line: 2,
-    variables: { '$items': "['task1', 'task2', 'task3']" },
+    variables: { $items: "['task1', 'task2', 'task3']" },
     note: 'Створюємо масив з трьох рядків. В JS це було б const items = ["task1", "task2", "task3"]',
   },
   {
     line: 3,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '0', '$item': '"task1"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '0', $item: '"task1"' },
     note: 'foreach бере перший елемент. $index = ключ (0), $item = значення ("task1"). Як for...of + entries() в JS.',
   },
   {
     line: 4,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '0', '$item': '"task1"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '0', $item: '"task1"' },
     output: '0: task1\n',
     note: 'echo виводить рядок з інтерполяцією. $index та $item підставляються всередину подвійних лапок.',
   },
   {
     line: 3,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '1', '$item': '"task2"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '1', $item: '"task2"' },
     note: 'Друга ітерація. $index = 1, $item = "task2".',
   },
   {
     line: 4,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '1', '$item': '"task2"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '1', $item: '"task2"' },
     output: '1: task2\n',
   },
   {
     line: 3,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '2', '$item': '"task3"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '2', $item: '"task3"' },
     note: 'Остання ітерація. $index = 2, $item = "task3".',
   },
   {
     line: 4,
-    variables: { '$items': "['task1', 'task2', 'task3']", '$index': '2', '$item': '"task3"' },
+    variables: { $items: "['task1', 'task2', 'task3']", $index: '2', $item: '"task3"' },
     output: '2: task3\n',
     note: 'Цикл завершено. Всі 3 елементи оброблено.',
   },
@@ -345,8 +339,9 @@ print_r($stats);`
       <TheoryBlock title="Змінні та типи">
         <p>
           В PHP немає <code>let</code> чи <code>const</code> для змінних. Кожна змінна починається з
-          <code>$</code> і може бути змінена в будь-який момент. PHP -- мова з динамічною типізацією,
-          як і JavaScript. Для справжніх констант є окремий синтаксис <code>const</code> або <code>define()</code>.
+          <code>$</code> і може бути змінена в будь-який момент. PHP -- мова з динамічною
+          типізацією, як і JavaScript. Для справжніх констант є окремий синтаксис
+          <code>const</code> або <code>define()</code>.
         </p>
       </TheoryBlock>
 
@@ -363,13 +358,14 @@ print_r($stats);`
 
       <TheoryBlock title="Масиви">
         <p>
-          В PHP немає окремого типу "об'єкт-словник". Замість цього є <strong>індексовані масиви</strong>
-          (як JS arrays: <code>[1, 2, 3]</code>) та <strong>асоціативні масиви</strong> (як JS objects:
-          <code>['key' => 'value']</code>). Це одна структура <code>array</code>, яка замінює і масиви, і об'єкти з JavaScript.
+          В PHP немає окремого типу "об'єкт-словник". Замість цього є
+          <strong>індексовані масиви</strong> (як JS arrays: <code>[1, 2, 3]</code>) та
+          <strong>асоціативні масиви</strong> (як JS objects: <code>['key' => 'value']</code>). Це
+          одна структура <code>array</code>, яка замінює і масиви, і об'єкти з JavaScript.
         </p>
         <p>
-          Доступ до елементів -- тільки через квадратні дужки: <code>$task['title']</code>.
-          Оператор <code>.</code> в PHP -- це конкатенація рядків, а не доступ до властивості.
+          Доступ до елементів -- тільки через квадратні дужки: <code>$task['title']</code>. Оператор
+          <code>.</code> в PHP -- це конкатенація рядків, а не доступ до властивості.
         </p>
       </TheoryBlock>
 
@@ -386,26 +382,25 @@ print_r($stats);`
 
       <TheoryBlock title="Функції">
         <p>
-          PHP підтримує звичайні функції з <code>function</code>, стрілкові функції <code>fn()</code>
-          (тільки один вираз, як implicit return в JS) та замикання з <code>use</code>.
+          PHP підтримує звичайні функції з <code>function</code>, стрілкові функції
+          <code>fn()</code> (тільки один вираз, як implicit return в JS) та замикання з
+          <code>use</code>.
         </p>
         <p>
           Важлива відмінність: анонімна функція в PHP <strong>не бачить</strong> зовнішніх змінних
-          без явного <code>use ($var)</code>. Стрілкова функція <code>fn()</code> автоматично захоплює
-          зовнішні змінні (read-only).
+          без явного <code>use ($var)</code>. Стрілкова функція <code>fn()</code> автоматично
+          захоплює зовнішні змінні (read-only).
         </p>
       </TheoryBlock>
 
-      <CodeComparison
-        js="const double = (x) => x * 2;"
-        php="$double = fn($x) => $x * 2;"
-      />
+      <CodeComparison js="const double = (x) => x * 2;" php="$double = fn($x) => $x * 2;" />
 
       <TheoryBlock title="Оператори">
         <p>
           <code>===</code> працює так само, як в JS -- строге порівняння без приведення типів.
           <code>??</code> (null coalescing) теж ідентичний. А <code>match</code> -- це покращений
-          <code>switch</code>: повертає значення, використовує <code>===</code>, не потребує <code>break</code>.
+          <code>switch</code>: повертає значення, використовує <code>===</code>, не потребує
+          <code>break</code>.
         </p>
       </TheoryBlock>
 
@@ -418,9 +413,10 @@ print_r($stats);`
 
       <TheoryBlock title="Heredoc (Template Literals)">
         <p>
-          В JS є template literals з бектіками. В PHP аналог — <strong>heredoc</strong> (<code>&lt;&lt;&lt;EOT</code>).
-          Heredoc підтримує інтерполяцію змінних, як подвійні лапки. <strong>Nowdoc</strong> (<code>&lt;&lt;&lt;'EOT'</code>) —
-          без інтерполяції, як одинарні лапки.
+          В JS є template literals з бектіками. В PHP аналог —
+          <strong>heredoc</strong> (<code>&lt;&lt;&lt;EOT</code>). Heredoc підтримує інтерполяцію
+          змінних, як подвійні лапки. <strong>Nowdoc</strong> (<code>&lt;&lt;&lt;'EOT'</code>) — без
+          інтерполяції, як одинарні лапки.
         </p>
       </TheoryBlock>
 
@@ -433,8 +429,8 @@ print_r($stats);`
 
       <TheoryBlock title="Spread operator">
         <p>
-          Оператор <code>...</code> працює і в PHP (з версії 8.1 для масивів).
-          Можна розпакувати масив у інший масив або передати аргументи у функцію.
+          Оператор <code>...</code> працює і в PHP (з версії 8.1 для масивів). Можна розпакувати
+          масив у інший масив або передати аргументи у функцію.
         </p>
       </TheoryBlock>
 
@@ -455,7 +451,8 @@ print_r($stats);`
       <TheoryBlock title="Практика: перший PHP-файл">
         <p>
           Відредагуйте код нижче та натисніть <strong>"Запустити"</strong> щоб побачити результат.
-          Спробуйте змінити значення змінних, додати нові елементи в масив, або написати свою функцію.
+          Спробуйте змінити значення змінних, додати нові елементи в масив, або написати свою
+          функцію.
         </p>
       </TheoryBlock>
 
@@ -474,8 +471,8 @@ print_r($stats);`
     <div v-show="activeTab === 'task'" class="tab-content">
       <TheoryBlock title="Завдання: Task Manager Functions">
         <p>
-          Реалізуйте три функції для роботи з масивом задач. Натисніть <strong>"Запустити"</strong> —
-          автоматичні тести перевірять вашу реалізацію.
+          Реалізуйте три функції для роботи з масивом задач. Натисніть
+          <strong>"Запустити"</strong> — автоматичні тести перевірять вашу реалізацію.
         </p>
         <ol>
           <li>
@@ -483,17 +480,17 @@ print_r($stats);`
             <code>[STATUS] Title (priority: N)</code>
           </li>
           <li>
-            <strong>filterByStatus(array $tasks, string $status): array</strong> — повертає
-            тільки задачі з вказаним статусом
+            <strong>filterByStatus(array $tasks, string $status): array</strong> — повертає тільки
+            задачі з вказаним статусом
           </li>
           <li>
-            <strong>getTaskStats(array $tasks): array</strong> — повертає статистику:
-            загальна кількість, скільки done, pending, in_progress
+            <strong>getTaskStats(array $tasks): array</strong> — повертає статистику: загальна
+            кількість, скільки done, pending, in_progress
           </li>
         </ol>
         <p>
-          Підказка: використовуйте <code>array_filter</code>, <code>array_values</code>, <code>count</code>,
-          <code>strtoupper</code>, <code>foreach</code>.
+          Підказка: використовуйте <code>array_filter</code>, <code>array_values</code>,
+          <code>count</code>, <code>strtoupper</code>, <code>foreach</code>.
         </p>
       </TheoryBlock>
 

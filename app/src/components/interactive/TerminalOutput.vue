@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 
-const props = withDefaults(defineProps<{
-  lines: string[]
-  animate?: boolean
-  title?: string
-}>(), {
-  animate: true,
-  title: 'Terminal',
-})
+const props = withDefaults(
+  defineProps<{
+    lines: string[]
+    animate?: boolean
+    title?: string
+  }>(),
+  {
+    animate: true,
+    title: 'Terminal',
+  },
+)
 
 const visibleLines = ref<string[]>([])
 
@@ -75,14 +78,20 @@ function isCommand(line: string): boolean {
   border-radius: 50%;
 }
 
-.dot.red { background: #FF5F57; }
-.dot.yellow { background: #FFBD2E; }
-.dot.green { background: #28C840; }
+.dot.red {
+  background: #ff5f57;
+}
+.dot.yellow {
+  background: #ffbd2e;
+}
+.dot.green {
+  background: #28c840;
+}
 
 .terminal-title {
   margin-left: 8px;
   font-size: 0.8rem;
-  color: #A0A0B8;
+  color: #a0a0b8;
 }
 
 .terminal-body {
@@ -94,10 +103,10 @@ function isCommand(line: string): boolean {
 }
 
 .command {
-  color: #6BCB77;
+  color: #6bcb77;
 }
 
 .output {
-  color: #A0A0B8;
+  color: #a0a0b8;
 }
 </style>
