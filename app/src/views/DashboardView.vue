@@ -127,6 +127,17 @@ function goToCheatsheet(name: string) {
         </div>
       </div>
     </section>
+
+    <!-- Interactive diagrams -->
+    <section class="cheatsheets-section">
+      <h2 class="section-title">Інтерактивні діаграми</h2>
+      <div class="cheatsheet-cards">
+        <div class="cheatsheet-card" @click="router.push('/lifecycle')">
+          <span class="cheatsheet-icon">&#9889;</span>
+          <span class="cheatsheet-title">Request Lifecycle</span>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

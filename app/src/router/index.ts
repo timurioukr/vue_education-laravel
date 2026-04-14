@@ -24,6 +24,12 @@ const router = createRouter({
       meta: { title: 'Cheatsheet' },
     },
     {
+      path: '/lifecycle',
+      name: 'lifecycle',
+      component: () => import('@/views/LifecycleView.vue'),
+      meta: { title: 'Request Lifecycle' },
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: () => import('@/views/NotFoundView.vue'),
