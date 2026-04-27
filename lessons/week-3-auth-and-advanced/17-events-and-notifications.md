@@ -196,8 +196,8 @@ public function update(Request $request, Task $task)
 
     $task->update($request->validated());
 
-    // Якщо статус змінився на "completed"
-    if ($oldStatus !== 'completed' && $task->status === 'completed') {
+    // Якщо статус змінився на "done"
+    if ($oldStatus !== 'done' && $task->status === 'done') {
         TaskCompleted::dispatch($task);
     }
 
@@ -258,7 +258,7 @@ class TaskObserver
     public function updated(Task $task): void
     {
         // wasChanged() перевіряє, чи змінилося поле при останньому save()
-        if ($task->wasChanged('status') && $task->status === 'completed') {
+        if ($task->wasChanged('status') && $task->status === 'done') {
             TaskCompleted::dispatch($task);
         }
     }
@@ -311,7 +311,7 @@ public function boot(): void
 ```javascript
 // Pinia -- підписка на зміни store
 taskStore.$subscribe((mutation, state) => {
-    if (mutation.type === 'patch' && state.currentTask.status === 'completed') {
+    if (mutation.type === 'patch' && state.currentTask.status === 'done') {
         showConfetti()
         sendAnalytics('task_completed')
     }
@@ -608,7 +608,7 @@ class TaskObserver
     {
         // wasChanged() перевіряє, чи змінилось поле при останньому save()
         // getOriginal() повертає значення ДО зміни
-        if ($task->wasChanged('status') && $task->status === 'completed') {
+        if ($task->wasChanged('status') && $task->status === 'done') {
             TaskCompleted::dispatch($task);
         }
     }
@@ -809,7 +809,7 @@ curl http://localhost:8000/api/notifications \
 # { "data": [], "meta": { "unread_count": 0, ... } }
 ```
 
-Завершіть задачу (змініть статус на "completed"):
+Завершіть задачу (змініть статус на "done"):
 
 ```bash
 # Спочатку дізнайтесь ID існуючої задачі
@@ -820,7 +820,7 @@ curl http://localhost:8000/api/tasks \
 curl -X PUT http://localhost:8000/api/tasks/1 \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"status": "completed"}'
+  -d '{"status": "done"}'
 ```
 
 Перевірте, що сповіщення з'явилося:
@@ -895,7 +895,7 @@ $user->unreadNotifications->count();   // непрочитані
 
 // Створити задачу і завершити її -- подія спрацює автоматично
 $task = $user->tasks()->first();
-$task->update(['status' => 'completed']);
+$task->update(['status' => 'done']);
 
 // Перевірити нове сповіщення
 $user->refresh();
@@ -915,7 +915,7 @@ $user->notifications->last()->data;
 3. `app/Notifications/TaskCompletedNotification.php` -- сповіщення з каналом `database`
 4. `app/Observers/TaskObserver.php` -- спостерігач з методами `creating`, `updated`, `deleting`
 5. Модель `Task` має атрибут `#[ObservedBy(TaskObserver::class)]`
-6. Оновлення статусу задачі на `completed` автоматично створює запис у таблиці `notifications`
+6. Оновлення статусу задачі на `done` автоматично створює запис у таблиці `notifications`
 7. `GET /api/notifications` повертає список сповіщень з `unread_count`
 8. `PATCH /api/notifications/{id}/read` позначає сповіщення як прочитане
 9. При створенні задачі без статусу/пріоритету Observer автоматично встановлює `pending` та `0`
@@ -1034,7 +1034,7 @@ $assignee->unreadNotifications->first()->data;
 
 1. **b) Дозволяє викликати `TaskCompleted::dispatch()` як статичний метод** -- трейт `Dispatchable` додає статичний метод `dispatch()`, який створює екземпляр події і відправляє його через систему подій Laravel. Без нього довелось би писати `event(new TaskCompleted($task))`.
 
-2. **c) `updated` -- після оновлення задачі (перевіряючи `wasChanged`)** -- подія TaskCompleted повинна спрацьовувати, коли статус змінюється на "completed". Метод `updated` викликається після збереження, і `$task->wasChanged('status')` дозволяє перевірити, чи дійсно статус змінився.
+2. **c) `updated` -- після оновлення задачі (перевіряючи `wasChanged`)** -- подія TaskCompleted повинна спрацьовувати, коли статус змінюється на "done". Метод `updated` викликається після збереження, і `$task->wasChanged('status')` дозволяє перевірити, чи дійсно статус змінився.
 
 3. **b) `via()`** -- метод `via()` повертає масив каналів, через які буде доставлено сповіщення: `['database']`, `['mail', 'database']` тощо. Назва методу означає "через які канали".
 

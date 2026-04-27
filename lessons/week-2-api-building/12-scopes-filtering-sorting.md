@@ -55,7 +55,7 @@ Scope -- це метод у моделі, який інкапсулює част
 // Визначення -- метод scopeOverdue
 public function scopeOverdue(Builder $query): Builder
 {
-    return $query->where('status', '!=', 'completed')
+    return $query->where('status', '!=', 'done')
                  ->where('deadline', '<', now());
 }
 
@@ -73,7 +73,7 @@ const useTaskStore = defineStore('tasks', () => {
     // "Scope" як computed
     const overdueTasks = computed(() =>
         tasks.value.filter(t =>
-            t.status !== 'completed' && isPast(new Date(t.deadline))
+            t.status !== 'done' && isPast(new Date(t.deadline))
         )
     );
 
@@ -102,7 +102,7 @@ class Task extends Model
      */
     public function scopeOverdue(Builder $query): Builder
     {
-        return $query->where('status', '!=', 'completed')
+        return $query->where('status', '!=', 'done')
                      ->whereNotNull('deadline')
                      ->where('deadline', '<', now());
     }
@@ -514,7 +514,7 @@ class Task extends Model
      */
     public function scopeOverdue(Builder $query): Builder
     {
-        return $query->where('status', '!=', 'completed')
+        return $query->where('status', '!=', 'done')
                      ->whereNotNull('deadline')
                      ->where('deadline', '<', now());
     }
@@ -801,7 +801,7 @@ d) Для автоматичного кешування результатів
  */
 public function scopeDueToday(Builder $query): Builder
 {
-    return $query->where('status', '!=', 'completed')
+    return $query->where('status', '!=', 'done')
                  ->whereNotNull('deadline')
                  ->whereDate('deadline', today());
 }
@@ -811,7 +811,7 @@ public function scopeDueToday(Builder $query): Builder
  */
 public function scopeDueThisWeek(Builder $query): Builder
 {
-    return $query->where('status', '!=', 'completed')
+    return $query->where('status', '!=', 'done')
                  ->whereNotNull('deadline')
                  ->whereBetween('deadline', [
                      now()->startOfWeek(),

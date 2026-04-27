@@ -309,19 +309,19 @@ Route::get('/tasks', function () {
             'id' => 1,
             'title' => 'Learn Laravel routing',
             'status' => 'in_progress',
-            'priority' => 2,
+            'priority' => 'medium',
         ],
         [
             'id' => 2,
             'title' => 'Build Task Manager API',
             'status' => 'pending',
-            'priority' => 1,
+            'priority' => 'low',
         ],
         [
             'id' => 3,
             'title' => 'Connect Vue frontend',
             'status' => 'pending',
-            'priority' => 0,
+            'priority' => 'low',
         ],
     ];
 
@@ -334,7 +334,7 @@ Route::get('/tasks/{id}', function (string $id) {
         'id' => (int) $id,
         'title' => 'Learn Laravel routing',
         'status' => 'in_progress',
-        'priority' => 2,
+        'priority' => 'medium',
         'description' => 'Understanding routes, controllers, and HTTP methods',
     ];
 
@@ -347,7 +347,7 @@ Route::post('/tasks', function (Request $request) {
         'id' => 4,
         'title' => $request->input('title', 'New Task'),
         'status' => 'pending',
-        'priority' => $request->input('priority', 0),
+        'priority' => $request->input('priority', 'low'),
         'created_at' => now(),
     ];
 
@@ -385,9 +385,9 @@ php artisan serve
 curl http://localhost:8000/api/tasks
 
 # Очікуваний результат:
-# [{"id":1,"title":"Learn Laravel routing","status":"in_progress","priority":2},
-#  {"id":2,"title":"Build Task Manager API","status":"pending","priority":1},
-#  {"id":3,"title":"Connect Vue frontend","status":"pending","priority":0}]
+# [{"id":1,"title":"Learn Laravel routing","status":"in_progress","priority":"medium"},
+#  {"id":2,"title":"Build Task Manager API","status":"pending","priority":"low"},
+#  {"id":3,"title":"Connect Vue frontend","status":"pending","priority":"low"}]
 
 # GET -- одна задача
 curl http://localhost:8000/api/tasks/1
@@ -395,10 +395,10 @@ curl http://localhost:8000/api/tasks/1
 # POST -- створити задачу
 curl -X POST http://localhost:8000/api/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "Write tests", "priority": 3}'
+  -d '{"title": "Write tests", "priority": "high"}'
 
 # Очікуваний результат:
-# {"id":4,"title":"Write tests","status":"pending","priority":3,"created_at":"..."}
+# {"id":4,"title":"Write tests","status":"pending","priority":"high","created_at":"..."}
 
 # PUT -- оновити задачу
 curl -X PUT http://localhost:8000/api/tasks/1 \
@@ -443,21 +443,21 @@ class TaskController extends Controller
                 'id' => 1,
                 'title' => 'Learn Laravel routing',
                 'status' => 'in_progress',
-                'priority' => 2,
+                'priority' => 'medium',
                 'category_id' => 1,
             ],
             [
                 'id' => 2,
                 'title' => 'Build Task Manager API',
                 'status' => 'pending',
-                'priority' => 1,
+                'priority' => 'low',
                 'category_id' => 1,
             ],
             [
                 'id' => 3,
                 'title' => 'Buy groceries',
                 'status' => 'pending',
-                'priority' => 0,
+                'priority' => 'low',
                 'category_id' => 2,
             ],
         ];
@@ -474,7 +474,7 @@ class TaskController extends Controller
             'id' => 4,
             'title' => $request->input('title', 'New Task'),
             'status' => 'pending',
-            'priority' => $request->input('priority', 0),
+            'priority' => $request->input('priority', 'low'),
             'category_id' => $request->input('category_id'),
             'created_at' => now()->toISOString(),
         ];
@@ -498,7 +498,7 @@ class TaskController extends Controller
             'id' => (int) $id,
             'title' => 'Learn Laravel routing',
             'status' => 'in_progress',
-            'priority' => 2,
+            'priority' => 'medium',
             'description' => 'Understanding routes, controllers, and HTTP methods',
             'category' => [
                 'id' => 1,
@@ -518,7 +518,7 @@ class TaskController extends Controller
             'id' => (int) $id,
             'title' => $request->input('title', 'Updated Task'),
             'status' => $request->input('status', 'in_progress'),
-            'priority' => $request->input('priority', 1),
+            'priority' => $request->input('priority', 'low'),
             'updated_at' => now()->toISOString(),
         ];
 
@@ -700,8 +700,8 @@ curl http://localhost:8000/api/tasks
 # POST -- створити задачу
 curl -X POST http://localhost:8000/api/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "Deploy to production", "priority": 3}'
-# {"id":4,"title":"Deploy to production","status":"pending","priority":3,...}
+  -d '{"title": "Deploy to production", "priority": "high"}'
+# {"id":4,"title":"Deploy to production","status":"pending","priority":"high",...}
 
 # GET -- одна задача
 curl http://localhost:8000/api/tasks/1

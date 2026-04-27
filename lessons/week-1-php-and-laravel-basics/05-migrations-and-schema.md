@@ -131,7 +131,7 @@ interface Task {
     title: string
     description?: string  // nullable
     status: 'pending' | 'in_progress' | 'done'  // enum
-    priority: number
+    priority: 'low' | 'medium' | 'high'           // enum
     deadline?: Date        // nullable
     is_completed: boolean
     user_id: number       // foreign key
@@ -149,7 +149,7 @@ Schema::create('tasks', function (Blueprint $table) {
     $table->string('title');                         // title: string
     $table->text('description')->nullable();         // description?: string
     $table->string('status')->default('pending');    // status: 'pending' | ...
-    $table->unsignedTinyInteger('priority')->default(0); // priority: number
+    $table->string('priority')->default('low');      // priority: 'low' | 'medium' | 'high'
     $table->date('deadline')->nullable();            // deadline?: Date
     $table->boolean('is_completed')->default(false); // is_completed: boolean
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();  // user_id: number (FK)
@@ -171,7 +171,7 @@ Schema::create('tasks', function (Blueprint $table) {
 | `$table->text('body')` | TEXT | `body: string` | Довгий текст (без обмеження) |
 | `$table->boolean('active')` | BOOLEAN | `active: boolean` | true/false |
 | `$table->integer('count')` | INTEGER | `count: number` | Ціле число (-2B...+2B) |
-| `$table->unsignedTinyInteger('priority')` | TINYINT UNSIGNED | `priority: number` | Число 0-255 |
+| `$table->unsignedTinyInteger('value')` | TINYINT UNSIGNED | `value: number` | Число 0-255 |
 | `$table->date('deadline')` | DATE | `deadline: string` (YYYY-MM-DD) | Тільки дата |
 | `$table->timestamp('published_at')` | TIMESTAMP | `published_at: Date` | Дата і час |
 | `$table->timestamps()` | -- | `created_at, updated_at: Date` | Додає два поля одразу |
@@ -396,7 +396,7 @@ return new class extends Migration
             $table->string('title');                              // Назва задачі
             $table->text('description')->nullable();              // Опис (необов'язковий)
             $table->string('status')->default('pending');         // pending, in_progress, done
-            $table->unsignedTinyInteger('priority')->default(0);  // 0=low, 1=medium, 2=high, 3=urgent
+            $table->string('priority')->default('low');           // low, medium, high
             $table->date('deadline')->nullable();                 // Дедлайн (необов'язковий)
             $table->foreignId('user_id')                          // Автор задачі
                 ->constrained()
@@ -424,7 +424,7 @@ return new class extends Migration
 
 - `$table->text('description')->nullable()` -- `TEXT` може зберігати довгий текст. `nullable()` означає, що задача може бути без опису. Це як `description?: string` у TypeScript.
 - `$table->string('status')->default('pending')` -- ми використовуємо `string` замість `enum`, бо це гнучкіше. Валідацію значень зробимо на рівні контролера (Урок 13). `default('pending')` -- нова задача завжди починається зі статусу "pending".
-- `$table->unsignedTinyInteger('priority')->default(0)` -- `TINYINT UNSIGNED` зберігає числа 0-255. Для пріоритету (0-3) цього більш ніж достатньо. `unsigned` означає тільки додатні числа.
+- `$table->string('priority')->default('low')` -- так само, як і `status`: зберігаємо рядок (`low`, `medium`, `high`), валідацію набору значень робимо у FormRequest (Урок 8). Це консистентно з тим, як працює `status`, і не вимагає мапінгу чисел у фронтенді.
 - `$table->date('deadline')->nullable()` -- тільки дата (без часу). Не кожна задача має дедлайн.
 - `$table->foreignId('category_id')->nullable()->constrained()->nullOnDelete()` -- задача може бути без категорії (`nullable`). Якщо категорію видаляють, задача НЕ видаляється -- просто `category_id` стає NULL.
 - `$table->softDeletes()` -- додає колонку `deleted_at`. Замість фізичного видалення запис просто позначається як "видалений". Це як кошик у файловій системі.
@@ -469,7 +469,7 @@ return new class extends Migration
 };
 ```
 
-### Крок 5: Створіть pivot-таблицю task_tag
+### Крок 5: Створіть pivot-таблицю tag_task
 
 Pivot-таблиця (або зв'язкова таблиця) -- це спосіб реалізувати зв'язок "багато до багатьох" (many-to-many). Одна задача може мати багато тегів, і один тег може бути на багатьох задачах.
 
@@ -487,21 +487,21 @@ const task = {
 У базі даних це реалізується через окрему таблицю:
 
 ```
-task_tag
-+----+---------+--------+
-| id | task_id | tag_id |
-+----+---------+--------+
-|  1 |       1 |      1 |  ← Task 1 має Tag 1
-|  2 |       1 |      3 |  ← Task 1 має Tag 3
-|  3 |       2 |      1 |  ← Task 2 має Tag 1
-+----+---------+--------+
+tag_task
++----+--------+---------+
+| id | tag_id | task_id |
++----+--------+---------+
+|  1 |      1 |       1 |  ← Task 1 має Tag 1
+|  2 |      3 |       1 |  ← Task 1 має Tag 3
+|  3 |      1 |       2 |  ← Task 2 має Tag 1
++----+--------+---------+
 ```
 
 ```bash
-php artisan make:migration create_task_tag_table
+php artisan make:migration create_tag_task_table
 ```
 
-> **Конвенція імен:** pivot-таблиця називається з імен двох таблиць у **алфавітному порядку**, в однині, через підкреслення: `task` + `tag` = `task_tag`. Не `tag_task`, не `tasks_tags`.
+> **Конвенція імен:** pivot-таблиця називається з імен двох моделей у **алфавітному порядку**, в однині, через підкреслення: `Tag` + `Task` → `tag_task` (бо `tag` < `task` алфавітно). Не `task_tag`, не `tasks_tags`. Eloquent автоматично шукає таблицю саме під цим іменем у `belongsToMany()`.
 
 ```php
 <?php
@@ -517,18 +517,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_tag', function (Blueprint $table) {
+        Schema::create('tag_task', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')
-                ->constrained()
-                ->cascadeOnDelete();    // Видалили задачу -> видаляються зв'язки
             $table->foreignId('tag_id')
                 ->constrained()
                 ->cascadeOnDelete();    // Видалили тег -> видаляються зв'язки
+            $table->foreignId('task_id')
+                ->constrained()
+                ->cascadeOnDelete();    // Видалили задачу -> видаляються зв'язки
             $table->timestamps();
 
             // Унікальний індекс: одна задача не може мати один і той самий тег двічі
-            $table->unique(['task_id', 'tag_id']);
+            $table->unique(['tag_id', 'task_id']);
         });
     }
 
@@ -537,7 +537,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_tag');
+        Schema::dropIfExists('tag_task');
     }
 };
 ```
@@ -559,7 +559,7 @@ php artisan migrate
   2026_04_09_120001_create_categories_table ............... 2.15ms DONE
   2026_04_09_120002_create_tasks_table .................... 3.42ms DONE
   2026_04_09_120003_create_tags_table ..................... 1.89ms DONE
-  2026_04_09_120004_create_task_tag_table ................. 2.03ms DONE
+  2026_04_09_120004_create_tag_task_table ................. 2.03ms DONE
 ```
 
 Всі 7 міграцій виконались. Laravel створив таблиці в базі даних SQLite.
@@ -580,7 +580,7 @@ php artisan migrate:status
   2026_04_09_120001_create_categories_table .......... [1] Ran
   2026_04_09_120002_create_tasks_table ............... [1] Ran
   2026_04_09_120003_create_tags_table ................ [1] Ran
-  2026_04_09_120004_create_task_tag_table ............ [1] Ran
+  2026_04_09_120004_create_tag_task_table ............ [1] Ran
 ```
 
 `[1]` означає "batch 1" -- всі міграції виконались в одній пачці. Якщо ви зробите `rollback`, відкотяться всі міграції з batch 1.
@@ -616,7 +616,7 @@ php artisan db:table tasks
   title ............... varchar ........... 
   description ......... text .............. nullable
   status .............. varchar ........... default: 'pending'
-  priority ............ integer ........... default: 0
+  priority ............ varchar ........... default: 'low'
   deadline ............ date .............. nullable
   user_id ............. integer ...........
   category_id ......... integer ........... nullable
@@ -632,7 +632,7 @@ php artisan db:table categories
 
 ```bash
 # Структура pivot-таблиці
-php artisan db:table task_tag
+php artisan db:table tag_task
 ```
 
 ### Крок 9: Протестуйте rollback
@@ -647,7 +647,7 @@ php artisan migrate:rollback
 ```
    INFO  Rolling back migrations.
 
-  2026_04_09_120004_create_task_tag_table ............. 1.23ms DONE
+  2026_04_09_120004_create_tag_task_table ............. 1.23ms DONE
   2026_04_09_120003_create_tags_table ................. 0.98ms DONE
   2026_04_09_120002_create_tasks_table ................ 1.45ms DONE
   2026_04_09_120001_create_categories_table ........... 0.87ms DONE
@@ -681,7 +681,7 @@ php artisan migrate:fresh
 
   0001_01_01_000000_create_users_table ............... 11.23ms DONE
   ...
-  2026_04_09_120004_create_task_tag_table ............. 1.89ms DONE
+  2026_04_09_120004_create_tag_task_table ............. 1.89ms DONE
 ```
 
 `migrate:fresh` видаляє ВСІ таблиці і запускає всі міграції з нуля. Це зручно під час розробки, коли хочеш почати з чистого аркуша.
@@ -697,7 +697,7 @@ php artisan migrate:fresh
 3. `php artisan db:table tasks` показує всі колонки: id, title, description, status, priority, deadline, user_id, category_id, created_at, updated_at, deleted_at
 4. `php artisan db:table categories` показує: id, name, color, user_id, created_at, updated_at
 5. `php artisan db:table tags` показує: id, name, user_id, created_at, updated_at
-6. `php artisan db:table task_tag` показує: id, task_id, tag_id, created_at, updated_at
+6. `php artisan db:table tag_task` показує: id, tag_id, task_id, created_at, updated_at
 
 ---
 

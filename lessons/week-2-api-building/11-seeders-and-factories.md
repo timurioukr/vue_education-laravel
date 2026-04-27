@@ -20,7 +20,7 @@
 | `Task::factory()->create()` | `generateFakeTask()` | Створити один фейковий об'єкт |
 | `Task::factory()->count(10)->create()` | `Array.from({ length: 10 }, () => generateFakeTask())` | Створити масив фейкових об'єктів |
 | `->make()` (без збереження) | Просто створити об'єкт в пам'яті | Корисно для тестів |
-| Factory states | Різні fixture presets для тестування | `overdue`, `completed` варіації |
+| Factory states | Різні fixture presets для тестування | `overdue`, `done` варіації |
 | Seeder | setup-скрипт, що наповнює mock-базу | Запускається одною командою |
 | `DatabaseSeeder` | `setupMockData()` головна функція | Викликає інші seeders |
 | `migrate:fresh --seed` | Скинути mock-базу і наповнити заново | "Чистий старт" для розробки |
@@ -101,7 +101,7 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['pending', 'in_progress', 'completed']),
+            'status' => fake()->randomElement(['pending', 'in_progress', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
             'deadline' => fake()->dateTimeBetween('now', '+2 months'),
         ];
@@ -117,7 +117,7 @@ function generateFakeTask() {
     return {
         title: faker.lorem.sentence(4),
         description: faker.lorem.paragraph(),
-        status: faker.helpers.arrayElement(['pending', 'in_progress', 'completed']),
+        status: faker.helpers.arrayElement(['pending', 'in_progress', 'done']),
         priority: faker.helpers.arrayElement(['low', 'medium', 'high']),
         deadline: faker.date.between({ from: new Date(), to: addMonths(new Date(), 2) }),
     };
@@ -136,7 +136,7 @@ $tasks = Task::factory()->count(10)->create();
 // Створити задачу з конкретними значеннями (перезаписують faker)
 $task = Task::factory()->create([
     'title' => 'My specific task',
-    'status' => 'completed',
+    'status' => 'done',
 ]);
 
 // make() -- створити об'єкт БЕЗ збереження в базу
@@ -172,7 +172,7 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['pending', 'in_progress', 'completed']),
+            'status' => fake()->randomElement(['pending', 'in_progress', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
             'deadline' => fake()->dateTimeBetween('now', '+2 months'),
         ];
@@ -192,10 +192,10 @@ class TaskFactory extends Factory
     /**
      * Завершена задача.
      */
-    public function completed(): static
+    public function done(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'completed',
+            'status' => 'done',
         ]);
     }
 
@@ -219,7 +219,7 @@ class TaskFactory extends Factory
 $overdue = Task::factory()->count(5)->overdue()->create();
 
 // Створити завершену задачу з високим пріоритетом
-$task = Task::factory()->completed()->highPriority()->create();
+$task = Task::factory()->done()->highPriority()->create();
 
 // Комбінувати стани: прострочена + високий пріоритет
 $urgent = Task::factory()->overdue()->highPriority()->create();
@@ -237,7 +237,7 @@ const generateOverdueTask = () => ({
 
 const generateCompletedTask = () => ({
     ...generateFakeTask(),
-    status: 'completed',
+    status: 'done',
 });
 ```
 
@@ -272,7 +272,7 @@ $category = Category::factory()
 
 // Або з іменованим зв'язком
 $category = Category::factory()
-    ->has(Task::factory()->count(3)->completed(), 'tasks')
+    ->has(Task::factory()->count(3)->done(), 'tasks')
     ->create();
 ```
 
@@ -327,7 +327,7 @@ class TaskSeeder extends Seeder
         Task::factory()->count(5)->overdue()->create();
 
         // Створити 3 завершених
-        Task::factory()->count(3)->completed()->create();
+        Task::factory()->count(3)->done()->create();
     }
 }
 ```
@@ -398,7 +398,7 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['pending', 'in_progress', 'completed']),
+            'status' => fake()->randomElement(['pending', 'in_progress', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
             'deadline' => fake()->dateTimeBetween('now', '+2 months'),
         ];
@@ -481,7 +481,7 @@ class TaskFactory extends Factory
         return [
             'title' => fake()->sentence(rand(3, 6)),
             'description' => fake()->optional(0.8)->paragraph(), // 80% мають опис
-            'status' => fake()->randomElement(['pending', 'in_progress', 'completed']),
+            'status' => fake()->randomElement(['pending', 'in_progress', 'done']),
             'priority' => fake()->randomElement(['low', 'medium', 'high']),
             'deadline' => fake()->optional(0.7)->dateTimeBetween('now', '+3 months'), // 70% мають дедлайн
             'category_id' => Category::factory(),
@@ -502,10 +502,10 @@ class TaskFactory extends Factory
     /**
      * Завершена задача.
      */
-    public function completed(): static
+    public function done(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'completed',
+            'status' => 'done',
         ]);
     }
 
@@ -741,7 +741,7 @@ class TaskSeeder extends Seeder
         // 5 завершених задач
         Task::factory()
             ->count(5)
-            ->completed()
+            ->done()
             ->recycle($categories)
             ->create();
 
@@ -820,7 +820,7 @@ php artisan tinker
 >>> Task::count()
 => 28
 
->>> Task::where('status', 'completed')->count()
+>>> Task::where('status', 'done')->count()
 => 5
 
 >>> Task::where('status', 'pending')->where('deadline', '<', now())->count()
@@ -893,7 +893,7 @@ d) Робить бекап бази і створює нову
 **4. Навіщо потрібні factory states?**
 
 a) Для зберігання стану фабрики між запусками
-b) Для створення іменованих варіацій моделі (overdue, completed тощо)
+b) Для створення іменованих варіацій моделі (overdue, done тощо)
 c) Для валідації даних перед створенням
 d) Для підключення до різних баз даних
 
@@ -908,7 +908,7 @@ d) Запускається тільки після всіх seeders
 
 Створіть реалістичний набір тестових даних:
 
-1. Додайте factory state `completed` до `TaskFactory`, який встановлює `status` в `'completed'`
+1. Додайте factory state `done` до `TaskFactory`, який встановлює `status` в `'done'`
 2. Створіть seeder `TestDataSeeder`, який створює:
    - Рівно **5 завершених** задач
    - Рівно **15 незавершених** (pending) задач
@@ -916,13 +916,13 @@ d) Запускається тільки після всіх seeders
 
 ### Підказки
 
-State `completed` (якщо ще не додали):
+State `done` (якщо ще не додали):
 
 ```php
-public function completed(): static
+public function done(): static
 {
     return $this->state(fn (array $attributes) => [
-        'status' => 'completed',
+        'status' => 'done',
     ]);
 }
 ```
@@ -959,7 +959,7 @@ class TestDataSeeder extends Seeder
         // 5 завершених задач
         Task::factory()
             ->count(5)
-            ->completed()
+            ->done()
             ->recycle($categories)
             ->create();
 
@@ -983,7 +983,7 @@ php artisan tinker
 ```
 
 ```php
->>> Task::where('status', 'completed')->count()
+>>> Task::where('status', 'done')->count()
 => 5
 
 >>> Task::where('status', 'pending')->count()
@@ -998,5 +998,5 @@ php artisan tinker
 1. **b)** `create()` зберігає модель у базу даних і повертає її з `id`. `make()` створює об'єкт тільки в пам'яті -- корисно для тестів, коли не потрібно зберігати в базу.
 2. **b)** `recycle()` каже фабриці використовувати існуючу модель (наприклад, категорію) замість створення нової для кожного запису. Без нього 10 задач створять 10 різних категорій.
 3. **b)** `migrate:fresh --seed` видаляє **всі** таблиці, запускає всі міграції з нуля, а потім запускає `DatabaseSeeder`. Це "повний скид" бази даних.
-4. **b)** Factory states створюють іменовані варіації. `Task::factory()->overdue()` завжди створює задачу з дедлайном у минулому, `->completed()` -- завершену. Стани можна комбінувати.
+4. **b)** Factory states створюють іменовані варіації. `Task::factory()->overdue()` завжди створює задачу з дедлайном у минулому, `->done()` -- завершену (`status = 'done'`). Стани можна комбінувати.
 5. **b)** `afterCreating()` виконує код **після** збереження моделі в базу. Це потрібно для зв'язків, які вимагають `id` (наприклад, many-to-many через `attach()`).

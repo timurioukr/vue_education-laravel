@@ -96,7 +96,7 @@ class Task extends Model
 > **Конвенції імен:**
 > - Модель `Task` -> таблиця `tasks`
 > - Модель `Category` -> таблиця `categories`
-> - Модель `TaskTag` -> таблиця `task_tags`
+> - Модель `BlogPost` -> таблиця `blog_posts` (PascalCase -> snake_case + множина)
 > 
 > Якщо таблиця називається інакше, можна перевизначити: `protected $table = 'my_custom_table';`
 
@@ -178,7 +178,6 @@ class Task extends Model
     {
         return [
             'deadline' => 'date',        // string -> Carbon (об'єкт дати)
-            'priority' => 'integer',     // string -> int
             'is_completed' => 'boolean', // 0/1 -> true/false
             'metadata' => 'array',       // JSON string -> PHP array
         ];
@@ -214,7 +213,7 @@ class User extends Model
 $task = Task::create([
     'title' => 'Learn Eloquent',
     'status' => 'pending',
-    'priority' => 2,
+    'priority' => 'medium',
     'user_id' => 1,
 ]);
 // $task -- це вже збережений об'єкт з id, created_at тощо
@@ -229,7 +228,7 @@ $task->save();
 // Спосіб 3: firstOrCreate -- знайти або створити
 $task = Task::firstOrCreate(
     ['title' => 'Learn Eloquent', 'user_id' => 1],  // Шукати за цими полями
-    ['status' => 'pending', 'priority' => 2]          // Якщо не знайшли -- створити з цими
+    ['status' => 'pending', 'priority' => 'medium']   // Якщо не знайшли -- створити з цими
 );
 ```
 
@@ -269,12 +268,12 @@ $titles = Task::where('status', 'done')->pluck('title');
 
 // Кілька умов
 $urgentPending = Task::where('status', 'pending')
-    ->where('priority', '>=', 2)
+    ->whereIn('priority', ['medium', 'high'])
     ->orderBy('deadline', 'asc')
     ->limit(5)
     ->get();
 // ~= tasks.value
-//      .filter(t => t.status === 'pending' && t.priority >= 2)
+//      .filter(t => t.status === 'pending' && ['medium','high'].includes(t.priority))
 //      .sort((a, b) => a.deadline - b.deadline)
 //      .slice(0, 5)
 ```
@@ -404,7 +403,6 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
-        'notes',
         'status',
         'priority',
         'deadline',
@@ -416,7 +414,6 @@ class Task extends Model
     {
         return [
             'deadline' => 'date',
-            'priority' => 'integer',
         ];
     }
 }
@@ -426,7 +423,7 @@ class Task extends Model
 
 - `use SoftDeletes` -- активує м'яке видалення (таблиця вже має `deleted_at` з Уроку 5)
 - `$fillable` -- перелік полів, які можна заповнити через `Task::create()`. Зверніть увагу: `id`, `created_at`, `updated_at`, `deleted_at` НЕ в списку -- вони заповнюються автоматично.
-- `casts()` -- `deadline` автоматично стає об'єктом Carbon, `priority` -- цілим числом.
+- `casts()` -- `deadline` автоматично стає об'єктом Carbon. `status` і `priority` лишаються рядками (їх валідуємо у FormRequest, Урок 8).
 
 ### Крок 3: Налаштуйте модель Category
 
@@ -496,7 +493,7 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
     'title' => 'Set up Laravel project',
     'description' => 'Install Laravel and configure database',
     'status' => 'done',
-    'priority' => 2,
+    'priority' => 'medium',
     'user_id' => 1,
     'category_id' => 1,
 ]);
@@ -505,7 +502,7 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
     'title' => 'Learn Eloquent ORM',
     'description' => 'Understand models, CRUD operations, and relationships',
     'status' => 'in_progress',
-    'priority' => 3,
+    'priority' => 'high',
     'deadline' => '2026-04-15',
     'user_id' => 1,
     'category_id' => 3,
@@ -515,7 +512,7 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
     'title' => 'Build REST API',
     'description' => 'Create controllers and routes for Task Manager',
     'status' => 'pending',
-    'priority' => 2,
+    'priority' => 'medium',
     'deadline' => '2026-04-20',
     'user_id' => 1,
     'category_id' => 1,
@@ -524,7 +521,7 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
 \App\Models\Task::create([
     'title' => 'Buy groceries',
     'status' => 'pending',
-    'priority' => 1,
+    'priority' => 'low',
     'user_id' => 1,
     'category_id' => 2,
 ]);
@@ -533,7 +530,7 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
     'title' => 'Write unit tests',
     'description' => 'Cover all API endpoints with tests',
     'status' => 'pending',
-    'priority' => 1,
+    'priority' => 'low',
     'deadline' => '2026-04-25',
     'user_id' => 1,
     'category_id' => 1,
@@ -577,8 +574,8 @@ $learning = \App\Models\Category::create(['name' => 'Learning', 'color' => '#8B5
 // => 3
 
 // Задачі з високим пріоритетом
-\App\Models\Task::where('priority', '>=', 2)->get();
-// => Collection of 3 tasks (priority 2 та 3)
+\App\Models\Task::whereIn('priority', ['medium', 'high'])->get();
+// => Collection of 3 tasks (priority "medium" та "high")
 
 // Тільки назви задач зі статусом done
 \App\Models\Task::where('status', 'done')->pluck('title');
@@ -667,7 +664,7 @@ class TaskController extends Controller
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'status' => $request->input('status', 'pending'),
-            'priority' => $request->input('priority', 0),
+            'priority' => $request->input('priority', 'low'),
             'deadline' => $request->input('deadline'),
             'user_id' => 1, // Поки хардкодимо, бо немає автентифікації
             'category_id' => $request->input('category_id'),
@@ -738,7 +735,7 @@ php artisan serve
 # GET -- список всіх задач (з реальної бази!)
 curl http://localhost:8000/api/tasks
 # [{"id":1,"title":"Set up Laravel project","description":"Install Laravel and configure database",
-#   "status":"done","priority":2,"deadline":null,"user_id":1,"category_id":1,
+#   "status":"done","priority":"medium","deadline":null,"user_id":1,"category_id":1,
 #   "created_at":"2026-04-09T...","updated_at":"2026-04-09T...","deleted_at":null}, ...]
 
 # GET -- одна задача
@@ -753,15 +750,15 @@ curl http://localhost:8000/api/tasks/999 -w "\nHTTP Status: %{http_code}\n"
 # POST -- створити нову задачу
 curl -X POST http://localhost:8000/api/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "Deploy to production", "priority": 3, "deadline": "2026-05-01", "category_id": 1}'
-# {"id":6,"title":"Deploy to production","status":"pending","priority":3,
+  -d '{"title": "Deploy to production", "priority": "high", "deadline": "2026-05-01", "category_id": 1}'
+# {"id":6,"title":"Deploy to production","status":"pending","priority":"high",
 #  "deadline":"2026-05-01","user_id":1,"category_id":1,"created_at":"...","updated_at":"..."}
 
 # PUT -- оновити задачу
 curl -X PUT http://localhost:8000/api/tasks/3 \
   -H "Content-Type: application/json" \
-  -d '{"status": "in_progress", "priority": 3}'
-# {"id":3,"title":"Build REST API","status":"in_progress","priority":3,...}
+  -d '{"status": "in_progress", "priority": "high"}'
+# {"id":3,"title":"Build REST API","status":"in_progress","priority":"high",...}
 
 # DELETE -- м'яко видалити задачу
 curl -X DELETE http://localhost:8000/api/tasks/6 -w "\nHTTP Status: %{http_code}\n"
