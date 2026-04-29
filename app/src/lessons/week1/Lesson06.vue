@@ -388,7 +388,7 @@ const quizQuestions: QuizQuestion[] = [
 
       <CodeComparison
         :js="`// JS: немає вбудованого захисту\nconst task = await db.insert('tasks', req.body);\n// будь-яке поле з body потрапить в БД!`"
-        :php="`// Laravel: $fillable (whitelist)\nprotected \$fillable = ['title', 'status'];\n// Тільки title і status можна масово заповнити\n\n// Laravel: $guarded (blacklist)\nprotected \$guarded = ['id'];\n// Все можна, крім id`"
+        :php="`// Laravel: $fillable (whitelist)\nprotected $fillable = ['title', 'status'];\n// Тільки title і status можна масово заповнити\n\n// Laravel: $guarded (blacklist)\nprotected $guarded = ['id'];\n// Все можна, крім id`"
         js-title="JS (без захисту)"
         php-title="Laravel ($fillable vs $guarded)"
       />

@@ -43,7 +43,7 @@ const quizQuestions: QuizQuestion[] = [
     options: ['channels()', 'via()', 'deliver()', 'send()'],
     correct: 1,
     explanation:
-      "via(object \\$notifiable): array повертає масив каналів — наприклад ['database', 'mail']. Для кожного каналу Laravel шукає окремий метод: toDatabase(), toMail(), toBroadcast(), toSlack(). Зручно: один Notification клас → одночасна доставка кількома каналами без дублювання логіки.",
+      "via(object $notifiable): array повертає масив каналів — наприклад ['database', 'mail']. Для кожного каналу Laravel шукає окремий метод: toDatabase(), toMail(), toBroadcast(), toSlack(). Зручно: один Notification клас → одночасна доставка кількома каналами без дублювання логіки.",
   },
   {
     question: 'Як отримати ТІЛЬКИ непрочитані сповіщення користувача через Notifiable trait?',
@@ -173,7 +173,7 @@ class TaskCompleted
      * Constructor property promotion (PHP 8+):
      *   public Task $task — і поле, і параметр одночасно.
      *
-     * \$event->task буде доступний у кожному Listener.
+     * $event->task буде доступний у кожному Listener.
      */
     public function __construct(
         public Task $task
@@ -245,7 +245,7 @@ class TaskObserver
 {
     /**
      * BEFORE create — встановити дефолти.
-     * Поля присвоєні \$task->status = ... збережуться
+     * Поля присвоєні $task->status = ... збережуться
      * автоматично перед INSERT.
      */
     public function creating(Task $task): void
@@ -549,22 +549,22 @@ declare(strict_types=1);
  *
  *   1) class EventDispatcher (вже частково — добавте listen + dispatch)
  *
- *   2) sendTaskAssignedNotification(TaskAssigned \$event, array &\$notifications): void
- *      — додає сповіщення У МАСИВ \$notifications для assignedTo (НЕ для assignedBy!)
+ *   2) sendTaskAssignedNotification(TaskAssigned $event, array &$notifications): void
+ *      — додає сповіщення У МАСИВ $notifications для assignedTo (НЕ для assignedBy!)
  *      - тип:  'TaskAssignedNotification'
  *      - data: ['task_id', 'task_title', 'assigned_by_name', 'message']
  *      - message формату: "{assigned_by_name} assigned you task: {task_title}"
  *
- *   3) observeTaskUpdate(array \$original, array \$updated, EventDispatcher \$events,
- *                         array \$users): void
+ *   3) observeTaskUpdate(array $original, array $updated, EventDispatcher $events,
+ *                         array $users): void
  *      — еквівалент TaskObserver::updated().
  *      Якщо assigned_to змінилось і != null:
- *        - dispatch new TaskAssigned(\$updated, \$assignedTo, \$assignedBy)
+ *        - dispatch new TaskAssigned($updated, $assignedTo, $assignedBy)
  *      Якщо status змінився на 'completed':
- *        - dispatch new TaskCompleted(\$updated)
+ *        - dispatch new TaskCompleted($updated)
  *      ⚠️ Можуть спрацювати ОБИДВА у одному save — це нормально.
  *
- *   4) markAllAsRead(int \$userId, array &\$notifications): int
+ *   4) markAllAsRead(int $userId, array &$notifications): int
  *      — позначає всі непрочитані сповіщення user як прочитані,
  *        повертає скільки було позначено.
  */
@@ -603,7 +603,7 @@ function sendTaskAssignedNotification(TaskAssigned $event, array &$notifications
 function observeTaskUpdate(array $original, array $updated, EventDispatcher $events, array $users): void {
     // Ваш код тут
     // Підказка: для assigned_to знайдіть users[id] для отримання name.
-    // Для assigned_by — це auth-юзер; візьміть users[\$updated['user_id']].
+    // Для assigned_by — це auth-юзер; візьміть users[$updated['user_id']].
 }
 
 function markAllAsRead(int $userId, array &$notifications): int {

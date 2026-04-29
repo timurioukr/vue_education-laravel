@@ -125,7 +125,7 @@ class LogRequest
         \\Log::info(
             "{$request->method()} {$request->url()}"
         );
-        return $next($request); // ← \$next() = next()
+        return $next($request); // ← $next() = next()
     }
 }
 
@@ -170,7 +170,7 @@ const pipelineDiagram = `HTTP Request
 └────────────────┬───────────────────────┘
                  ▼
 ┌────────────────────────────────────────┐
-│ Middleware 4   (LogApiRequest, around) │  ← BEFORE: \$start = microtime(true)
+│ Middleware 4   (LogApiRequest, around) │  ← BEFORE: $start = microtime(true)
 │   ↓ $next($request)                    │
 └────────────────┬───────────────────────┘
                  ▼
@@ -520,19 +520,19 @@ declare(strict_types=1);
  * Реалізуйте 3 функції:
  *
  *   1) checkTaskLimit(array $request, callable $next, int $max): array
- *      - якщо count($request['tasks']) >= \$max → 403 з body
- *        ['message' => "Task limit reached. Maximum {\$max}.",
- *         'current_count' => N, 'max_allowed' => \$max]
- *      - інакше → \$response = \$next(\$request)
+ *      - якщо count($request['tasks']) >= $max → 403 з body
+ *        ['message' => "Task limit reached. Maximum {$max}.",
+ *         'current_count' => N, 'max_allowed' => $max]
+ *      - інакше → $response = $next($request)
  *        додати заголовки X-Task-Limit, X-Task-Count, X-Task-Remaining
- *        і повернути \$response
+ *        і повернути $response
  *
- *   2) ensureJson(array \$request, callable \$next): array
- *      - встановити \$request['headers']['Accept'] = 'application/json'
- *      - повернути \$next(\$request)
+ *   2) ensureJson(array $request, callable $next): array
+ *      - встановити $request['headers']['Accept'] = 'application/json'
+ *      - повернути $next($request)
  *
- *   3) runPipeline(array \$request, array \$middlewares, callable \$controller): array
- *      - згорнути \$middlewares ЗПРАВА НАЛІВО, останній виклик — \$controller
+ *   3) runPipeline(array $request, array $middlewares, callable $controller): array
+ *      - згорнути $middlewares ЗПРАВА НАЛІВО, останній виклик — $controller
  *      - запустити повний ланцюжок з першого middleware
  *      - повернути результат
  */

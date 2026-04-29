@@ -58,7 +58,7 @@ const quizQuestions: QuizQuestion[] = [
     ],
     correct: 2,
     explanation:
-      'Класичний use-case before() — «адмін може все»: if (\\$user->is_admin) return true. Тоді update/delete/view не викликаються взагалі. ⚠️ Дуже важливо повертати null для звичайних користувачів — інакше всі дії будуть заблоковані. Повертайте bool тільки для override.',
+      'Класичний use-case before() — «адмін може все»: if ($user->is_admin) return true. Тоді update/delete/view не викликаються взагалі. ⚠️ Дуже важливо повертати null для звичайних користувачів — інакше всі дії будуть заблоковані. Повертайте bool тільки для override.',
   },
   {
     question: 'Що правильно передати другим аргументом у $this->authorize() для viewAny та create?',
@@ -299,7 +299,7 @@ class TaskPolicy
 const practiceCode = `<?php
 declare(strict_types=1);
 
-// Симулюємо Laravel Policy + \$this->authorize() на чистому PHP.
+// Симулюємо Laravel Policy + $this->authorize() на чистому PHP.
 // Показує, чому Policy краще за ручні перевірки.
 
 // === "БД" ===
@@ -339,7 +339,7 @@ class TaskPolicy
     public function delete(array $user, array $task): bool { return $task['user_id'] === $user['id']; }
 }
 
-// === Емуляція \$this->authorize() ===
+// === Емуляція $this->authorize() ===
 function authorize(array $user, string $ability, mixed $resource): void
 {
     $policy = new TaskPolicy();

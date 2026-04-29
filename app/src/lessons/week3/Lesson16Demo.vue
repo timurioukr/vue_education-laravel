@@ -13,7 +13,7 @@ const memoryItems = [
     laravel: 'getClientOriginalName/getSize/getMimeType',
   },
   { vue: 'accept=".jpg,.png" (підказка!)', laravel: "validate: 'mimes:jpg,png|max:10240'" },
-  { vue: '<img :src="user.avatarUrl">', laravel: "Storage::disk('public')->url(\\$path)" },
+  { vue: '<img :src="user.avatarUrl">', laravel: "Storage::disk('public')->url($path)" },
   { vue: 'URL.createObjectURL(file)', laravel: "$file->store('avatars', 'public')" },
   { vue: 'Vite public/ — статичні файли', laravel: 'php artisan storage:link → public/storage' },
 ]

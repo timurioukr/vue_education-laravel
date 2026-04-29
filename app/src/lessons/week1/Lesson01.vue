@@ -422,7 +422,7 @@ print_r($stats);`
 
       <CodeComparison
         :js="`const msg = \`Hello \${name},\ntotal: \${a + b}\`;`"
-        :php="`\$msg = &lt;&lt;&lt;EOT\nHello {\$name},\ntotal: {\$total}\nEOT;`"
+        :php="`$msg = &lt;&lt;&lt;EOT\nHello {$name},\ntotal: {$total}\nEOT;`"
         js-title="JS (template literal)"
         php-title="PHP (heredoc)"
       />

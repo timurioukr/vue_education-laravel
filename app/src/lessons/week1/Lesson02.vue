@@ -261,7 +261,7 @@ print_r($task->toArray());`
 
       <CodeComparison
         :js="`class Admin extends User {\n  constructor(name, role) {\n    super(name);\n    this.role = role;\n  }\n}`"
-        :php="`class Admin extends User\n{\n    public function __construct(\n        string \$name,\n        public string \$role,\n    ) {\n        parent::__construct(\$name);\n    }\n}`"
+        :php="`class Admin extends User\n{\n    public function __construct(\n        string $name,\n        public string $role,\n    ) {\n        parent::__construct($name);\n    }\n}`"
         js-title="JS extends"
         php-title="PHP extends"
       />
@@ -276,7 +276,7 @@ print_r($task->toArray());`
 
       <CodeComparison
         :js="`class Task {\n  static create(data) {\n    return new Task(data);\n  }\n}\nconst task = Task.create({...});`"
-        :php="`class Task\n{\n    public static function create(array \$data): self\n    {\n        return new self(\$data);\n    }\n}\n\$task = Task::create([...]);`"
+        :php="`class Task\n{\n    public static function create(array $data): self\n    {\n        return new self($data);\n    }\n}\n$task = Task::create([...]);`"
         js-title="JS static"
         php-title="PHP static (::)"
       />
@@ -290,7 +290,7 @@ print_r($task->toArray());`
       </TheoryBlock>
 
       <CodeBlock
-        :code="`class Task {\n    public function __construct(\n        public readonly int \$id,\n        public readonly string \$title,\n        public string \$status = 'pending',\n    ) {}\n}\n\n\$task = new Task(1, 'Learn PHP');\n// \$task->id = 2;  // Error: Cannot modify readonly property`"
+        :code="`class Task {\n    public function __construct(\n        public readonly int $id,\n        public readonly string $title,\n        public string $status = 'pending',\n    ) {}\n}\n\n$task = new Task(1, 'Learn PHP');\n// $task->id = 2;  // Error: Cannot modify readonly property`"
         lang="php"
         title="readonly properties"
       />

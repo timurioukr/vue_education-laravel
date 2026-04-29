@@ -8,7 +8,7 @@ defineProps<{
 
 const memoryItems = [
   { vue: 'computed(() => filter(list))', laravel: "Cache::remember('key', ttl, fn)" },
-  { vue: 'v-for + fetch per item', laravel: 'N+1: \$task->category (lazy load)' },
+  { vue: 'v-for + fetch per item', laravel: 'N+1: $task->category (lazy load)' },
   { vue: 'single fetch with include', laravel: "Task::with('category')->get()" },
   { vue: 'queryClient.invalidateQueries()', laravel: "Cache::forget('key')" },
   { vue: 'virtual scroll (stream)', laravel: 'cursor() / lazy()' },

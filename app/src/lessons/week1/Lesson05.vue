@@ -377,7 +377,7 @@ const quizQuestions: QuizQuestion[] = [
 
       <CodeComparison
         :js="`// JS: ручний JOIN\nconst tags = await db.query(\n  'SELECT t.* FROM tags t ' +\n  'JOIN task_tag tt ON t.id = tt.tag_id ' +\n  'WHERE tt.task_id = ?', [taskId]\n);`"
-        :php="`// Laravel: автоматично\n\$tags = \$task->tags;\n\n// В моделі Task:\npublic function tags(): BelongsToMany\n{\n    return \$this->belongsToMany(Tag::class);\n}`"
+        :php="`// Laravel: автоматично\n$tags = $task->tags;\n\n// В моделі Task:\npublic function tags(): BelongsToMany\n{\n    return $this->belongsToMany(Tag::class);\n}`"
         js-title="JS (ручний SQL)"
         php-title="Laravel (belongsToMany)"
       />

@@ -459,7 +459,7 @@ print_r($row);
 
 echo "\\n=== 4) Скачування — клієнт бачить ОРИГІНАЛЬНЕ імʼя ===\\n";
 echo "  HTTP Header: Content-Disposition: attachment; filename=\\"{$row['original_name']}\\"\\n";
-echo "  Контент бере з диску по \$row['path']: " . substr($publicDisk->get($row['path']) ?? '', 0, 30) . "...\\n\\n";
+echo "  Контент бере з диску по $row['path']: " . substr($publicDisk->get($row['path']) ?? '', 0, 30) . "...\\n\\n";
 
 echo "=== 5) Видалення вкладення ===\\n";
 $publicDisk->delete($row['path']);
@@ -501,16 +501,16 @@ declare(strict_types=1);
  *          "avatar may not be greater than 2048 kilobytes"
  *
  *   4) uploadAvatar(int $userId, array $file, array &$users, array &$disk): array
- *      \$file: ['name','ext','mime','contents']
- *      \$users[id]: ['avatar_path' => ?string]
- *      \$disk[path]: contents
+ *      $file: ['name','ext','mime','contents']
+ *      $users[id]: ['avatar_path' => ?string]
+ *      $disk[path]: contents
  *      Логіка:
  *        a) валідація — якщо є помилки, повернути ['status' => 422, 'errors' => [...]]
- *        b) якщо у \$users[\$userId]['avatar_path'] вже щось є — видалити старий файл з \$disk
+ *        b) якщо у $users[$userId]['avatar_path'] вже щось є — видалити старий файл з $disk
  *        c) згенерувати унікальне імʼя через makeUniqueFilename()
  *        d) шлях = "avatars/<filename>"
- *        e) покласти контент у \$disk
- *        f) оновити \$users[\$userId]['avatar_path']
+ *        e) покласти контент у $disk
+ *        f) оновити $users[$userId]['avatar_path']
  *        g) повернути ['status' => 201, 'url' => storageDiskUrl(...)]
  *
  *   5) deleteAvatar(int $userId, array &$users, array &$disk): array

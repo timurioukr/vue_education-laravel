@@ -331,7 +331,7 @@ const quizQuestions: QuizQuestion[] = [
 
       <CodeComparison
         :js="`// Vue Router + API call\nrouter.get('/tasks/:id', async (to) => {\n  const res = await fetch('/api/tasks/' + to.params.id);\n  if (!res.ok) throw new Error('Not found');\n  return res.json();\n});`"
-        :php="`// Laravel Route Model Binding\nRoute::get('/tasks/{task}', function (Task \$task) {\n    return \$task; // автоматичний findOrFail!\n});\n\n// В контролері:\npublic function show(Task \$task): JsonResponse\n{\n    return response()->json(\$task);\n}`"
+        :php="`// Laravel Route Model Binding\nRoute::get('/tasks/{task}', function (Task $task) {\n    return $task; // автоматичний findOrFail!\n});\n\n// В контролері:\npublic function show(Task $task): JsonResponse\n{\n    return response()->json($task);\n}`"
         js-title="JS (ручний fetch)"
         php-title="PHP (auto binding)"
       />
@@ -344,7 +344,7 @@ const quizQuestions: QuizQuestion[] = [
       </TheoryBlock>
 
       <CodeBlock
-        :code="`// Основні коди для REST API:\n//\n// 200 OK            — успішний GET або PUT\n// 201 Created       — успішний POST (ресурс створено)\n// 204 No Content    — успішний DELETE (тіло порожнє)\n// 404 Not Found     — ресурс не знайдено\n// 422 Unprocessable — помилка валідації\n// 500 Server Error  — щось зламалось на сервері\n\n// Приклад у контролері:\npublic function store(Request \$request): JsonResponse\n{\n    \$task = Task::create(\$request->validated());\n    return response()->json(\$task, 201); // Created\n}\n\npublic function destroy(Task \$task): JsonResponse\n{\n    \$task->delete();\n    return response()->json(null, 204); // No Content\n}`"
+        :code="`// Основні коди для REST API:\n//\n// 200 OK            — успішний GET або PUT\n// 201 Created       — успішний POST (ресурс створено)\n// 204 No Content    — успішний DELETE (тіло порожнє)\n// 404 Not Found     — ресурс не знайдено\n// 422 Unprocessable — помилка валідації\n// 500 Server Error  — щось зламалось на сервері\n\n// Приклад у контролері:\npublic function store(Request $request): JsonResponse\n{\n    $task = Task::create($request->validated());\n    return response()->json($task, 201); // Created\n}\n\npublic function destroy(Task $task): JsonResponse\n{\n    $task->delete();\n    return response()->json(null, 204); // No Content\n}`"
         lang="php"
         title="HTTP Status Codes"
         :show-line-numbers="true"

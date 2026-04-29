@@ -10,7 +10,7 @@ const memoryItems = [
   { vue: 'worker.postMessage(data)', laravel: 'MyJob::dispatch($data)' },
   { vue: 'worker.onmessage = fn', laravel: 'php artisan queue:work' },
   { vue: 'await doWork() (блокує)', laravel: 'QUEUE_CONNECTION=sync' },
-  { vue: 'setTimeout(fn, delay)', laravel: '::dispatch(\\$u)->delay(now()->addMinutes(10))' },
+  { vue: 'setTimeout(fn, delay)', laravel: '::dispatch($u)->delay(now()->addMinutes(10))' },
   { vue: 'setInterval(fn, 5*60*1000)', laravel: "Schedule::command('..')->everyFiveMinutes()" },
   { vue: '"scripts" у package.json', laravel: 'php artisan make:command → $signature' },
 ]

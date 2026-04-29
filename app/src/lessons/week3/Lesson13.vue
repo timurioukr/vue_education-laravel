@@ -563,7 +563,7 @@ $deleted = logoutAll(1);
 if ($deleted === 3 && count($tokens) === 1) {
     echo "✓ logoutAll видалив 3 токени user=1, токен user=2 лишився\\n"; $pass++;
 } else {
-    echo "✗ logoutAll: видалено $deleted, в \$tokens лишилось " . count($tokens) . "\\n";
+    echo "✗ logoutAll: видалено $deleted, в $tokens лишилось " . count($tokens) . "\\n";
 }
 
 // Тест 4: tokenCan з абилитою '*' дозволяє все

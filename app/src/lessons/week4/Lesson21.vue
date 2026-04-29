@@ -178,7 +178,7 @@ $tasks = Task::withCount('comments')->get();
 
 // Дефолтний eager load у моделі:
 class Task extends Model {
-    protected \$with = ['category']; // завжди підвантажує
+    protected $with = ['category']; // завжди підвантажує
 }`
 
 // === CodeBlock: preventLazyLoading ===
