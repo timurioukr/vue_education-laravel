@@ -89,7 +89,7 @@ const quizQuestions: QuizQuestion[] = [
       'Вказує, які поля показувати в JSON',
       'Визначає білий список полів, дозволених для масового присвоєння (mass assignment)',
       'Визначає типи полів для cast',
-      "Вказує обовʼязкові поля при створенні",
+      'Вказує обовʼязкові поля при створенні',
     ],
     correct: 1,
     explanation:
@@ -193,12 +193,7 @@ const quizQuestions: QuizQuestion[] = [
   },
   {
     question: 'Що поверне захищений auth:sanctum маршрут без Bearer-токена?',
-    options: [
-      '200 з порожніми даними',
-      '403 Forbidden',
-      '401 Unauthorized',
-      '404 Not Found',
-    ],
+    options: ['200 з порожніми даними', '403 Forbidden', '401 Unauthorized', '404 Not Found'],
     correct: 2,
     explanation:
       '401 Unauthorized — "ви не аутентифіковані". 403 — "ви аутентифіковані, але не маєте доступу". Без токена = не аутентифікований = 401.',
@@ -216,7 +211,8 @@ const quizQuestions: QuizQuestion[] = [
       'Gate — простий closure для глобальних перевірок (Gate::define("admin", ...)). Policy — клас з методами viewAny/view/create/update/delete для конкретної моделі.',
   },
   {
-    question: 'Що поверне $this->authorize("update", $task) якщо TaskPolicy::update() повертає false?',
+    question:
+      'Що поверне $this->authorize("update", $task) якщо TaskPolicy::update() повертає false?',
     options: [
       'null',
       'false',
@@ -475,9 +471,8 @@ const resources = [
         </p>
         <ul class="intro-list">
           <li>
-            <strong>Теоретичний тест</strong> — 25 питань на вкладці
-            <em>Квіз</em> (PHP, Laravel structure, routing, Eloquent, validation, auth, testing,
-            deployment).
+            <strong>Теоретичний тест</strong> — 25 питань на вкладці <em>Квіз</em> (PHP, Laravel
+            structure, routing, Eloquent, validation, auth, testing, deployment).
           </li>
           <li>
             <strong>Практичне завдання</strong> — повна перевірка вашого Task Manager на вкладці
@@ -522,9 +517,7 @@ const resources = [
 
     <div v-show="activeTab === 'practice'" class="tab-content">
       <TheoryBlock title="2.1 Підготовка">
-        <p>
-          Скиньте базу та заповніть тестовими даними, потім запустіть Laravel і Vue паралельно.
-        </p>
+        <p>Скиньте базу та заповніть тестовими даними, потім запустіть Laravel і Vue паралельно.</p>
       </TheoryBlock>
       <CodeBlock :code="setupCode" lang="bash" title="Setup" />
 
@@ -550,8 +543,8 @@ const resources = [
 
       <TheoryBlock title="2.6 Нотифікації">
         <p>
-          Оновлення статусу на <code>done</code> має автоматично створити notification через Observer
-          / Event з Уроку 17.
+          Оновлення статусу на <code>done</code> має автоматично створити notification через
+          Observer / Event з Уроку 17.
         </p>
       </TheoryBlock>
       <CodeBlock :code="notifyCode" lang="bash" title="Notifications" />

@@ -18,14 +18,14 @@ const completedLessons = computed(
 )
 const lessonsTotal = regularLessons.length
 
-const completedTests = computed(
-  () => weeklyTests.filter((l) => progress.isCompleted(l.id)).length,
-)
+const completedTests = computed(() => weeklyTests.filter((l) => progress.isCompleted(l.id)).length)
 
 const currentScore = computed(() => progress.getQuizScore('w4-test'))
 
 const totalProgressPercent = computed(() =>
-  Math.round(((completedLessons.value + completedTests.value) / (lessonsTotal + weeklyTests.length)) * 100),
+  Math.round(
+    ((completedLessons.value + completedTests.value) / (lessonsTotal + weeklyTests.length)) * 100,
+  ),
 )
 
 const weekProgress = computed(() =>
