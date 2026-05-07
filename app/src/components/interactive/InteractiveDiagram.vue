@@ -1,7 +1,33 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import mermaid from 'mermaid'
 import type { DiagramStep } from '@/types'
+
+type MermaidApi = (typeof import('mermaid'))['default']
+
+let mermaidPromise: Promise<MermaidApi> | null = null
+
+function loadMermaid(): Promise<MermaidApi> {
+  if (!mermaidPromise) {
+    mermaidPromise = import('mermaid').then(({ default: mermaid }) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        themeVariables: {
+          primaryColor: '#7C5CFC',
+          primaryTextColor: '#1A1A2E',
+          primaryBorderColor: '#6B4FE0',
+          lineColor: '#9CA3AF',
+          secondaryColor: '#F0EEFF',
+          tertiaryColor: '#F5F5FA',
+          fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+          fontSize: '14px',
+        },
+      })
+      return mermaid
+    })
+  }
+  return mermaidPromise
+}
 
 const props = withDefaults(
   defineProps<{
@@ -18,25 +44,11 @@ const diagramContainer = ref<HTMLDivElement>()
 const currentStep = ref(-1)
 const diagramId = `mermaid-${Math.random().toString(36).slice(2, 9)}`
 
-mermaid.initialize({
-  startOnLoad: false,
-  theme: 'base',
-  themeVariables: {
-    primaryColor: '#7C5CFC',
-    primaryTextColor: '#1A1A2E',
-    primaryBorderColor: '#6B4FE0',
-    lineColor: '#9CA3AF',
-    secondaryColor: '#F0EEFF',
-    tertiaryColor: '#F5F5FA',
-    fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-    fontSize: '14px',
-  },
-})
-
 async function renderDiagram() {
   if (!diagramContainer.value) return
 
   try {
+    const mermaid = await loadMermaid()
     const { svg } = await mermaid.render(diagramId, props.definition)
     diagramContainer.value.innerHTML = svg
     await nextTick()
