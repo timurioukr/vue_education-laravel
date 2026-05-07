@@ -2,47 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return response()->json(Category::query()->latest('id')->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $validated = $request->validate($this->rules());
+
+        $category = Category::query()->create([
+            ...$validated,
+            'user_id' => auth()->id() ?? User::query()->value('id'),
+        ]);
+
+        return response()->json($category, Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Category $category): JsonResponse
     {
-        //
+        return response()->json($category);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category): JsonResponse
     {
-        //
+        $category->update($request->validate($this->rules(sometimes: true)));
+
+        return response()->json($category->fresh());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Category $category): Response
     {
-        //
+        $category->delete();
+
+        return response()->noContent();
+    }
+
+    private function rules(bool $sometimes = false): array
+    {
+        $req = $sometimes ? 'sometimes' : 'required';
+        $opt = $sometimes ? 'sometimes' : 'nullable';
+
+        return [
+            'name' => [$req, 'string', 'max:255'],
+            'color' => [$opt, 'string', 'max:32'],
+        ];
     }
 }

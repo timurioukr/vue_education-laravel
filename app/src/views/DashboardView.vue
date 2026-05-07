@@ -31,12 +31,6 @@ const nextLessonWeek = computed(() => {
   return weeks.find((w) => w.number === lesson.week)
 })
 
-const cheatsheets = [
-  { name: 'php-vs-js', title: 'PHP vs JavaScript', icon: '🔄' },
-  { name: 'artisan-commands', title: 'Artisan команди', icon: '⚡' },
-  { name: 'eloquent-cheatsheet', title: 'Eloquent шпаргалка', icon: '🔮' },
-]
-
 function goToWeek(weekNum: number) {
   const week = weeks.find((w) => w.number === weekNum)
   if (week && week.lessons.length > 0) {
@@ -46,10 +40,6 @@ function goToWeek(weekNum: number) {
 
 function goToLesson(id: string) {
   router.push(`/lesson/${id}`)
-}
-
-function goToCheatsheet(name: string) {
-  router.push(`/cheatsheet/${name}`)
 }
 </script>
 
@@ -110,22 +100,6 @@ function goToCheatsheet(name: string) {
         </p>
       </div>
       <button class="continue-btn">Продовжити &rarr;</button>
-    </section>
-
-    <!-- Cheatsheets -->
-    <section class="cheatsheets-section">
-      <h2 class="section-title">Шпаргалки</h2>
-      <div class="cheatsheet-cards">
-        <div
-          v-for="cs in cheatsheets"
-          :key="cs.name"
-          class="cheatsheet-card"
-          @click="goToCheatsheet(cs.name)"
-        >
-          <span class="cheatsheet-icon">{{ cs.icon }}</span>
-          <span class="cheatsheet-title">{{ cs.title }}</span>
-        </div>
-      </div>
     </section>
 
     <!-- Interactive diagrams -->

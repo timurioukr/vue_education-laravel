@@ -1,2 +1,22 @@
-.superpowers/
+# macOS
 .DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+.nova/
+.zed/
+
+# Tooling caches
+.superpowers/
+.playwright-mcp/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local

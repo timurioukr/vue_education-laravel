@@ -17,13 +17,6 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/cheatsheet/:name',
-      name: 'cheatsheet',
-      component: () => import('@/views/CheatsheetView.vue'),
-      props: true,
-      meta: { title: 'Cheatsheet' },
-    },
-    {
       path: '/lifecycle',
       name: 'lifecycle',
       component: () => import('@/views/LifecycleView.vue'),

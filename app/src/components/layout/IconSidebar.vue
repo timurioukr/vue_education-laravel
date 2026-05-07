@@ -6,7 +6,6 @@ const route = useRoute()
 const navItems = [
   { icon: '📊', label: 'Dashboard', to: '/' },
   { icon: '📖', label: 'Lessons', to: '/lesson/01' },
-  { icon: '📋', label: 'Cheatsheets', to: '/cheatsheet/php-vs-js' },
 ]
 
 function isActive(to: string): boolean {

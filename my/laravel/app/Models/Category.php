@@ -24,8 +24,3 @@ class Category extends Model
         return $this->hasMany(Task::class);
     }
 }
-
-// Перевірка (запустіть в Tinker після реалізації):
-// $category = Category::first();
-// $category->tasks;      // Collection з задачами
-// $category->user->name; // Ім'я власника категорії
