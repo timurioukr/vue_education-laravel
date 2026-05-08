@@ -1,4 +1,5 @@
 # Laravel для Vue-розробника: від фронтенду до фулстеку за 4 тижні
+> **Language / Мова:** The course is currently available in Ukrainian only. English version is in progress.
 
 ## Що це за курс інфо
 
