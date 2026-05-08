@@ -1,143 +1,144 @@
-# Laravel для Vue-розробника: від фронтенду до фулстеку за 4 тижні
+# Laravel for Vue Developers: From Frontend to Fullstack in 4 Weeks
+
 > **Language / Мова:** The course is currently available in Ukrainian only. English version is in progress.
 
-## Що це за курс інфо
+## About This Course
 
-Практичний курс з Laravel для фронтенд-розробників, які вже працюють з Vue/Nuxt і хочуть навчитись будувати бекенд самостійно. Протягом курсу ми крок за кроком створимо повноцінний **Task Manager API**, а наприкінці підключимо до нього Vue SPA фронтенд.
+A hands-on Laravel course for frontend developers who already work with Vue/Nuxt and want to learn how to build a backend on their own. Throughout the course we will step by step create a fully functional **Task Manager API**, and at the end connect a Vue SPA frontend to it.
 
-Кожен урок містить теорію з поясненнями "мовою фронтендера" -- з паралелями до JavaScript, npm, Vue Router та інших знайомих інструментів. Код пишемо англійською, пояснення -- українською.
+Each lesson includes theory explained in "frontend developer language" -- with parallels to JavaScript, npm, Vue Router, and other familiar tools. Code is written in English, explanations are in Ukrainian.
 
-## Для кого
+## Who This Is For
 
-- Vue 3 або Nuxt розробники, які хочуть стати фулстек-спеціалістами
-- Фронтендери, яким набридло чекати на бекендера
-- Ті, хто хоче розуміти, що відбувається "по той бік API"
+- Vue 3 or Nuxt developers who want to become fullstack specialists
+- Frontend developers tired of waiting for a backend developer
+- Those who want to understand what happens "on the other side of the API"
 
-## Попередні вимоги
+## Prerequisites
 
-- Node.js та npm (вже маєте як Vue-розробник)
-- Досвід роботи з Vue 3 (Composition API, Pinia, Vue Router)
-- Базове розуміння терміналу (cd, ls, mkdir -- цього достатньо)
-- Розуміння HTTP-запитів (GET, POST, PUT, DELETE -- ви це робите щодня через axios/fetch)
+- Node.js and npm (you already have these as a Vue developer)
+- Experience with Vue 3 (Composition API, Pinia, Vue Router)
+- Basic understanding of the terminal (cd, ls, mkdir -- that's enough)
+- Understanding of HTTP requests (GET, POST, PUT, DELETE -- you do this every day via axios/fetch)
 
-## Що потрібно встановити
+## What You Need to Install
 
-| Інструмент | Версія | Навіщо                                                   |
-| ---------- | ------ | -------------------------------------------------------- |
-| PHP        | 8.2+   | Мова, на якій працює Laravel                             |
-| Composer   | 2.x    | Пакетний менеджер PHP (аналог npm)                       |
-| SQLite     | 3.x    | База даних (вбудована, не потребує налаштування сервера) |
+| Tool     | Version | Purpose                                       |
+| -------- | ------- | --------------------------------------------- |
+| PHP      | 8.2+    | The language Laravel runs on                  |
+| Composer | 2.x     | PHP package manager (equivalent of npm)       |
+| SQLite   | 3.x     | Database (built-in, no server setup required) |
 
-> **Для macOS:** PHP та SQLite вже встановлені. Composer встановлюється однією командою:
+> **For macOS:** PHP and SQLite are already installed. Composer is installed with one command:
 >
 > ```bash
 > php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 > ```
 
-## Запуск інтерактивної платформи
+## Running the Interactive Platform
 
-Курс має інтерактивну веб-платформу (Vue 3 SPA) з уроками, квізами та прикладами коду.
+The course has an interactive web platform (Vue 3 SPA) with lessons, quizzes, and code examples.
 
-**Вимоги:** Node.js 18+, npm, PHP 8.2+ (Laravel Herd або встановлений вручну)
+**Requirements:** Node.js 18+, npm, PHP 8.2+ (Laravel Herd or installed manually)
 
 ```bash
-# Перейти в папку додатку
+# Navigate to the app folder
 cd app
 
-# Встановити залежності
+# Install dependencies
 npm install
 
-# Запустити dev-сервер
+# Start the dev server
 npm run dev
 ```
 
-Для інтерактивного виконання PHP-коду в уроках запустіть локальний PHP-сервер у другому терміналі:
+To run PHP code interactively in lessons, start a local PHP server in a second terminal:
 
 ```bash
 php -S localhost:8088 app/server/executor.php
 ```
 
-Після запуску відкрийте посилання з терміналу (зазвичай `http://localhost:5173`).
+After starting, open the link from the terminal (usually `http://localhost:5173`).
 
-### Інші команди
+### Other Commands
 
-| Команда           | Опис                              |
-| ----------------- | --------------------------------- |
-| `npm run build`   | Збірка для продакшну              |
-| `npm run preview` | Перегляд продакшн-збірки локально |
+| Command           | Description                          |
+| ----------------- | ------------------------------------ |
+| `npm run build`   | Build for production                 |
+| `npm run preview` | Preview the production build locally |
 
-## Структура курсу
+## Course Structure
 
-### Тиждень 1: PHP та основи Laravel
+### Week 1: PHP and Laravel Basics
 
-| Урок | Тема                                           | Що будуємо                                             |
-| ---- | ---------------------------------------------- | ------------------------------------------------------ |
-| 1    | PHP для JS-розробника: синтаксис, типи, масиви | Перші PHP-скрипти, порівняння з JS                     |
-| 2    | ООП в PHP: класи, інтерфейси, трейти           | Моделювання сутностей Task Manager                     |
-| 3    | Встановлення Laravel, структура проєкту        | Новий Laravel-проєкт, огляд директорій                 |
-| 4    | Роутинг та контролери                          | Перші ендпоінти API                                    |
-| 5    | Blade шаблони та як Laravel рендерить сторінки | Проста HTML-сторінка (для розуміння SSR)               |
-| 6    | Request/Response lifecycle                     | Розуміння middleware, як запит проходить через Laravel |
+| Lesson | Topic                                         | What We Build                                          |
+| ------ | --------------------------------------------- | ------------------------------------------------------ |
+| 1      | PHP for JS developers: syntax, types, arrays  | First PHP scripts, comparison with JS                  |
+| 2      | OOP in PHP: classes, interfaces, traits       | Modeling Task Manager entities                         |
+| 3      | Installing Laravel, project structure         | New Laravel project, directory overview                |
+| 4      | Routing and controllers                       | First API endpoints                                    |
+| 5      | Blade templates and how Laravel renders pages | Simple HTML page (for understanding SSR)               |
+| 6      | Request/Response lifecycle                    | Understanding middleware, how a request flows through Laravel |
 
-### Тиждень 2: База даних та Eloquent ORM
+### Week 2: Database and Eloquent ORM
 
-| Урок | Тема                               | Що будуємо                                     |
-| ---- | ---------------------------------- | ---------------------------------------------- |
-| 7    | Міграції: версіонування бази даних | Таблиці tasks, categories, users               |
-| 8    | Eloquent моделі: CRUD-операції     | Створення, читання, оновлення, видалення задач |
-| 9    | Зв'язки (Relationships)            | Задачі належать користувачам та категоріям     |
-| 10   | Seeding та фабрики                 | Наповнення бази тестовими даними               |
-| 11   | Query Builder та складні запити    | Фільтрація, сортування, пошук задач            |
-| 12   | Пагінація та API Resources         | JSON-відповіді для фронтенду                   |
+| Lesson | Topic                             | What We Build                                  |
+| ------ | --------------------------------- | ---------------------------------------------- |
+| 7      | Migrations: database versioning   | tasks, categories, users tables                |
+| 8      | Eloquent models: CRUD operations  | Creating, reading, updating, deleting tasks    |
+| 9      | Relationships                     | Tasks belong to users and categories           |
+| 10     | Seeding and factories             | Populating the database with test data         |
+| 11     | Query Builder and complex queries | Filtering, sorting, searching tasks            |
+| 12     | Pagination and API Resources      | JSON responses for the frontend                |
 
-### Тиждень 3: Автентифікація, валідація та безпека
+### Week 3: Authentication, Validation and Security
 
-| Урок | Тема                                 | Що будуємо                             |
-| ---- | ------------------------------------ | -------------------------------------- |
-| 13   | Form Requests та валідація           | Валідація створення/оновлення задач    |
-| 14   | Laravel Sanctum: API-автентифікація  | Реєстрація, логін, токени              |
-| 15   | Middleware та авторизація (Policies) | Захист роутів, перевірка прав доступу  |
-| 16   | Обробка помилок та API-відповіді     | Уніфіковані JSON-помилки для фронтенду |
-| 17   | File Storage та завантаження файлів  | Прикріплення файлів до задач           |
-| 18   | CORS, rate limiting, безпека API     | Налаштування доступу для Vue SPA       |
+| Lesson | Topic                                   | What We Build                          |
+| ------ | --------------------------------------- | -------------------------------------- |
+| 13     | Form Requests and validation            | Validation for creating/updating tasks |
+| 14     | Laravel Sanctum: API authentication     | Registration, login, tokens            |
+| 15     | Middleware and authorization (Policies) | Route protection, access rights check  |
+| 16     | Error handling and API responses        | Unified JSON errors for the frontend   |
+| 17     | File Storage and file uploads           | Attaching files to tasks               |
+| 18     | CORS, rate limiting, API security       | Setting up access for Vue SPA          |
 
-### Тиждень 4: Просунуті теми та інтеграція з Vue
+### Week 4: Advanced Topics and Vue Integration
 
-| Урок | Тема                                   | Що будуємо                       |
-| ---- | -------------------------------------- | -------------------------------- |
-| 19   | Events, Listeners, Notifications       | Email-нотифікації при дедлайнах  |
-| 20   | Queues та фонові задачі                | Відкладена відправка повідомлень |
-| 21   | Тестування API (Feature та Unit тести) | Тести для всіх ендпоінтів        |
-| 22   | API Documentation (Scribe/Swagger)     | Автодокументація API             |
-| 23   | Деплой Laravel-додатку                 | Публікація на сервері            |
-| 24   | Підключення Vue SPA до Laravel API     | Повний фулстек Task Manager      |
+| Lesson | Topic                                | What We Build                     |
+| ------ | ------------------------------------ | --------------------------------- |
+| 19     | Events, Listeners, Notifications     | Email notifications for deadlines |
+| 20     | Queues and background jobs           | Deferred message sending          |
+| 21     | API Testing (Feature and Unit tests) | Tests for all endpoints           |
+| 22     | API Documentation (Scribe/Swagger)   | Auto-generated API docs           |
+| 23     | Deploying a Laravel application      | Publishing to a server            |
+| 24     | Connecting Vue SPA to Laravel API    | Full fullstack Task Manager       |
 
-## Як користуватись
+## How to Use
 
-1. Проходьте уроки **послідовно** -- кожен наступний базується на попередньому
-2. Весь код пишіть самостійно, не копіюйте -- так краще запам'ятовується
-3. Використовуйте шпаргалки з папки `cheatsheets/` як довідник
-4. Після кожного тижня є практичне завдання для закріплення
+1. Go through lessons **in order** -- each one builds on the previous
+2. Write all code yourself, don't copy -- it's better for memorization
+3. Use the cheatsheets in the `cheatsheets/` folder as a reference
+4. After each week there is a practical assignment to reinforce the material
 
-## Проєкт: Task Manager API
+## Project: Task Manager API
 
-Протягом курсу ми побудуємо REST API для менеджера задач з такими можливостями:
+Throughout the course we will build a REST API for a task manager with the following features:
 
-- Реєстрація та автентифікація користувачів (токени)
-- CRUD для задач (створення, перегляд, оновлення, видалення)
-- Категорії та теги для задач
-- Фільтрація, сортування, пошук
-- Пагінація результатів
-- Завантаження файлів-вкладень
-- Email-нотифікації про дедлайни
-- Повне покриття тестами
+- User registration and authentication (tokens)
+- CRUD for tasks (create, read, update, delete)
+- Categories and tags for tasks
+- Filtering, sorting, search
+- Result pagination
+- File attachment uploads
+- Email notifications for deadlines
+- Full test coverage
 
-Наприкінці підключимо Vue 3 SPA як фронтенд.
+At the end, we will connect a Vue 3 SPA as the frontend.
 
-## Шпаргалки
+## Cheatsheets
 
-| Файл                                                                     | Опис                                     |
-| ------------------------------------------------------------------------ | ---------------------------------------- |
-| [cheatsheets/php-vs-js.md](cheatsheets/php-vs-js.md)                     | PHP vs JavaScript: порівняння синтаксису |
-| [cheatsheets/artisan-commands.md](cheatsheets/artisan-commands.md)       | Основні команди Artisan                  |
-| [cheatsheets/eloquent-cheatsheet.md](cheatsheets/eloquent-cheatsheet.md) | Eloquent ORM: швидкий довідник           |
+| File                                                                     | Description                          |
+| ------------------------------------------------------------------------ | ------------------------------------ |
+| [cheatsheets/php-vs-js.md](cheatsheets/php-vs-js.md)                    | PHP vs JavaScript: syntax comparison |
+| [cheatsheets/artisan-commands.md](cheatsheets/artisan-commands.md)       | Main Artisan commands                |
+| [cheatsheets/eloquent-cheatsheet.md](cheatsheets/eloquent-cheatsheet.md) | Eloquent ORM: quick reference        |
