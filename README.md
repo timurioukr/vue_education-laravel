@@ -135,6 +135,21 @@ Throughout the course we will build a REST API for a task manager with the follo
 
 At the end, we will connect a Vue 3 SPA as the frontend.
 
+## Capstone Project: DevBlog (Fullstack Inertia.js)
+
+After finishing the course, the final hands-on assignment is to build a complete fullstack app **from scratch** in a **new domain** — a content platform (blog) — so you have to *recall and apply* the material instead of copying the Task Manager.
+
+Unlike the course (decoupled Vue SPA + Sanctum API), the capstone uses a **monolithic Inertia.js architecture** (Laravel + Vue in one app, session auth, server-driven forms). Being able to explain the trade-offs between the two approaches is a strong point in a junior interview.
+
+The capstone is a staged assignment (M0 → M13) covering the full junior Laravel basis — migrations, Eloquent relationships, validation, policies/RBAC, transactions & service layer, events/queues, testing (Pest), and the Inertia + Vue frontend. Each stage has subtasks, a Definition of Done, interview questions, and links back to the relevant lessons.
+
+> The capstone docs are in Ukrainian (same as the lessons).
+
+| File                                       | Description                                          |
+| ------------------------------------------ | ---------------------------------------------------- |
+| [capstone/README.md](capstone/README.md)   | Full assignment: domain model, route map, stages M0–M13, interview checklist |
+| [capstone/CHECKLIST.md](capstone/CHECKLIST.md) | Progress tracker for each stage                  |
+
 ## Cheatsheets
 
 | File                                                                     | Description                          |

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
+const { theme, toggle } = useTheme()
 
 const navItems = [
   { icon: '📊', label: 'Dashboard', to: '/' },
@@ -36,9 +38,15 @@ function isActive(to: string): boolean {
     </nav>
 
     <div class="nav-bottom">
-      <div class="nav-icon" title="Settings">
-        <span class="nav-emoji">⚙️</span>
-      </div>
+      <button
+        type="button"
+        class="nav-icon theme-toggle"
+        :title="theme === 'dark' ? 'Світла тема' : 'Темна тема'"
+        :aria-label="theme === 'dark' ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'"
+        @click="toggle"
+      >
+        <span class="nav-emoji" aria-hidden="true">{{ theme === 'dark' ? '☀️' : '🌙' }}</span>
+      </button>
     </div>
   </aside>
 </template>
@@ -108,5 +116,10 @@ function isActive(to: string): boolean {
 
 .nav-bottom {
   margin-top: auto;
+}
+
+.theme-toggle {
+  border: none;
+  font: inherit;
 }
 </style>
